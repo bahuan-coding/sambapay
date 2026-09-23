@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 // SambaPay Welcome Kit: check and build.
 // Usage: node scripts/build-kit.mjs check | build
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
@@ -96,7 +96,7 @@ function check() {
   for (const f of files) {
     const before = failures.length;
     const text = readFileSync(join(KIT, f), "utf8");
-    const lines = text.split("\n");
+    const lines = text.split(/\r?\n/);
     const num = f.slice(0, 2);
     if (!/^# \d\d · .+$/.test(lines[0])) fail(`${f}: line 1 must be "# NN · Title"`);
     if (lines[1] !== "") fail(`${f}: line 2 must be blank`);
@@ -129,7 +129,7 @@ function check() {
     if (!existsSync(abs)) continue;
     for (const file of walk(abs)) {
       const text = readFileSync(file, "utf8");
-      text.split("\n").forEach((line, i) => {
+      text.split(/\r?\n/).forEach((line, i) => {
         if (NAME.test(line) && TITLE_WORDS_OS.test(line)) fail(`${file.replace(ROOT + "/", "")}:${i + 1}: title word next to André Silva`);
       });
     }
