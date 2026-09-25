@@ -35,11 +35,11 @@ title: SambaPay
 <section class="beat beat-craft">
 <h2>Um serviço, três partes</h2>
 <dl class="ledger">
-<dt>Trilhos</dt>
+<dt><a href="/pt/trilhos/">Trilhos</a></dt>
 <dd>Infraestrutura que conecta o volume do cliente ao adquirente local na América Latina, numa política comercial local: preços locais, meios de pagamento locais, a melhor aprovação que conseguirmos.</dd>
-<dt>Website Factory</dt>
+<dt><a href="/pt/website-factory/">Website Factory</a></dt>
 <dd>Digitalização de merchants locais nas geografias onde temos estrutura, do CNPJ até o payout, passando pela gestão operacional com as entidades locais.</dd>
-<dt>Liquidação</dt>
+<dt><a href="/pt/liquidacao/">Liquidação</a></dt>
 <dd>O dinheiro arrecadado localmente chega ao cliente com o menor número de saltos. Nada se move antes de o livro fechar.</dd>
 </dl>
 </section>

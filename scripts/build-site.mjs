@@ -197,6 +197,8 @@ const SLUGS = {
   "how-we-win": { en: "how-we-win/", pt: "como-ganhamos/" },
   rails: { en: "rails/", pt: "trilhos/" },
   settlement: { en: "settlement/", pt: "liquidacao/" },
+  what: { en: "what/", pt: "o-que-fazemos/" },
+  "website-factory": { en: "website-factory/", pt: "website-factory/" },
 };
 
 function wrapPage({ lang, title, innerHtml, canonical, altUrl }) {

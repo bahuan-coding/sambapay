@@ -35,11 +35,11 @@ title: SambaPay
 <section class="beat beat-craft">
 <h2>One service, three parts</h2>
 <dl class="ledger">
-<dt>Rails</dt>
+<dt><a href="/rails/">Rails</a></dt>
 <dd>Infrastructure that connects a client's volume to local acquiring in Latin America, on a local commercial policy: local prices, local payment methods, the best approval we can get.</dd>
-<dt>Website Factory</dt>
+<dt><a href="/website-factory/">Website Factory</a></dt>
 <dd>Digitisation for local merchants in the geographies where we have structure, from the CNPJ through operational management with the local entities, until payout.</dd>
-<dt>Settlement</dt>
+<dt><a href="/settlement/">Settlement</a></dt>
 <dd>Money collected locally reaches the client with the fewest hops. Nothing moves before the book ties.</dd>
 </dl>
 </section>
