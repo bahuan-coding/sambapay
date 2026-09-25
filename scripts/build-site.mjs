@@ -119,7 +119,80 @@ function checkForbidden(label, text, fail, { allowName = false } = {}) {
   });
 }
 
+function generateGlossary() {
+  const kit = readFileSync(join(ROOT, "welcome-kit/09-glossary.md"), "utf8");
+  const pairs = JSON.parse(readFileSync(join(SITE, "lib/glossary-bilingue.json"), "utf8"));
+  const drop = ["counterparties", "goals", "people", "aiSubstance", "aiSubstanceLoose", "licence"].flatMap((name) =>
+    compile(FORBIDDEN[name] || {})
+  );
+  drop.push(...(FORBIDDEN.figures?.banned || []).map((p) => new RegExp(p, "i")));
+  const corpus = LANGS.flatMap((lang) =>
+    contentFiles(lang)
+      .filter((f) => f !== "11-glossary.md")
+      .map((f) => readFileSync(join(CONTENT, lang, f), "utf8"))
+  ).join("\n");
+  const entries = [];
+  for (const m of kit.matchAll(/^- \*\*(.+?)\*\* — (.+)$/gm)) {
+    const term = m[1];
+    const def = m[2];
+    if (drop.some((re) => re.test(def)) || NAME.test(def)) continue;
+    if (/\b(Taina|Thiago|Leandro|Hansraj|Sridhar|Viktoria|Abner|Renato|Sheila|Clayton|Rafaela|Govinda|Daniella)\b/.test(def)) continue;
+    const needle = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (!new RegExp(`\\b${needle}\\b`, "i").test(corpus)) continue;
+    entries.push({ term, def });
+  }
+  const items = entries
+    .map(({ term, def }) => `<dt>${term}</dt>\n<dd>${def}</dd>`)
+    .join("\n");
+  const en = `---
+id: glossary
+title: Glossary
+---
+
+<!-- src: welcome-kit/09-glossary.md § Glossary -->
+
+<!-- src: welcome-kit/01-why-we-exist.md § Two niches, no conflict of interest -->
+
+<section class="beat beat-refuse">
+<h2>What we refuse</h2>
+<p>We do not take our clients' merchants. Two niches, no conflict of interest.</p>
+</section>
+
+<section class="beat beat-craft">
+<dl class="ledger">
+${items}
+</dl>
+</section>
+`;
+  const ptItems = entries
+    .map(({ term, def }) => `<dt>${pairs[term] || term}</dt>\n<dd>${def}</dd>`)
+    .join("\n");
+  const pt = `---
+id: glossary
+title: Glossário
+---
+
+<!-- src: welcome-kit/09-glossary.md § Glossary -->
+
+<!-- src: welcome-kit/01-why-we-exist.md § Two niches, no conflict of interest -->
+
+<section class="beat beat-refuse">
+<h2>O que recusamos</h2>
+<p>Não pegamos os merchants dos nossos clientes. Dois nichos, sem conflito de interesse.</p>
+</section>
+
+<section class="beat beat-craft">
+<dl class="ledger">
+${ptItems}
+</dl>
+</section>
+`;
+  writeFileSync(join(CONTENT, "en/11-glossary.md"), en);
+  writeFileSync(join(CONTENT, "pt/11-glossary.md"), pt);
+}
+
 function check() {
+  generateGlossary();
   const failures = [];
   const ok = (msg) => console.log(`ok    ${msg}`);
   const fail = (msg) => { failures.push(msg); console.log(`FAIL  ${msg}`); };
@@ -199,6 +272,9 @@ const SLUGS = {
   settlement: { en: "settlement/", pt: "liquidacao/" },
   what: { en: "what/", pt: "o-que-fazemos/" },
   "website-factory": { en: "website-factory/", pt: "website-factory/" },
+  "how-we-work": { en: "how-we-work/", pt: "como-trabalhamos/" },
+  rules: { en: "rules/", pt: "regras/" },
+  glossary: { en: "glossary/", pt: "glossario/" },
 };
 
 function wrapPage({ lang, title, innerHtml, canonical, altUrl }) {

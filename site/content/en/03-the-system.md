@@ -29,7 +29,7 @@ title: The system
 
 <!-- src: welcome-kit/08-rules-we-live-by.md § 2. The engine stays up -->
 
-<dt>The engine</dt>
+<dt><a href="/rules/">The engine</a></dt>
 <dd>The engine is not allowed to go down.</dd>
 
 <!-- src: welcome-kit/09-glossary.md § Horizontal scaling -->
@@ -39,7 +39,7 @@ title: The system
 
 <!-- src: welcome-kit/08-rules-we-live-by.md § 7. Card scheme rules -->
 
-<dt>The letter</dt>
+<dt><a href="/rules/">The letter</a></dt>
 <dd>A letter from an acquirer is the moment that tells whether this business works. A letter answered the hour it arrives.</dd>
 </dl>
 <p>The system we run today is new, and it is new because of that. The architecture concept persisted, and new technology was absorbed natively, because the people who designed it already knew which part breaks first. The continuity is not the code. It is the team, and the culture that came out of processing that volume.</p>

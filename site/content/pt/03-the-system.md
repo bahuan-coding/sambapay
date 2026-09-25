@@ -29,7 +29,7 @@ title: O sistema
 
 <!-- src: welcome-kit/08-rules-we-live-by.md § 2. The engine stays up -->
 
-<dt>O motor</dt>
+<dt><a href="/pt/regras/">O motor</a></dt>
 <dd>O motor não tem permissão para cair.</dd>
 
 <!-- src: welcome-kit/09-glossary.md § Horizontal scaling -->
@@ -39,7 +39,7 @@ title: O sistema
 
 <!-- src: welcome-kit/08-rules-we-live-by.md § 7. Card scheme rules -->
 
-<dt>A carta</dt>
+<dt><a href="/pt/regras/">A carta</a></dt>
 <dd>Uma carta de adquirente é o momento que diz se este negócio funciona. Uma carta respondida na hora em que chega.</dd>
 </dl>
 <p>O sistema que rodamos hoje é novo, e é novo por causa disso. O conceito de arquitetura persistiu, e a tecnologia nova foi absorvida de forma nativa, porque quem o desenhou já sabia qual parte quebra primeiro. A continuidade não é o código. É o time, e a cultura que saiu de processar aquele volume.</p>
