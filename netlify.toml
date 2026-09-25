@@ -1,7 +1,7 @@
-# SambaPay institutional site (static). Brain repo stays in Git; only dist/site is published.
+# The public site is the Astro app. The kit compiler stays in the repo.
 [build]
-  command = "npm ci && npm run build:site"
-  publish = "dist/site"
+  command = "npm ci && npm run build:app"
+  publish = "dist/app"
 
 [build.environment]
   NODE_VERSION = "22"

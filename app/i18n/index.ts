@@ -54,5 +54,4 @@ export function alternatePath(currentPath: string, lang: Lang): string {
 export const navLinks = [
   { key: 'acquirers' as const, en: '/acquirers', pt: '/pt/adquirentes' },
   { key: 'what' as const, en: '/what-we-do', pt: '/pt/o-que-fazemos' },
-  { key: 'character' as const, en: '/character', pt: '/pt/carater' },
 ];

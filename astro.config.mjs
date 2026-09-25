@@ -1,8 +1,7 @@
 import { defineConfig } from 'astro/config';
 import netlify from '@astrojs/netlify';
 
-// The static kit site stays on Netlify until this app passes review.
-// Build output is dist/app, not dist/site.
+// Netlify publishes this app. Build output is dist/app, not dist/site.
 export default defineConfig({
   srcDir: './app',
   publicDir: './app/public',
