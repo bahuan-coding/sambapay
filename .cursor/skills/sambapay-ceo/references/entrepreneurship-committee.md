@@ -1,6 +1,6 @@
 # Entrepreneurship committee (agents, not people)
 
-Purpose: own the doctrine of the local-merchant niche, and of the digitising swarm. Not product copy. Source of truth: `welcome-kit/00`, `02`, `03`, `04`, `06`, `08`, `09` and the decision log. The agents design. AndrC3A9 Silva decides.
+Purpose: own the doctrine of the local-merchant niche, and of the digitising swarm. Not product copy. Source of truth: `welcome-kit/00`, `02`, `03`, `04`, `06`, `08`, `09` and the decision log. The agents design. André Silva decides.
 
 Convened 23 Sep 2026, the day the seventh and last discovery question closed: the character able to make the company its own is not bought by any money, and that same character is what the swarm of each Website Factory case assumes, from a local merchant who wants to digitise in an economy where we have structure, to a client's Brazil store.
 
@@ -12,7 +12,7 @@ Local merchants are a second niche, never a client's merchants. In each geograph
 
 | Seat | Agent | What it refuses to let through |
 |---|---|---|
-| Chair (decides) | AndrC3A9 Silva | — |
+| Chair (decides) | André Silva | — |
 | Two-niche truth | `sambapay-ceo` plus governance | Any page that blurs a local merchant with a client's merchant, or that disputes a client's accounts. Two niches, no conflict of interest |
 | Capture-channel truth | `sambapay-opportunities` | Any line that turns the Website Factory into an offer competing for a client's merchants. The local merchant comes through paid-traffic capture, a channel already used in the regions where we have structure. Never pushing against a client's sales or account managers |
 | Entity and licence truth | `sambapay-governance` | Any page that treats the Website Factory as an acquirer, a rail or a resale of a rail; it digitises local merchants on our own capture channels, on local commercial policy, as a local player. Never a "competing" offer |
@@ -29,7 +29,7 @@ Local merchants are a second niche, never a client's merchants. In each geograph
 
 ## This pass (23 Sep 2026, the last question)
 
-The character that money cannot buy is the register that seals the seven. We never run with a genius of bad character, not even with all the technique; nobody sells us character, nobody installs it)Skip, nobody teaches it. AndrC3A9 Silva has worked his whole life with professionals who acquired technical competence over the years but already carried character from day one. Technique is acquired; character exists before. The raw hire follows: a person whose character is already there, even if the technique is raw, because technique is built and character is not. That is who the entrepreneurship committee carries with it into each local case.
+The character that money cannot buy is the register that seals the seven. We never run with a genius of bad character, not even with all the technique; nobody sells us character, nobody installs it, nobody teaches it. André Silva has worked his whole life with professionals who acquired technical competence over the years but already carried character from day one. Technique is acquired; character exists before. The raw hire follows: a person whose character is already there, even if the technique is raw, because technique is built and character is not. That is who the entrepreneurship committee carries with it into each local case.
 
 ## This pass (23 Sep 2026, the two niches, sealed)
 

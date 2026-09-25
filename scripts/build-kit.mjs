@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env node
+#!/usr/bin/env node
 // SambaPay Welcome Kit: check and build.
 // Usage: node scripts/build-kit.mjs check | build
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
@@ -14,6 +14,11 @@ const CHROME = process.env.CHROME || "/usr/bin/google-chrome";
 const TITLE_WORDS_KIT = /\b(CEO|Chief|Founder|Director|Head|Manager|Owner|President)\b/;
 const TITLE_WORDS_OS = /\b(CEO|Chief|Founder|Director|Head|Manager|President)\b/;
 const NAME = /André Silva/;
+// A corrupted name defeats the NAME test above, so it must fail on its own.
+// Covers: mojibake (AndrÃ©), hex-as-text (AndrC3A9), stripped accent (Andre Silva),
+// replacement character, and the loose bytes that came with them.
+const NAME_BROKEN = /AndrÃ©|AndrC3A9|AndrAc|Andr\uFFFD|\bAndre Silva\b/;
+const MOJIBAKE = /â€|\uFFFD|\u0000/;
 const WORD_LIMIT_DEFAULT = 650; // 06 holds eight titled roles plus named processes; raised separately
 const WORD_LIMIT_ROLES = 900; // 06: eight roles, named processes, and how André Silva participates
 const WORD_LIMIT_LONG = 2700; // 04 and 09; 09 is the full glossary — do not cut entries to fit
@@ -103,6 +108,8 @@ function check() {
     if (!/^Status: (Settled|In discussion|Open)$/.test(lines[2])) fail(`${f}: line 3 must be a Status line`);
     lines.forEach((line, i) => {
       if (NAME.test(line) && TITLE_WORDS_KIT.test(line)) fail(`${f}:${i + 1}: title word next to André Silva`);
+      if (NAME_BROKEN.test(line)) fail(`${f}:${i + 1}: André Silva written with broken encoding`);
+      if (MOJIBAKE.test(line)) fail(`${f}:${i + 1}: mojibake or NUL byte`);
     });
     const limit = num === "04" || num === "09" ? WORD_LIMIT_LONG : num === "06" ? WORD_LIMIT_ROLES : WORD_LIMIT_DEFAULT;
     const w = words(text);
@@ -123,6 +130,22 @@ function check() {
   }
   if (missing.length) fail(`glossary missing: ${missing.join(", ")}`); else ok("glossary covers every jargon term used in 01–08");
 
+  // Encoding integrity. A BOM hides line 1 from every line-based tool, and a
+  // corrupted name slips past the NAME test below. Both must fail the build.
+  let scanned = 0;
+  for (const dir of ["welcome-kit", "company-os", ".cursor", "scripts", "site"]) {
+    const abs = join(ROOT, dir);
+    if (!existsSync(abs)) continue;
+    for (const file of walk(abs, /\.(md|mdc|mjs|css|json)$/)) {
+      const rel = file.replace(ROOT + "/", "");
+      const raw = readFileSync(file);
+      if (raw[0] === 0xef && raw[1] === 0xbb && raw[2] === 0xbf) fail(`${rel}: UTF-8 BOM at byte 0`);
+      if (raw.includes(0x00)) fail(`${rel}: NUL byte`);
+      scanned += 1;
+    }
+  }
+  ok(`encoding integrity: ${scanned} files scanned for BOM and NUL`);
+
   // Company OS and skills: name never next to a title word. The rule file is excluded on purpose.
   for (const dir of ["company-os", ".cursor/skills"]) {
     const abs = join(ROOT, dir);
@@ -130,7 +153,10 @@ function check() {
     for (const file of walk(abs)) {
       const text = readFileSync(file, "utf8");
       text.split(/\r?\n/).forEach((line, i) => {
-        if (NAME.test(line) && TITLE_WORDS_OS.test(line)) fail(`${file.replace(ROOT + "/", "")}:${i + 1}: title word next to André Silva`);
+        const where = `${file.replace(ROOT + "/", "")}:${i + 1}`;
+        if (NAME.test(line) && TITLE_WORDS_OS.test(line)) fail(`${where}: title word next to André Silva`);
+        if (NAME_BROKEN.test(line)) fail(`${where}: André Silva written with broken encoding`);
+        if (MOJIBAKE.test(line)) fail(`${where}: mojibake or NUL byte`);
       });
     }
   }
@@ -142,12 +168,13 @@ function check() {
   console.log("\nall checks passed");
 }
 
-function walk(dir) {
+function walk(dir, match = /\.(md|mdc)$/) {
   const out = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, entry.name);
-    if (entry.isDirectory()) out.push(...walk(p));
-    else if (/\.(md|mdc)$/.test(entry.name)) out.push(p);
+    if (entry.name === "node_modules") continue;
+    if (entry.isDirectory()) out.push(...walk(p, match));
+    else if (match.test(entry.name)) out.push(p);
   }
   return out;
 }
