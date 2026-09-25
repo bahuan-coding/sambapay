@@ -3,7 +3,7 @@
 // The check is the gate. Doctrine it enforces:
 //   .cursor/skills/sambapay-ceo/references/site-committee.md
 // Usage: node scripts/build-site.mjs check | build
-import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync, rmSync, copyFileSync } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -125,7 +125,9 @@ function check() {
   const fail = (msg) => { failures.push(msg); console.log(`FAIL  ${msg}`); };
 
   if (!existsSync(CONTENT)) { fail("site/content/ missing"); }
-  if (!existsSync(join(ASSETS, "site.css"))) fail("site/assets/site.css missing");
+  for (const asset of ["site.css", "carimbo.svg", "rule.svg"]) {
+    if (!existsSync(join(ASSETS, asset))) fail(`site/assets/${asset} missing`);
+  }
 
   const pages = {};
   for (const lang of LANGS) {
@@ -235,7 +237,9 @@ async function build() {
   mkdirSync(DIST, { recursive: true });
 
   mkdirSync(join(DIST, "assets"), { recursive: true });
-  writeFileSync(join(DIST, "assets", "site.css"), readFileSync(join(ASSETS, "site.css"), "utf8"));
+  for (const name of readdirSync(ASSETS)) {
+    copyFileSync(join(ASSETS, name), join(DIST, "assets", name));
+  }
 
   const urls = [];
   const provenance = [];
