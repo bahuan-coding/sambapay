@@ -1,0 +1,45 @@
+@import './tokens.css';
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--paper);
+}
+
+a { color: var(--blue); }
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--header-h);
+  padding: 0 24px;
+  background: var(--anil);
+  color: var(--field);
+}
+
+.bar strong {
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.mark { width: 32px; height: 32px; display: block; }
+
+main {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.chips { display: flex; gap: 12px; margin-top: 32px; }
+.chips i {
+  display: block;
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+}

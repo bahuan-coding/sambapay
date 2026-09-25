@@ -1,0 +1,22 @@
+:root {
+  /* Samba palette. The purple of the other product does not appear. */
+  --paper: #ffffff;
+  --field: #f4efe4;
+  --anil: #1c3d4a;
+  --ink: #1c3d4a;
+  --blue: #1351b4;
+  --yellow: #ffcd07;
+  --green: #168821;
+  --urucum: #c2412d;
+  --ipe: #c4890a;
+
+  /* Symbol, from the gov.br digital mark manual. */
+  --mark-blue: #377ec1;
+  --mark-green: #52ae32;
+  --mark-yellow: #fbba00;
+
+  --font: Inter, system-ui, sans-serif;
+  --display: Raleway, Inter, system-ui, sans-serif;
+  --measure: 72rem;
+  --header-h: 64px;
+}

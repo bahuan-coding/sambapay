@@ -6,7 +6,13 @@
     "check": "node scripts/build-kit.mjs check",
     "check:site": "node scripts/build-site.mjs check",
     "build": "node scripts/build-kit.mjs build",
-    "build:site": "node scripts/build-site.mjs build"
+    "build:site": "node scripts/build-site.mjs build",
+    "dev:app": "astro dev",
+    "build:app": "astro build"
+  },
+  "dependencies": {
+    "@astrojs/netlify": "^6.6.5",
+    "astro": "^5.7.0"
   },
   "devDependencies": {
     "marked": "^15.0.0"
