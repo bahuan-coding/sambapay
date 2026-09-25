@@ -22,6 +22,7 @@ title: Caráter
 <!-- src: company-os/governance/decision-log.md § People register (Q7) settled -->
 
 <p>O talento nunca é usado contra um cliente ou contra um adquirente.</p>
+<p>Não disputamos a conta de quem nos trouxe até aqui.</p>
 
 <!-- src: welcome-kit/05-how-we-work.md § Principles -->
 

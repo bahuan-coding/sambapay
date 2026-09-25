@@ -22,6 +22,7 @@ title: Character
 <!-- src: company-os/governance/decision-log.md § People register (Q7) settled -->
 
 <p>Talent is never used against a client or an acquirer.</p>
+<p>We do not dispute the account of those who carried us here.</p>
 
 <!-- src: welcome-kit/05-how-we-work.md § Principles -->
 
