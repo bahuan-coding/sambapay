@@ -6,12 +6,8 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# EN at / ; PT at /pt/
-[[redirects]]
-  from = "/pt"
-  to = "/pt/"
-  status = 301
-  force = true
+# EN at / ; PT at /pt/. Netlify serves pt/index.html and adds the trailing
+# slash on its own. A forced /pt -> /pt/ rule matches its own target and loops.
 
 [[headers]]
   for = "/assets/*"

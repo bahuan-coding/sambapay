@@ -56,7 +56,7 @@ function wrapPage({ lang, title, innerHtml, altLang, altUrl, canonical }) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escapeHtml(title)} · SambaPay</title>
+  <title>${title === "SambaPay" ? "SambaPay" : `${escapeHtml(title)} · SambaPay`}</title>
   <link rel="canonical" href="https://sambapay.tech${canonical}">
   <link rel="alternate" hreflang="en" href="https://sambapay.tech${enHref}">
   <link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech${ptHref}">
