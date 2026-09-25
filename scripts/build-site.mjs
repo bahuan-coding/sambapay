@@ -194,6 +194,9 @@ const SLUGS = {
   character: { en: "character/", pt: "carater/" },
   why: { en: "why/", pt: "por-que/" },
   "the-system": { en: "the-system/", pt: "o-sistema/" },
+  "how-we-win": { en: "how-we-win/", pt: "como-ganhamos/" },
+  rails: { en: "rails/", pt: "trilhos/" },
+  settlement: { en: "settlement/", pt: "liquidacao/" },
 };
 
 function wrapPage({ lang, title, innerHtml, canonical, altUrl }) {

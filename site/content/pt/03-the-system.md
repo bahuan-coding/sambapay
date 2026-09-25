@@ -24,7 +24,7 @@ title: O sistema
 
 <!-- src: welcome-kit/05-how-we-work.md § Principles -->
 
-<dt>Conciliação</dt>
+<dt><a href="/pt/liquidacao/">Conciliação</a></dt>
 <dd>Conciliação primeiro. Nada mais é confiável antes de o livro fechar.</dd>
 
 <!-- src: welcome-kit/08-rules-we-live-by.md § 2. The engine stays up -->
@@ -34,7 +34,7 @@ title: O sistema
 
 <!-- src: welcome-kit/09-glossary.md § Horizontal scaling -->
 
-<dt>Adquirentes</dt>
+<dt><a href="/pt/trilhos/">Adquirentes</a></dt>
 <dd>Vários adquirentes lado a lado, para que nenhum trilho sozinho nos limite nem concentre o risco.</dd>
 
 <!-- src: welcome-kit/08-rules-we-live-by.md § 7. Card scheme rules -->

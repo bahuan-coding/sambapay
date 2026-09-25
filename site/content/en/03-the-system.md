@@ -24,7 +24,7 @@ title: The system
 
 <!-- src: welcome-kit/05-how-we-work.md § Principles -->
 
-<dt>Reconciliation</dt>
+<dt><a href="/settlement/">Reconciliation</a></dt>
 <dd>Reconciliation first. Nothing else is trusted until the book ties.</dd>
 
 <!-- src: welcome-kit/08-rules-we-live-by.md § 2. The engine stays up -->
@@ -34,7 +34,7 @@ title: The system
 
 <!-- src: welcome-kit/09-glossary.md § Horizontal scaling -->
 
-<dt>Acquirers</dt>
+<dt><a href="/rails/">Acquirers</a></dt>
 <dd>Several acquirers side by side, so no single rail limits us or concentrates the risk.</dd>
 
 <!-- src: welcome-kit/08-rules-we-live-by.md § 7. Card scheme rules -->
