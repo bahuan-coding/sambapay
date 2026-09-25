@@ -17,6 +17,7 @@ const pairs: [string, string][] = [
   ['/character', '/pt/carater'],
   ['/login', '/pt/login'],
   ['/signup', '/pt/signup'],
+  ['/account', '/pt/conta'],
   ['/legal/privacy', '/pt/legal/privacy'],
   ['/legal/terms', '/pt/legal/terms'],
   ['/404', '/pt/404'],

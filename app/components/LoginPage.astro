@@ -1,0 +1,93 @@
+---
+import type { Lang } from '../i18n';
+import { pathForLang } from '../i18n';
+import { loginCopy } from '../i18n/login';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const copy = loginCopy(lang);
+const signupHref = pathForLang('/signup', lang);
+---
+
+<BaseLayout lang={lang} currentPath={currentPath} title={copy.title}>
+  <div class="account">
+    <div class="account__card">
+      <h1>{copy.h1}</h1>
+      <p class="account__sub">{copy.sub}</p>
+      <p class="account__niches">{copy.niches}</p>
+
+      <form data-login-form novalidate>
+        <div data-login-panel="form">
+          <label for="lg-email">{copy.email}</label>
+          <input id="lg-email" name="email" type="email" autocomplete="email" required />
+          <p class="account__error" data-login-error hidden role="alert"></p>
+          <div class="account__actions">
+            <button class="btn btn--primary btn--full" type="submit">{copy.submit}</button>
+          </div>
+        </div>
+        <div data-login-panel="success" hidden>
+          <h2>{copy.successTitle}</h2>
+          <p class="account__sub">{copy.successBody}</p>
+        </div>
+      </form>
+
+      <p class="account__footer"><a href={signupHref}>{copy.create}</a></p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script define:vars={{ lang, errors: copy.errors, invalidLink: copy.invalidLink, mailFailed: copy.mailFailed }}>
+  const form = document.querySelector('[data-login-form]');
+  const panelForm = document.querySelector('[data-login-panel="form"]');
+  const panelSuccess = document.querySelector('[data-login-panel="success"]');
+  const errEl = document.querySelector('[data-login-error]');
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('link') === 'invalid' && errEl) {
+    errEl.textContent = invalidLink;
+    errEl.hidden = false;
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const emailEl = form.elements.namedItem('email');
+    if (!(emailEl instanceof HTMLInputElement) || !emailEl.value.trim()) {
+      errEl.textContent = errors.required;
+      errEl.hidden = false;
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
+      errEl.textContent = errors.invalid;
+      errEl.hidden = false;
+      return;
+    }
+    errEl.hidden = true;
+    try {
+      const res = await fetch('/api/auth/magic-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: emailEl.value.trim(), locale: lang }),
+      });
+      if (res.status === 502) {
+        errEl.textContent = mailFailed;
+        errEl.hidden = false;
+        return;
+      }
+      if (!res.ok) {
+        errEl.textContent = errors.generic;
+        errEl.hidden = false;
+        return;
+      }
+      panelForm.hidden = true;
+      panelSuccess.hidden = false;
+    } catch {
+      errEl.textContent = errors.generic;
+      errEl.hidden = false;
+    }
+  });
+</script>

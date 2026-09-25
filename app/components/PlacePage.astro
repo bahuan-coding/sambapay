@@ -1,6 +1,7 @@
 ---
 import type { Lang } from '../i18n';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CountryFlag from './CountryFlag.astro';
 
 interface Props {
   lang: Lang;
@@ -9,19 +10,25 @@ interface Props {
   image: string;
   place: string;
   country: string;
+  flag: string;
   credit: string;
   creditHref: string;
 }
 
-const { lang, currentPath, title, image, place, country, credit, creditHref } = Astro.props;
+const { lang, currentPath, title, image, place, country, flag, credit, creditHref } = Astro.props;
 ---
 
 <BaseLayout lang={lang} currentPath={currentPath} title={title}>
   <section class="place">
     <img src={image} alt="" />
     <div class="place__sheet">
-      <p class="place__name">{place}</p>
-      <p class="place__country">{country}</p>
+      <div class="place__where">
+        <CountryFlag code={flag} />
+        <div>
+          <p class="place__name">{place}</p>
+          <p class="place__country">{country}</p>
+        </div>
+      </div>
       <slot name="sheet" />
       <a class="place__credit" href={creditHref}>{credit}</a>
     </div>
@@ -60,23 +67,30 @@ const { lang, currentPath, title, image, place, country, credit, creditHref } = 
     background: var(--field);
   }
 
+  .place__where {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--space-4);
+  }
+
   .place__name {
     margin: 0;
-    font-family: var(--display);
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1;
+    font-family: var(--place);
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
     color: var(--ink);
   }
 
   .place__country {
-    margin: var(--space-2) 0 var(--space-4);
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    margin: 2px 0 0;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--blue);
+    color: var(--muted);
   }
 
   .place__sheet :global(h1) {

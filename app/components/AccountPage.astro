@@ -1,0 +1,33 @@
+---
+import type { Lang } from '../i18n';
+import type { Merchant } from '../../db/schema';
+import { accountCopy } from '../i18n/account';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+  merchant: Merchant;
+}
+
+const { lang, currentPath, merchant } = Astro.props;
+const copy = accountCopy(lang);
+---
+
+<BaseLayout lang={lang} currentPath={currentPath} title={copy.title}>
+  <div class="account">
+    <div class="account__card">
+      <h1>{copy.h1}</h1>
+      <p class="account__sub">{copy.in}</p>
+      <p class="account__niches">{copy.niches}</p>
+      <ul class="account__facts">
+        <li>{merchant.name}</li>
+        <li>{merchant.email}</li>
+        <li>{merchant.companyName}</li>
+      </ul>
+      <form method="post" action={`/api/auth/logout?lang=${lang}`}>
+        <button class="btn btn--secondary" type="submit">{copy.logout}</button>
+      </form>
+    </div>
+  </div>
+</BaseLayout>

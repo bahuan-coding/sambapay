@@ -1,0 +1,185 @@
+---
+import type { Lang } from '../i18n';
+import { pathForLang } from '../i18n';
+import { signupCopy } from '../i18n/signup';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const copy = signupCopy(lang);
+const privacyHref = pathForLang('/legal/privacy', lang);
+const termsHref = pathForLang('/legal/terms', lang);
+---
+
+<BaseLayout lang={lang} currentPath={currentPath} title={copy.title}>
+  <div class="account">
+    <div class="account__card">
+      <h1>{copy.h1}</h1>
+      <p class="account__sub">{copy.sub}</p>
+      <p class="account__niches">{copy.niches}</p>
+
+      <form data-signup-form novalidate>
+        <p class="account__steps">
+          <span data-progress="1" aria-current="step">{copy.step1}</span>
+          <span data-progress="2">{copy.step2}</span>
+        </p>
+
+        <div data-step-panel="1">
+          <label for="su-name">{copy.name}</label>
+          <input id="su-name" name="name" autocomplete="name" required minlength="2" />
+
+          <label for="su-email">{copy.email}</label>
+          <input id="su-email" name="email" type="email" autocomplete="email" required />
+
+          <label for="su-phone">{copy.phone}</label>
+          <input id="su-phone" name="phone" type="tel" autocomplete="tel" required minlength="8" />
+
+          <label class="account__check" for="su-terms">
+            <input id="su-terms" name="terms" type="checkbox" required />
+            <span>
+              {copy.termsBefore}<a href={termsHref}>{copy.termsLink}</a>{copy.termsMid}<a href={privacyHref}>{copy.privacyLink}</a>{copy.termsAfter}
+            </span>
+          </label>
+
+          <button class="btn btn--primary btn--full" type="button" data-signup-next>{copy.next}</button>
+        </div>
+
+        <div data-step-panel="2" hidden>
+          <label for="su-company">{copy.company}</label>
+          <input id="su-company" name="companyName" autocomplete="organization" required minlength="2" />
+
+          <label for="su-country">{copy.country}</label>
+          <select id="su-country" name="country" required>
+            <option value="">{copy.countryPlaceholder}</option>
+            {copy.countries.map((c) => <option value={c.code}>{c.label}</option>)}
+          </select>
+
+          <label for="su-site">{copy.website}</label>
+          <input id="su-site" name="website" type="text" inputmode="url" autocomplete="url" />
+          <p class="account__hint">{copy.websiteOptional}</p>
+
+          <p class="account__error" data-signup-error hidden role="alert"></p>
+          <div class="account__actions">
+            <button class="btn btn--secondary" type="button" data-signup-back>{copy.back}</button>
+            <button class="btn btn--primary btn--full" type="submit">{copy.submit}</button>
+          </div>
+        </div>
+
+        <div data-step-panel="success" hidden>
+          <h2>{copy.successTitle}</h2>
+          <p class="account__sub">{copy.successBody}</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</BaseLayout>
+
+<script define:vars={{ lang, errors: copy.errors, mailFailed: copy.mailFailed }}>
+  const form = document.querySelector('[data-signup-form]');
+  const panel1 = document.querySelector('[data-step-panel="1"]');
+  const panel2 = document.querySelector('[data-step-panel="2"]');
+  const panelSuccess = document.querySelector('[data-step-panel="success"]');
+  const steps = document.querySelectorAll('[data-progress]');
+  const errEl = document.querySelector('[data-signup-error]');
+
+  function setDisabled(panel, disabled) {
+    panel?.querySelectorAll('input, select, textarea, button').forEach((el) => {
+      if (el.hasAttribute('data-signup-back') || el.type === 'submit') return;
+      el.disabled = disabled;
+    });
+  }
+
+  function validate(panel) {
+    const fields = panel?.querySelectorAll('input, select, textarea') ?? [];
+    for (const field of fields) {
+      if (field.disabled) continue;
+      if (!field.checkValidity()) {
+        field.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function setStep(n) {
+    panel1.hidden = n !== 1;
+    panel2.hidden = n !== 2;
+    panelSuccess.hidden = n !== 'success';
+    setDisabled(panel2, n !== 2);
+    steps.forEach((el) => {
+      const step = Number(el.getAttribute('data-progress'));
+      if (step === n) el.setAttribute('aria-current', 'step');
+      else el.removeAttribute('aria-current');
+    });
+  }
+
+  function value(name) {
+    const el = form.elements.namedItem(name);
+    if (!el || el instanceof RadioNodeList) return '';
+    if (el instanceof HTMLInputElement && el.type === 'checkbox') return el.checked;
+    return el.value.trim();
+  }
+
+  setStep(1);
+
+  document.querySelector('[data-signup-next]')?.addEventListener('click', () => {
+    if (!validate(panel1)) return;
+    setStep(2);
+  });
+
+  document.querySelector('[data-signup-back]')?.addEventListener('click', () => {
+    setStep(1);
+  });
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (panel2.hidden) {
+      if (!validate(panel1)) return;
+      setStep(2);
+      return;
+    }
+    if (!validate(panel2)) return;
+    errEl.hidden = true;
+    const website = value('website');
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: value('name'),
+          email: value('email'),
+          phone: value('phone'),
+          terms: value('terms') === true,
+          companyName: value('companyName'),
+          country: value('country'),
+          website,
+          locale: lang,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.status === 409) {
+        errEl.textContent = errors.emailTaken;
+        errEl.hidden = false;
+        return;
+      }
+      if (!res.ok) {
+        errEl.textContent = data.error === 'validation' ? errors.validation : errors.generic;
+        errEl.hidden = false;
+        return;
+      }
+      if (data.emailSent === false) {
+        errEl.textContent = mailFailed;
+        errEl.hidden = false;
+        return;
+      }
+      setStep('success');
+    } catch {
+      errEl.textContent = errors.generic;
+      errEl.hidden = false;
+    }
+  });
+</script>

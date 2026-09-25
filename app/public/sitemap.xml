@@ -41,4 +41,24 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/character"/>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/carater"/>
   </url>
+  <url>
+    <loc>https://sambapay.tech/signup</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/signup"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/signup"/>
+  </url>
+  <url>
+    <loc>https://sambapay.tech/login</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/login"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/login"/>
+  </url>
+  <url>
+    <loc>https://sambapay.tech/pt/signup</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/signup"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/signup"/>
+  </url>
+  <url>
+    <loc>https://sambapay.tech/pt/login</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/login"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/login"/>
+  </url>
 </urlset>

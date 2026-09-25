@@ -1,0 +1,10 @@
+---
+export const prerender = false;
+import AccountPage from '../../components/AccountPage.astro';
+import { getSessionMerchant } from '../../lib/auth';
+
+const merchant = await getSessionMerchant(Astro.cookies);
+if (!merchant) return Astro.redirect('/pt/login');
+---
+
+<AccountPage lang="pt" currentPath="/pt/conta" merchant={merchant} />

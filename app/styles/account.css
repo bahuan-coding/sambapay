@@ -1,0 +1,138 @@
+.account {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+}
+
+.account__card {
+  padding: var(--space-5);
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.account h1 {
+  margin: 0 0 var(--space-3);
+  font-family: var(--display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.account__sub,
+.account__niches {
+  margin: 0 0 var(--space-4);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.account__steps {
+  display: flex;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-5);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.account__steps [aria-current="step"] { color: var(--blue); }
+
+.account label {
+  display: block;
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.account input,
+.account select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.account__check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.account__check input {
+  width: 1.1rem;
+  min-height: 1.1rem;
+  margin-top: 2px;
+}
+
+.account__hint {
+  margin: var(--space-2) 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.account__error {
+  margin: var(--space-3) 0;
+  color: var(--urucum);
+  font-size: 0.875rem;
+}
+
+.account__actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.account__actions .btn--full { flex: 1; }
+
+.account .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  font-family: var(--font);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.account .btn--primary {
+  background: var(--blue);
+  color: var(--paper);
+}
+
+.account .btn--secondary {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--border);
+}
+
+.account .btn--full { width: 100%; }
+
+.account__facts {
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.account__facts li {
+  margin: 0 0 var(--space-2);
+}
+
+.account__footer {
+  margin: var(--space-5) 0 0;
+  font-size: 0.875rem;
+}
