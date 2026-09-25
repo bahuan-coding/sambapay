@@ -192,6 +192,8 @@ function urlFor(lang, id) {
 const SLUGS = {
   home: { en: "", pt: "" },
   character: { en: "character/", pt: "carater/" },
+  why: { en: "why/", pt: "por-que/" },
+  "the-system": { en: "the-system/", pt: "o-sistema/" },
 };
 
 function wrapPage({ lang, title, innerHtml, canonical, altUrl }) {

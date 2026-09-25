@@ -18,9 +18,7 @@ title: SambaPay
 
 <!-- src: welcome-kit/01-why-we-exist.md § The system is new. What it knows is not -->
 
-<h2>O sistema é novo. O que ele sabe, não</h2>
-
-<p>Mais de <span class="mono">R$ 3 bilhões</span> foram processados antes de existir o sistema que rodamos hoje. O volume não é a credencial. O que ele ensinou é.</p>
+<h2><a href="/pt/o-sistema/">O sistema é novo. O que ele sabe, não</a></h2>
 
 <p>Conciliação primeiro. Um motor que não tem permissão para cair. Vários adquirentes lado a lado, para que nenhum trilho sozinho nos limite. Uma carta de adquirente respondida na hora em que chega. Nenhum desses é um valor que escolhemos numa sala. É o que aquele volume custou para aprender.</p>
 </section>
