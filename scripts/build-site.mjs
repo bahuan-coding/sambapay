@@ -192,6 +192,13 @@ async function build() {
   });
   writeFileSync(join(DIST, "404.html"), notFound);
 
+  // Serve the Portuguese index as a rewrite (200), never a redirect. A 301 from
+  // /pt/ to /pt/ matches its own target and loops; _redirects wins over that.
+  writeFileSync(
+    join(DIST, "_redirects"),
+    "/pt      /pt/index.html   200\n/pt/     /pt/index.html   200\n"
+  );
+
   writeFileSync(
     join(DIST, "robots.txt"),
     "User-agent: *\nAllow: /\nSitemap: https://sambapay.tech/sitemap.xml\n"
