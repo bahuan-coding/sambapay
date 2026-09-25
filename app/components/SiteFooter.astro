@@ -1,6 +1,7 @@
 ---
 import type { Lang } from '../i18n';
 import { navLinks, pathForLang, t } from '../i18n';
+import Wordmark from './Wordmark.astro';
 
 interface Props {
   lang: Lang;
@@ -15,8 +16,8 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="site-footer__inner">
     <a class="site-footer__brand" href={homeHref}>
-      <img src="/favicon.svg" alt="" width="28" height="28" />
-      <span>SambaPay</span>
+      <img src="/favicon.svg" alt="" width="28" height="20" />
+      <Wordmark />
     </a>
     <nav class="site-footer__nav" aria-label={messages.a11y.footer}>
       {navLinks.map((link) => (
@@ -60,10 +61,11 @@ const year = new Date().getFullYear();
     display: inline-flex;
     align-items: center;
     gap: var(--space-3);
-    color: var(--blue);
-    font-family: var(--display);
-    font-weight: 700;
     text-decoration: none;
+  }
+
+  .site-footer__brand :global(.wordmark) {
+    font-size: 1rem;
   }
 
   .site-footer__nav,

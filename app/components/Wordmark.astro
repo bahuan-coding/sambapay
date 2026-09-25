@@ -1,0 +1,29 @@
+<span class="wordmark">
+  <span class="wordmark__samba">Samba</span><span class="wordmark__pay">Pay</span>
+</span>
+
+<style>
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .wordmark__samba {
+    color: var(--saffron);
+  }
+
+  .wordmark__pay {
+    color: var(--india-navy);
+  }
+
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .wordmark__samba {
+      background-image: linear-gradient(90deg, var(--saffron), var(--india-green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+  }
+</style>

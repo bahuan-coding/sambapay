@@ -21,7 +21,7 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
 <BaseLayout lang={lang} currentPath={currentPath} title={title}>
   <section class="place">
     <img src={image} alt="" />
-    <div class="place__sheet">
+    <div class="place__stack">
       <div class="place__where">
         <CountryFlag code={flag} />
         <div>
@@ -29,8 +29,10 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
           <p class="place__country">{country}</p>
         </div>
       </div>
-      <slot name="sheet" />
-      <a class="place__credit" href={creditHref}>{credit}</a>
+      <div class="place__sheet">
+        <slot name="sheet" />
+        <a class="place__credit" href={creditHref}>{credit}</a>
+      </div>
     </div>
   </section>
   <div class="reading">
@@ -59,10 +61,18 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
     object-fit: cover;
   }
 
-  .place__sheet {
+  .place__stack {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
     margin: var(--space-5);
-    max-width: 36rem;
+    max-width: 40rem;
+  }
+
+  .place__sheet {
+    width: 100%;
     padding: var(--space-5);
     background: var(--field);
   }
@@ -71,7 +81,8 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: var(--space-4);
+    color: #f4efe4;
+    text-shadow: 0 1px 10px rgba(16, 22, 20, 0.55);
   }
 
   .place__name {
@@ -81,7 +92,7 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
     font-weight: 500;
     letter-spacing: -0.01em;
     line-height: 1.15;
-    color: var(--ink);
+    color: #f4efe4;
   }
 
   .place__country {
@@ -90,7 +101,7 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: #f4efe4;
   }
 
   .place__sheet :global(h1) {

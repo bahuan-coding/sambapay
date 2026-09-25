@@ -3,6 +3,7 @@ import type { Lang } from '../i18n';
 import { navLinks, pathForLang, t } from '../i18n';
 import LangToggle from './LangToggle.astro';
 import PrimaryButton from './PrimaryButton.astro';
+import Wordmark from './Wordmark.astro';
 
 interface Props {
   lang: Lang;
@@ -19,8 +20,8 @@ const accountHref = pathForLang('/signup', lang);
 <header class="site-header">
   <div class="site-header__inner">
     <a class="site-header__brand" href={homeHref}>
-      <img src="/favicon.svg" alt="" width="32" height="32" />
-      <span class="site-header__word">SambaPay</span>
+      <img src="/favicon.svg" alt="" width="32" height="22" />
+      <Wordmark />
     </a>
     <nav class="site-header__nav" aria-label={messages.a11y.mainNav}>
       {navLinks.map((link) => {
@@ -104,12 +105,8 @@ const accountHref = pathForLang('/signup', lang);
     text-decoration: none;
   }
 
-  .site-header__word {
-    font-family: var(--display);
+  .site-header__brand :global(.wordmark) {
     font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--blue);
   }
 
   .site-header__nav {
