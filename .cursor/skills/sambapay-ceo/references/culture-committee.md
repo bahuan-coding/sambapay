@@ -74,6 +74,22 @@ Govinda is not at PaySecure. Do not name him. Pulse and pack: Sridhar (sri@payse
 
 Production volume on DD1 Cielo. DD2 opens in parallel. It does not gate volume. Do not write that October has no volume until the three DD2 accounts exist.
 
+## This pass (24 Sep 2026, the evolution)
+
+The weak version is "more than R$ 3 billion has already been processed on this premise". It reads as legacy, and legacy is the opposite of what this company is. The strong version, and the one to write from now on: that volume was processed **before the system we run today existed**. The volume is not the credential. What it taught is.
+
+The system we run today is new, and it is new because of those R$ 3 billion. The architecture concept persisted, and new technology was absorbed natively, because the people who designed it already knew which part breaks first. The continuity is not the code. It is the team, and the culture that came out of processing that volume.
+
+What closes the argument: the principles of this house are not values chosen in a room. They are scars. Reconciliation first; an engine not allowed to go down; several acquirers side by side; a letter answered the hour it arrives. Each one is what that volume cost us to learn. That is what turns `05` and `08` from generic pages into the receipt of the experience.
+
+What this pass refuses to let through: any page that writes the volume as a credential; any page that makes the system sound like legacy; any page that implies the processed figure is current volume; any year count or number of nines.
+
+## This pass (24 Sep 2026, Brazilian origin)
+
+The company is built in Brazil, by Brazilians, for markets that are hard to enter. Write it as work taken on, never as aesthetics. The bureaucracy of these markets is the barrier that stops the foreigner, and it is the work we took on: `03`, reason 4, already says it is our expertise. Hospitality is already written too, in `06`: institutional relationships get reliability and open doors.
+
+What this pass refuses to let through: declared pride, suffering, third-world framing, overcoming-the-odds narrative, flags, carnival, samba as decoration. The pride is implicit in having taken on the work the foreigner cannot survive. Show the work; never claim the effort.
+
 ## Method
 
 Rewrite the pages the new fact touches. Add glossary terms before using them. Spread the same sentences into `company-os/product-tech`, `company-os/commercial` and `company-os/finance` so the ledger matches the story. One line in the decision log. Run `node scripts/build-kit.mjs check`.

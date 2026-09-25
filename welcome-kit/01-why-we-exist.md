@@ -26,7 +26,13 @@ We offer a local connection as a presence for businesses that do not have access
 
 ## Always-on pay technology
 
-We are a paytech: a fintech specialised in payments. A focused system is an efficient system. The business model is to provide infrastructure. The culture is obsessively online: the engine is not allowed to go down. It has years of history without unavailability, carrying traffic twenty-four hours a day, every day, from everywhere. The service is consumed as a URL: a data-centre-level delivery for the payments segment, on PaySecure's white label. More than R$ 3 billion has already been processed on this premise. The live book in September is zero. We go to production with DD1 Cielo for volumes. We open DD2 in parallel. 1 October is day one of October volume.
+We are a paytech: a fintech specialised in payments. A focused system is an efficient system. The business model is to provide infrastructure. The culture is obsessively online: the engine is not allowed to go down. It has years of history without unavailability, carrying traffic twenty-four hours a day, every day, from everywhere. The service is consumed as a URL: a data-centre-level delivery for the payments segment, on PaySecure's white label. The live book in September is zero. We go to production with DD1 Cielo for volumes. We open DD2 in parallel. 1 October is day one of October volume.
+
+## The system is new. What it knows is not
+
+More than R$ 3 billion was processed before the system we run today existed. The volume is not the credential. What it taught is. Reconciliation first, an engine that is not allowed to go down, several acquirers side by side, a letter answered the hour it arrives: none of those are values we chose in a room. They are what that volume cost us to learn.
+
+The system we run today is new, and it is new because of that. The architecture concept persisted, and new technology was absorbed natively, because the people who designed it already knew which part breaks first. The continuity is not the code. It is the team, and the culture that came out of processing that volume.
 
 ## Why it matters
 

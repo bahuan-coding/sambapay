@@ -25,3 +25,5 @@ Today **Cielo** acts as Merchant of Record in production: it carries the merchan
 ## What we never forget
 
 Margin mechanics in most markets have not changed in decades. Access has. We stay in Latin America because these geographies are very cost-efficient. We do not take our clients' merchants. Local merchants on the Website Factory are another niche. We have a strong relationship with our partners, and with our acquirers above all. That relationship is our greatest focus, and our obsession. Nothing else.
+
+The system we run today is new, and it is new because of what more than R$ 3 billion of processing taught this same team. The continuity is the team and the culture, not the code.
