@@ -1,13 +1,9 @@
 #!/usr/bin/env node
 // SambaPay institutional site: check and static build for Netlify.
+// The check is the gate. Doctrine it enforces:
+//   .cursor/skills/sambapay-ceo/references/site-committee.md
 // Usage: node scripts/build-site.mjs check | build
-import {
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-  mkdirSync,
-  existsSync,
-} from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,49 +12,203 @@ const SITE = join(ROOT, "site");
 const CONTENT = join(SITE, "content");
 const ASSETS = join(SITE, "assets");
 const DIST = join(ROOT, "dist", "site");
+const LANGS = ["en", "pt"];
+
+const FORBIDDEN = JSON.parse(readFileSync(join(SITE, "lib", "forbidden.json"), "utf8"));
+
+// Inherited from the kit checker so the two gates never disagree.
+const TITLE_WORDS = /\b(CEO|Chief|Founder|Director|Head|Manager|Owner|President)\b/;
+const NAME = /André Silva/;
+const NAME_BROKEN = /AndrÃ©|AndrC3A9|AndrAc|Andr\uFFFD|\bAndre Silva\b/;
+const MOJIBAKE = /â€|\uFFFD|\u0000/;
+
+const SRC_RE = /<!--\s*src:\s*(.+?)\s*-->/g;
 
 function contentFiles(lang) {
   const dir = join(CONTENT, lang);
   if (!existsSync(dir)) return [];
-  return readdirSync(dir)
-    .filter((f) => /^\d\d-.*\.md$/.test(f))
-    .sort();
+  return readdirSync(dir).filter((f) => /^\d\d-.*\.md$/.test(f)).sort();
 }
 
-function parsePage(md, file) {
-  const lines = md.split("\n");
-  if (!/^# .+/.test(lines[0])) {
-    throw new Error(`${file}: line 1 must be "# Title"`);
+function parsePage(raw, label) {
+  const errors = [];
+  if (!raw.startsWith("---\n")) {
+    errors.push(`${label}: must start with a front-matter block`);
+    return { errors };
   }
-  const title = lines[0].replace(/^# /, "");
-  let bodyStart = 1;
-  if (lines[1] === "") bodyStart = 2;
-  const bodyMd = lines.slice(bodyStart).join("\n").trim();
-  return { title, bodyMd, slug: file.replace(/^\d\d-/, "").replace(/\.md$/, "") };
+  const end = raw.indexOf("\n---\n", 4);
+  if (end === -1) {
+    errors.push(`${label}: front-matter block is not closed`);
+    return { errors };
+  }
+  const meta = {};
+  for (const line of raw.slice(4, end).split("\n")) {
+    if (!line.trim()) continue;
+    const m = line.match(/^([a-zA-Z]+):\s*(.*)$/);
+    if (!m) { errors.push(`${label}: bad front-matter line "${line}"`); continue; }
+    meta[m[1]] = m[2].trim();
+  }
+  const body = raw.slice(end + 5).trim();
+  for (const key of ["id", "title"]) {
+    if (!meta[key]) errors.push(`${label}: front-matter needs "${key}"`);
+  }
+  const sources = [...body.matchAll(SRC_RE)].map((m) => m[1]);
+  return { meta, body, sources, errors };
 }
 
-function urlFor(lang, slug) {
-  if (slug === "home") return lang === "pt" ? "/pt/" : "/";
-  return lang === "pt" ? `/pt/${slug}/` : `/${slug}/`;
+// "welcome-kit/01-why-we-exist.md § Two niches" -> file must exist, heading must be in it.
+function resolveSource(src) {
+  const [rawPath, heading] = src.split("§").map((s) => s.trim());
+  const abs = join(ROOT, rawPath);
+  if (!existsSync(abs)) return `source file not found: ${rawPath}`;
+  if (heading) {
+    const text = readFileSync(abs, "utf8");
+    if (!text.includes(heading)) return `source section not found in ${rawPath}: "${heading}"`;
+  }
+  return null;
 }
 
-function wrapPage({ lang, title, innerHtml, altLang, altUrl, canonical }) {
-  const homeHref = lang === "pt" ? "/pt/" : "/";
+function compile(group) {
+  return (group.patterns || []).map((p) => new RegExp(p, group.flags || ""));
+}
+
+function checkForbidden(label, text, fail, { allowName = false } = {}) {
+  const groups = ["goals", "counterparties", "people", "aiSubstance", "aiSubstanceLoose", "aiTexture", "superiority", "licence", "conflict"];
+  for (const name of groups) {
+    const group = FORBIDDEN[name];
+    if (!group) continue;
+    for (const re of compile(group)) {
+      const hit = text.match(re);
+      if (hit) fail(`${label}: [${name}] forbidden "${hit[0]}" — ${group.reason}`);
+    }
+  }
+
+  // Figures.
+  for (const p of FORBIDDEN.figures.banned) {
+    const hit = text.match(new RegExp(p, "i"));
+    if (hit) fail(`${label}: [figures] "${hit[0]}" never goes public — ${FORBIDDEN.figures.reason}`);
+  }
+  // The learning frame must sit in the same paragraph as the figure. A frame
+  // elsewhere on the page does not license a bare credential sentence.
+  const cond = FORBIDDEN.figures.conditional;
+  const figureRe = new RegExp(cond.pattern, "i");
+  text.split(/\n\s*\n/).forEach((para) => {
+    if (!figureRe.test(para)) return;
+    const framed = cond.requiresOneOf.some((w) => para.toLowerCase().includes(w.toLowerCase()));
+    if (!framed) {
+      fail(`${label}: [figures] the figure appears without the learning frame in its own paragraph (needs one of: ${cond.requiresOneOf.join(", ")})`);
+    }
+  });
+
+  // Co-required lines.
+  for (const rule of FORBIDDEN.coRequired.rules) {
+    if (new RegExp(rule.trigger, "i").test(text)) {
+      const ok = rule.requiresOneOf.some((w) => text.toLowerCase().includes(w.toLowerCase()));
+      if (!ok) fail(`${label}: [conflict] page speaks of merchants without the two-niche line — ${FORBIDDEN.coRequired.reason}`);
+    }
+  }
+
+  // The name.
+  text.split("\n").forEach((line, i) => {
+    if (NAME_BROKEN.test(line)) fail(`${label}:${i + 1}: André Silva written with broken encoding`);
+    if (MOJIBAKE.test(line)) fail(`${label}:${i + 1}: mojibake or NUL byte`);
+    if (NAME.test(line)) {
+      if (!allowName) fail(`${label}:${i + 1}: André Silva appears outside the character page`);
+      if (TITLE_WORDS.test(line)) fail(`${label}:${i + 1}: rank word on the same line as André Silva`);
+    }
+  });
+}
+
+function check() {
+  const failures = [];
+  const ok = (msg) => console.log(`ok    ${msg}`);
+  const fail = (msg) => { failures.push(msg); console.log(`FAIL  ${msg}`); };
+
+  if (!existsSync(CONTENT)) { fail("site/content/ missing"); }
+  if (!existsSync(join(ASSETS, "site.css"))) fail("site/assets/site.css missing");
+
+  const pages = {};
+  for (const lang of LANGS) {
+    pages[lang] = [];
+    for (const f of contentFiles(lang)) {
+      const label = `${lang}/${f}`;
+      const raw = readFileSync(join(CONTENT, lang, f), "utf8");
+      const page = parsePage(raw, label);
+      for (const e of page.errors) fail(e);
+      if (page.errors.length) continue;
+
+      if (!page.sources.length) fail(`${label}: no "<!-- src: ... -->" marker; nothing on the site may be unsourced`);
+      for (const src of page.sources) {
+        const problem = resolveSource(src);
+        if (problem) fail(`${label}: ${problem}`);
+      }
+
+      const allowName = page.meta.id === "character";
+      checkForbidden(label, `${page.meta.title}\n${page.body}`, fail, { allowName });
+
+      pages[lang].push({ ...page, file: f, lang });
+    }
+  }
+
+  const enIds = pages.en.map((p) => p.meta.id);
+  const ptIds = pages.pt.map((p) => p.meta.id);
+  if (enIds.join() !== ptIds.join()) fail(`en/pt page ids differ: en=[${enIds}] pt=[${ptIds}]`);
+  else ok(`en/pt parity on ${enIds.length} page id(s): ${enIds.join(", ")}`);
+
+  for (const en of pages.en) {
+    const pt = pages.pt.find((p) => p.meta.id === en.meta.id);
+    if (!pt) continue;
+    if (en.sources.join("|") !== pt.sources.join("|")) {
+      fail(`${en.meta.id}: en and pt cite different sources; Portuguese may not carry a claim English does not`);
+    }
+  }
+  if (!failures.length) ok("provenance: every page sourced, en and pt cite the same sections");
+
+  const total = pages.en.length + pages.pt.length;
+  ok(`${total} page file(s) scanned against ${Object.keys(FORBIDDEN).length - 1} refusal groups`);
+
+  if (failures.length) {
+    console.log(`\n${failures.length} failure(s)`);
+    process.exit(1);
+  }
+  console.log("\nall site checks passed");
+  return pages;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function urlFor(lang, id) {
+  const slug = SLUGS[id]?.[lang];
+  // The home slug is the empty string, so test for absence, not falsiness.
+  if (slug === undefined) throw new Error(`no slug for page id "${id}" in ${lang}`);
+  return lang === "pt" ? `/pt/${slug}` : `/${slug}`;
+}
+
+// Page id -> path per language. Home is the language root.
+const SLUGS = {
+  home: { en: "", pt: "" },
+  character: { en: "character/", pt: "carater/" },
+};
+
+function wrapPage({ lang, title, innerHtml, canonical, altUrl }) {
   const enHref = lang === "en" ? canonical : altUrl;
   const ptHref = lang === "pt" ? canonical : altUrl;
-  const assetPrefix = lang === "pt" ? "/pt" : "";
+  const homeHref = lang === "pt" ? "/pt/" : "/";
   const enNav = lang === "en" ? ' aria-current="page"' : "";
   const ptNav = lang === "pt" ? ' aria-current="page"' : "";
+  const head = lang === "pt" ? "SambaPay" : "SambaPay";
   return `<!doctype html>
 <html lang="${lang === "pt" ? "pt-BR" : "en"}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${title === "SambaPay" ? "SambaPay" : `${escapeHtml(title)} · SambaPay`}</title>
+  <title>${title === head ? head : `${escapeHtml(title)} · SambaPay`}</title>
   <link rel="canonical" href="https://sambapay.tech${canonical}">
   <link rel="alternate" hreflang="en" href="https://sambapay.tech${enHref}">
   <link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech${ptHref}">
-  <link rel="stylesheet" href="${assetPrefix}/assets/site.css">
+  <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
   <header class="site">
@@ -77,136 +227,63 @@ function wrapPage({ lang, title, innerHtml, altLang, altUrl, canonical }) {
 </html>`;
 }
 
-function escapeHtml(s) {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function check() {
-  const failures = [];
-  const ok = (msg) => console.log(`ok    ${msg}`);
-  const fail = (msg) => {
-    failures.push(msg);
-    console.log(`FAIL  ${msg}`);
-  };
-
-  if (!existsSync(CONTENT)) fail("site/content/ missing");
-  else ok("site/content/");
-
-  const en = contentFiles("en");
-  const pt = contentFiles("pt");
-  if (!en.length) fail("no pages in site/content/en");
-  else ok(`en pages: ${en.length}`);
-  if (!pt.length) fail("no pages in site/content/pt");
-  else ok(`pt pages: ${pt.length}`);
-
-  if (en.join() !== pt.join()) {
-    fail(`en/pt file mismatch: en=[${en.join()}] pt=[${pt.join()}]`);
-  } else ok("en/pt parity");
-
-  for (const lang of ["en", "pt"]) {
-    for (const f of contentFiles(lang)) {
-      const text = readFileSync(join(CONTENT, lang, f), "utf8");
-      if (text.includes("\uFFFD")) fail(`${lang}/${f}: replacement character found`);
-      if (/\p{Extended_Pictographic}/u.test(text)) fail(`${lang}/${f}: emoji found`);
-      try {
-        parsePage(text, `${lang}/${f}`);
-      } catch (e) {
-        fail(e.message);
-      }
-    }
-  }
-  if (!failures.length) ok("page structure");
-
-  if (!existsSync(join(ASSETS, "site.css"))) fail("site/assets/site.css missing");
-  else ok("site.css");
-
-  if (failures.length) {
-    console.log(`\n${failures.length} failure(s)`);
-    process.exit(1);
-  }
-  console.log("\nall site checks passed");
-}
-
 async function build() {
-  check();
+  const pages = check();
   const { marked } = await import("marked");
+  // Start clean so a renamed page never lingers in the published output.
+  rmSync(DIST, { recursive: true, force: true });
   mkdirSync(DIST, { recursive: true });
 
-  const pages = {};
-  for (const lang of ["en", "pt"]) {
-    pages[lang] = [];
-    for (const f of contentFiles(lang)) {
-      const text = readFileSync(join(CONTENT, lang, f), "utf8");
-      const parsed = parsePage(text, f);
-      pages[lang].push({ ...parsed, file: f });
-    }
-  }
-
-  const assetOutEn = join(DIST, "assets");
-  const assetOutPt = join(DIST, "pt", "assets");
-  mkdirSync(assetOutEn, { recursive: true });
-  mkdirSync(assetOutPt, { recursive: true });
-  writeFileSync(join(assetOutEn, "site.css"), readFileSync(join(ASSETS, "site.css"), "utf8"));
-  writeFileSync(join(assetOutPt, "site.css"), readFileSync(join(assetOutEn, "site.css"), "utf8"));
+  mkdirSync(join(DIST, "assets"), { recursive: true });
+  writeFileSync(join(DIST, "assets", "site.css"), readFileSync(join(ASSETS, "site.css"), "utf8"));
 
   const urls = [];
-  for (const lang of ["en", "pt"]) {
+  const provenance = [];
+  for (const lang of LANGS) {
     for (const page of pages[lang]) {
-      const otherLang = lang === "en" ? "pt" : "en";
-      const other = pages[otherLang].find((p) => p.slug === page.slug);
-      const canonical = urlFor(lang, page.slug);
-      const altUrl = other ? urlFor(otherLang, other.slug) : canonical;
-      const inner = `<h1>${escapeHtml(page.title)}</h1>\n${marked.parse(page.bodyMd)}`;
-      const html = wrapPage({
-        lang,
-        title: page.title,
-        innerHtml: inner,
-        altLang: otherLang,
-        altUrl,
-        canonical,
-      });
-      const outPath =
-        page.slug === "home"
-          ? join(DIST, lang === "pt" ? "pt" : "", "index.html")
-          : join(DIST, lang === "pt" ? "pt" : "", page.slug, "index.html");
+      const id = page.meta.id;
+      const canonical = urlFor(lang, id);
+      const altUrl = urlFor(lang === "en" ? "pt" : "en", id);
+      const bodyMd = page.body.replace(SRC_RE, "");
+      const inner = `<h1>${escapeHtml(page.meta.title)}</h1>\n${marked.parse(bodyMd)}`;
+      const html = wrapPage({ lang, title: page.meta.title, innerHtml: inner, canonical, altUrl });
+      const outPath = join(DIST, canonical.replace(/^\//, ""), "index.html");
       mkdirSync(dirname(outPath), { recursive: true });
       writeFileSync(outPath, html);
       urls.push(`https://sambapay.tech${canonical}`);
+      provenance.push(`| \`${canonical}\` | ${lang} | ${page.sources.map((s) => `\`${s}\``).join("<br>")} |`);
       console.log(`html  ${canonical}`);
     }
   }
 
-  const notFound = wrapPage({
-    lang: "en",
-    title: "Not found",
-    innerHtml: "<h1>Not found</h1><p>This page is not published.</p>",
-    altLang: "pt",
-    altUrl: "/pt/",
-    canonical: "/404.html",
-  });
-  writeFileSync(join(DIST, "404.html"), notFound);
+  writeFileSync(
+    join(DIST, "404.html"),
+    wrapPage({
+      lang: "en",
+      title: "Not found",
+      innerHtml: "<h1>Not found</h1>\n<p>This page is not published.</p>",
+      canonical: "/404.html",
+      altUrl: "/pt/",
+    })
+  );
 
   // Serve the Portuguese index as a rewrite (200), never a redirect. A 301 from
-  // /pt/ to /pt/ matches its own target and loops; _redirects wins over that.
+  // /pt/ to /pt/ matches its own target and loops.
+  writeFileSync(join(DIST, "_redirects"), "/pt      /pt/index.html   200\n/pt/     /pt/index.html   200\n");
+
+  writeFileSync(join(DIST, "robots.txt"), "User-agent: *\nAllow: /\nSitemap: https://sambapay.tech/sitemap.xml\n");
   writeFileSync(
-    join(DIST, "_redirects"),
-    "/pt      /pt/index.html   200\n/pt/     /pt/index.html   200\n"
+    join(DIST, "sitemap.xml"),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
+      .map((u) => `  <url><loc>${u}</loc></url>`)
+      .join("\n")}\n</urlset>\n`
   );
 
   writeFileSync(
-    join(DIST, "robots.txt"),
-    "User-agent: *\nAllow: /\nSitemap: https://sambapay.tech/sitemap.xml\n"
-  );
-  writeFileSync(
-    join(DIST, "sitemap.xml"),
-    `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}
-</urlset>\n`
+    join(SITE, "PROVENANCE.md"),
+    `# Provenance\n\nGenerated by \`scripts/build-site.mjs build\`. Every public page and the house sections it translates. The site never invents.\n\n| Page | Language | Source |\n|---|---|---|\n${provenance.join(
+      "\n"
+    )}\n`
   );
 
   console.log("done  dist/site/");

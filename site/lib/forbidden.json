@@ -1,0 +1,221 @@
+{
+  "note": "Refusal lists for the public site. Registered 24 Sep 2026 by the site committee (.cursor/skills/sambapay-ceo/references/site-committee.md) and the decision log. Each pattern is a JavaScript regex source string. Flags are per group.",
+
+  "goals": {
+    "reason": "The site carries no goal, no date, no target and no strategic discussion. The house register stays in the house.",
+    "flags": "i",
+    "patterns": [
+      "\\bStatus:\\s",
+      "\\bOpen:\\s",
+      "\\bin discussion\\b",
+      "\\broadmap\\b",
+      "\\bmilestone",
+      "\\bobjectives?\\b",
+      "\\btargets?\\b",
+      "\\bbreakeven\\b",
+      "\\btake rate\\b",
+      "ICC\\+\\+",
+      "\\bDD1\\b",
+      "\\bDD2\\b",
+      "\\bcruise\\b",
+      "\\bcoming soon\\b",
+      "\\bwe will launch\\b",
+      "\\bem breve\\b",
+      "\\bmeta\\b",
+      "\\bcronograma\\b",
+      "\\b(janeiro|fevereiro|mar\u00e7o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro) de 20\\d\\d\\b",
+      "\\b\\d{1,2} (January|February|March|April|May|June|July|August|September|October|November|December)\\b",
+      "\\bQ[1-4] 20\\d\\d\\b"
+    ]
+  },
+
+  "counterparties": {
+    "reason": "No client, acquirer, vendor or platform is named. The acquirer is a category, never a brand.",
+    "flags": "i",
+    "patterns": [
+      "PaySecure",
+      "\\bCielo\\b",
+      "\\bAsaas\\b",
+      "\\bEFI\\b",
+      "Gerencianet",
+      "Finnera",
+      "Double Diamond",
+      "Chargeblast",
+      "Global Pass",
+      "\\bJumio\\b",
+      "Transfero",
+      "MIPPO",
+      "OrbiFi",
+      "\\bAmFi\\b",
+      "\\bZoho\\b",
+      "SimilarWeb",
+      "Clicksign",
+      "\\bAzure\\b",
+      "CyberSource",
+      "Braspag"
+    ]
+  },
+
+  "people": {
+    "reason": "No person is named. André Silva appears only on the character page, and is checked separately.",
+    "flags": "i",
+    "patterns": [
+      "Leandro Silva",
+      "Thiago Silva",
+      "Sheila Esmeralda",
+      "Clayton Lira",
+      "Taina Chaves",
+      "Rafaela Brito",
+      "Abner Maioralli",
+      "Renato Paulino",
+      "\\bHansraj\\b",
+      "\\bSridhar\\b",
+      "\\bViktoria\\b",
+      "\\bGovinda\\b",
+      "\\bDaniella\\b"
+    ]
+  },
+
+  "aiSubstance": {
+    "reason": "Nothing on the site may recall AI. The method is ours; the site does not sell the method.",
+    "flags": "",
+    "patterns": [
+      "\\bAI\\b",
+      "\\bA\\.I\\.",
+      "\\bLLM\\b",
+      "\\bGPT\\b"
+    ]
+  },
+
+  "aiSubstanceLoose": {
+    "reason": "Same rule, case-insensitive terms that have no legitimate use on this site.",
+    "flags": "i",
+    "patterns": [
+      "artificial intelligence",
+      "intelig\u00eancia artificial",
+      "machine learning",
+      "aprendizado de m\u00e1quina",
+      "\\bswarms?\\b",
+      "\\benxame\\b",
+      "orchestration swarm",
+      "\\bcopilots?\\b",
+      "\\bchatbots?\\b",
+      "\\bbots?\\b",
+      "\\bagentes? de (ia|intelig)",
+      "\\bai[- ]powered\\b",
+      "\\bai[- ]driven\\b",
+      "language model",
+      "\\bautomation\\b",
+      "\\bautoma\u00e7\u00e3o\\b"
+    ]
+  },
+
+  "aiTexture": {
+    "reason": "The site must not read as though a machine wrote it.",
+    "flags": "i",
+    "patterns": [
+      "in today's",
+      "\\bleverage\\b",
+      "\\bseamless",
+      "\\brobust\\b",
+      "cutting[- ]edge",
+      "\\bempower",
+      "\\bunlock\\b",
+      "\\bjourney\\b",
+      "\\bsolutions\\b",
+      "\\becosystem\\b",
+      "\\bgame[- ]chang",
+      "\\bdelve\\b",
+      "\\bit is not just\\b",
+      "\\bit's not just\\b",
+      "\\bn\u00e3o \u00e9 (apenas|s\u00f3) um",
+      "\\bno mundo de hoje\\b",
+      "\\bsolu\u00e7\u00f5es inovadoras\\b",
+      "\\brevolucion"
+    ]
+  },
+
+  "superiority": {
+    "reason": "We never write that we are better than the market.",
+    "flags": "i",
+    "patterns": [
+      "better than",
+      "best[- ]in[- ]class",
+      "\\bworld[- ]class\\b",
+      "\\bindustry[- ]leading\\b",
+      "\\bleading (provider|platform|player)\\b",
+      "\\bnumber one\\b",
+      "\\bunlike other",
+      "\\bmelhor que\\b",
+      "\\bl\u00edder de mercado\\b",
+      "\\bo \u00fanico\\b",
+      "\\ba \u00fanica\\b"
+    ]
+  },
+
+  "licence": {
+    "reason": "We never claim a status we do not hold, and we never publish an availability number.",
+    "flags": "i",
+    "patterns": [
+      "we are a sub[- ]acquirer",
+      "we are a payment institution",
+      "somos (uma )?sub[- ]?(adquirente|credenciador)",
+      "somos (uma )?institui\u00e7\u00e3o de pagamento",
+      "\\bSLA\\b",
+      "\\buptime\\b",
+      "\\b99\\.\\d",
+      "\\bfour nines\\b",
+      "\\bfive nines\\b",
+      "\\b\\d+ years without\\b",
+      "\\b\\d+ anos sem\\b"
+    ]
+  },
+
+  "conflict": {
+    "reason": "The Website Factory is a capture rule, not an offer rule.",
+    "flags": "i",
+    "patterns": [
+      "merchant acquisition",
+      "grow your merchant base",
+      "switch to us",
+      "\\bmigre para\\b",
+      "\\bcadastre[- ]se\\b",
+      "\\bsign up\\b",
+      "\\bbook a demo\\b",
+      "\\bfale com vendas\\b",
+      "\\btalk to sales\\b",
+      "\\bget started\\b"
+    ]
+  },
+
+  "figures": {
+    "reason": "R$ 3 billion is the only publishable figure, and only inside the learning frame. R$ 2 billion is tied to a named acquirer and stays internal.",
+    "banned": ["R\\$\\s?2 (billion|bilh\u00f5es)", "R\\$\\s?5,000", "USD\\s?100,000", "25 million", "100k"],
+    "conditional": {
+      "pattern": "R\\$\\s?3 (billion|bilh\u00f5es)",
+      "requiresOneOf": [
+        "taught",
+        "learned",
+        "before the system we run today",
+        "ensinou",
+        "aprender",
+        "antes de existir o sistema"
+      ]
+    }
+  },
+
+  "coRequired": {
+    "reason": "Any page that speaks of merchants must carry the two-niche line on the same page.",
+    "rules": [
+      {
+        "trigger": "\\b(merchants?|Website Factory)\\b",
+        "requiresOneOf": [
+          "do not take our clients' merchants",
+          "n\u00e3o pegamos os merchants dos nossos clientes",
+          "two niches",
+          "dois nichos"
+        ]
+      }
+    ]
+  }
+}
