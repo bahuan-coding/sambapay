@@ -66,7 +66,5 @@ title: Glossary
 <dd>A card network: Visa, Mastercard.</dd>
 <dt>Settlement</dt>
 <dd>The acquirer paying out the money from authorised transactions, on its window.</dd>
-<dt>Sub-acquirer</dt>
-<dd>Central Bank of Brazil term (Circular BCB 3.886/2018; Portuguese: sub-credenciador). A company that acquires card transactions under an acquirer's licence, with its own merchant IDs, rather than under its own payment-institution authorisation. What we will be. Distinct from payment facilitator.</dd>
 </dl>
 </section>

@@ -137,6 +137,7 @@ function generateGlossary() {
     const def = m[2];
     if (drop.some((re) => re.test(def)) || NAME.test(def)) continue;
     if (/\b(Taina|Thiago|Leandro|Hansraj|Sridhar|Viktoria|Abner|Renato|Sheila|Clayton|Rafaela|Govinda|Daniella)\b/.test(def)) continue;
+    if (/\b20\d{2}\b/.test(def)) continue;
     const needle = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     if (!new RegExp(`\\b${needle}\\b`, "i").test(corpus)) continue;
     entries.push({ term, def });
