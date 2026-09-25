@@ -1,7 +1,41 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import PlacePage from '../../components/PlacePage.astro';
+import PrimaryButton from '../../components/PrimaryButton.astro';
 ---
 
-<BaseLayout lang="pt" currentPath="/pt/">
-  <h1 class="shell-title">SambaPay</h1>
-</BaseLayout>
+<PlacePage
+  lang="pt"
+  currentPath="/pt/"
+  title="SambaPay"
+  image="/places/ouro-preto.jpg"
+  place="Ouro Preto"
+  country="Brasil"
+  credit="Alvesgaspar, CC BY-SA 3.0"
+  creditHref="https://commons.wikimedia.org/wiki/File:Ouro_Preto_November_2009-13.jpg"
+>
+  <h1 slot="sheet">Abrimos <span class="word">adquirentes</span> locais na América Latina para que o dinheiro que já circula nesta economia possa ser usado a preços locais.</h1>
+  <PrimaryButton slot="sheet" href="/pt/signup">Criar conta</PrimaryButton>
+  <p>Um negócio na Europa ou nos Estados Unidos que quer vender aqui não precisa de mais um gateway. Precisa de preços locais, aprovação local e regras locais: as mesmas condições que um merchant local tem. Consegui-las exige entidade local regulada, conformidade PCI, contratos com adquirentes e bancos locais, e alguém que mantenha cada uma dessas relações viva, todo dia.</p>
+  <p>Feito no Brasil, por brasileiros, para mercados difíceis de entrar. A burocracia desses mercados é a dificuldade que assumimos. É a nossa especialidade.</p>
+  <h2>O sistema é novo. O que ele sabe, não</h2>
+  <p>Conciliação primeiro. Um motor que não tem permissão para cair. Vários adquirentes lado a lado, para que nenhum adquirente sozinho nos limite. Uma carta de adquirente respondida na hora em que chega. Nenhum desses é um valor que escolhemos numa sala. É o que aquele volume custou para aprender.</p>
+  <h2>O que recusamos</h2>
+  <p>Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Dois nichos, sem conflito de interesse.</p>
+  <div class="cards">
+    <article class="card">
+      <span class="card__bar" style="background:#1C3D4A"></span>
+      <h2><a href="/pt/adquirentes">Adquirentes</a></h2>
+      <p>Infraestrutura que conecta o volume do cliente ao adquirente local na América Latina, numa política comercial local: preços locais, meios de pagamento locais, a melhor aprovação que conseguirmos.</p>
+    </article>
+    <article class="card">
+      <span class="card__bar" style="background:#C2412D"></span>
+      <h2>Website Factory</h2>
+      <p>Digitalização de merchants locais nas geografias onde temos estrutura, do CNPJ até o payout, passando pela gestão operacional com as entidades locais.</p>
+    </article>
+    <article class="card">
+      <span class="card__bar" style="background:#C4890A"></span>
+      <h2>Liquidação</h2>
+      <p>O dinheiro arrecadado localmente chega ao cliente com o menor número de saltos. Nada se move antes de o livro fechar.</p>
+    </article>
+  </div>
+</PlacePage>

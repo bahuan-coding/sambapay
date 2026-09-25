@@ -7,8 +7,38 @@
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/"/>
   </url>
   <url>
+    <loc>https://sambapay.tech/acquirers</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/acquirers"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/adquirentes"/>
+  </url>
+  <url>
+    <loc>https://sambapay.tech/what-we-do</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/what-we-do"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/o-que-fazemos"/>
+  </url>
+  <url>
+    <loc>https://sambapay.tech/character</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/character"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/carater"/>
+  </url>
+  <url>
     <loc>https://sambapay.tech/pt/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/"/>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/"/>
+  </url>
+  <url>
+    <loc>https://sambapay.tech/pt/adquirentes</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/acquirers"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/adquirentes"/>
+  </url>
+  <url>
+    <loc>https://sambapay.tech/pt/o-que-fazemos</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/what-we-do"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/o-que-fazemos"/>
+  </url>
+  <url>
+    <loc>https://sambapay.tech/pt/carater</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/character"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/carater"/>
   </url>
 </urlset>

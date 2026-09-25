@@ -1,7 +1,41 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import PlacePage from '../components/PlacePage.astro';
+import PrimaryButton from '../components/PrimaryButton.astro';
 ---
 
-<BaseLayout lang="en" currentPath="/">
-  <h1 class="shell-title">SambaPay</h1>
-</BaseLayout>
+<PlacePage
+  lang="en"
+  currentPath="/"
+  title="SambaPay"
+  image="/places/ouro-preto.jpg"
+  place="Ouro Preto"
+  country="Brazil"
+  credit="Alvesgaspar, CC BY-SA 3.0"
+  creditHref="https://commons.wikimedia.org/wiki/File:Ouro_Preto_November_2009-13.jpg"
+>
+  <h1 slot="sheet">We open local <span class="word">rails</span> in Latin America, so money that already circulates in this economy can be used at local prices.</h1>
+  <PrimaryButton slot="sheet" href="/signup">Create account</PrimaryButton>
+  <p>A business in Europe or the United States that wants to sell here does not need another gateway. It needs local prices, local approval and local rules: the same conditions a local merchant gets. Getting them means a regulated local entity, PCI compliance, contracts with local acquirers and banks, and someone who keeps every one of those relationships alive, every day.</p>
+  <p>Built in Brazil, by Brazilians, for markets that are hard to enter. The bureaucracy of these markets is the difficulty we took on. It is our expertise.</p>
+  <h2>The system is new. What it knows is not</h2>
+  <p>Reconciliation first. An engine that is not allowed to go down. Several acquirers side by side, so that no single rail limits us. A letter from an acquirer answered the hour it arrives. None of those are values we chose in a room. They are what that volume cost us to learn.</p>
+  <h2>What we refuse</h2>
+  <p>We do not take our clients' merchants. We do not dispute their accounts. Two niches, no conflict of interest.</p>
+  <div class="cards">
+    <article class="card">
+      <span class="card__bar" style="background:#1C3D4A"></span>
+      <h2><a href="/acquirers">Rails</a></h2>
+      <p>Infrastructure that connects a client's volume to local acquiring in Latin America, on a local commercial policy: local prices, local payment methods, the best approval we can get.</p>
+    </article>
+    <article class="card">
+      <span class="card__bar" style="background:#C2412D"></span>
+      <h2>Website Factory</h2>
+      <p>Digitisation for local merchants in the geographies where we have structure, from the CNPJ through operational management with the local entities, until payout.</p>
+    </article>
+    <article class="card">
+      <span class="card__bar" style="background:#C4890A"></span>
+      <h2>Settlement</h2>
+      <p>Money collected locally reaches the client with the fewest hops. Nothing moves before the book ties.</p>
+    </article>
+  </div>
+</PlacePage>

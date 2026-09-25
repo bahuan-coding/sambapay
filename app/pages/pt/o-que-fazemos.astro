@@ -1,0 +1,36 @@
+---
+import PlacePage from '../../components/PlacePage.astro';
+---
+
+<PlacePage
+  lang="pt"
+  currentPath="/pt/o-que-fazemos"
+  title="O que fazemos"
+  image="/places/bellas-artes.jpg"
+  place="Palacio de Bellas Artes"
+  country="México"
+  credit="Diego Delso, CC BY-SA 3.0"
+  creditHref="https://commons.wikimedia.org/wiki/File:Palacio_de_Bellas_Artes,_M%C3%A9xico_D.F.,_M%C3%A9xico,_2013-10-13,_DD_40.jpg"
+>
+  <h1 slot="sheet">Um serviço, três partes.</h1>
+  <p>Os adquirentes conectam o volume do cliente ao adquirente local na América Latina, numa política comercial local. A Website Factory digitaliza merchants locais nas geografias onde temos estrutura. A liquidação leva o dinheiro arrecadado localmente até o cliente.</p>
+  <h2>O que recusamos</h2>
+  <p>Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Não fazemos fulfilment nem envio. Só os adquirentes, a Website Factory, e a liquidação que tira o dinheiro. Dois nichos, sem conflito de interesse.</p>
+  <div class="cards">
+    <article class="card">
+      <span class="card__bar" style="background:#1C3D4A"></span>
+      <h2><a href="/pt/adquirentes">Adquirentes</a></h2>
+      <p>Infraestrutura que conecta o volume do cliente ao adquirente local na América Latina, numa política comercial local: preços locais, meios de pagamento locais, a melhor aprovação que conseguirmos.</p>
+    </article>
+    <article class="card">
+      <span class="card__bar" style="background:#C2412D"></span>
+      <h2>Website Factory</h2>
+      <p>Digitalização de merchants locais nas geografias onde temos estrutura, do CNPJ até o payout, passando pela gestão operacional com as entidades locais.</p>
+    </article>
+    <article class="card">
+      <span class="card__bar" style="background:#C4890A"></span>
+      <h2>Liquidação</h2>
+      <p>O dinheiro arrecadado localmente chega ao cliente com o menor número de saltos. Nada se move antes de o livro fechar.</p>
+    </article>
+  </div>
+</PlacePage>

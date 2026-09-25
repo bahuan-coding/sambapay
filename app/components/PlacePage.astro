@@ -1,0 +1,159 @@
+---
+import type { Lang } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+  title: string;
+  image: string;
+  place: string;
+  country: string;
+  credit: string;
+  creditHref: string;
+}
+
+const { lang, currentPath, title, image, place, country, credit, creditHref } = Astro.props;
+---
+
+<BaseLayout lang={lang} currentPath={currentPath} title={title}>
+  <section class="place">
+    <img src={image} alt="" />
+    <div class="place__sheet">
+      <p class="place__name">{place}</p>
+      <p class="place__country">{country}</p>
+      <slot name="sheet" />
+      <a class="place__credit" href={creditHref}>{credit}</a>
+    </div>
+  </section>
+  <div class="reading">
+    <slot />
+  </div>
+</BaseLayout>
+
+<style>
+  .place {
+    position: relative;
+    min-height: 70vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .place { min-height: 100vh; }
+  }
+
+  .place img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .place__sheet {
+    position: relative;
+    margin: var(--space-5);
+    max-width: 36rem;
+    padding: var(--space-5);
+    background: var(--field);
+  }
+
+  .place__name {
+    margin: 0;
+    font-family: var(--display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .place__country {
+    margin: var(--space-2) 0 var(--space-4);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .place__sheet :global(h1) {
+    margin: 0 0 var(--space-4);
+    font-family: var(--display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .place__sheet :global(.word) { color: var(--blue); }
+
+  .place__credit {
+    display: inline-block;
+    margin-top: var(--space-4);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .reading {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .reading :global(p),
+  .reading :global(h2) {
+    max-width: 42rem;
+  }
+
+  .reading :global(h2) {
+    margin: var(--space-6) 0 var(--space-3);
+    font-family: var(--display);
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .reading :global(p) { margin: 0 0 var(--space-4); }
+
+  .reading :global(.name) {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .reading :global(.cards) {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+    max-width: none;
+  }
+
+  @media (min-width: 768px) {
+    .reading :global(.cards) { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .reading :global(.card) {
+    background: var(--paper);
+    border: 1px solid var(--border);
+  }
+
+  .reading :global(.card__bar) { display: block; height: 4px; }
+
+  .reading :global(.card h2) {
+    margin: var(--space-4) var(--space-4) var(--space-2);
+    font-size: 1.15rem;
+  }
+
+  .reading :global(.card p) {
+    margin: 0;
+    padding: 0 var(--space-4) var(--space-4);
+    max-width: none;
+  }
+
+  .reading :global(.card a) {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>
