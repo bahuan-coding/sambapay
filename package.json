@@ -8,13 +8,18 @@
     "build": "node scripts/build-kit.mjs build",
     "build:site": "node scripts/build-site.mjs build",
     "dev:app": "astro dev",
-    "build:app": "astro build"
+    "build:app": "astro build",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "node scripts/db-migrate.mjs"
   },
   "dependencies": {
     "@astrojs/netlify": "^6.6.5",
-    "astro": "^5.7.0"
+    "@neondatabase/serverless": "^1.1.0",
+    "astro": "^5.7.0",
+    "drizzle-orm": "beta"
   },
   "devDependencies": {
+    "drizzle-kit": "beta",
     "marked": "^15.0.0"
   }
 }

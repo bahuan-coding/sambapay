@@ -4,6 +4,7 @@ dist/
 .netlify/
 .env
 .env.*
+!.env.example
 
 # One lockfile only: npm. Netlify must not see a second one.
 pnpm-lock.yaml
