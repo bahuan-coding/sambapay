@@ -43,8 +43,6 @@ function urlFor(lang, slug) {
 }
 
 function wrapPage({ lang, title, innerHtml, altLang, altUrl, canonical }) {
-  const otherLabel = lang === "en" ? "PT" : "EN";
-  const otherHref = altUrl;
   const homeHref = lang === "pt" ? "/pt/" : "/";
   const enHref = lang === "en" ? canonical : altUrl;
   const ptHref = lang === "pt" ? canonical : altUrl;
@@ -67,7 +65,7 @@ function wrapPage({ lang, title, innerHtml, altLang, altUrl, canonical }) {
     <a class="brand" href="${homeHref}">SambaPay</a>
     <nav class="lang" aria-label="Language">
       <a href="${enHref}"${enNav}>EN</a>
-      <a href="${ptHref}"${ptNav}>${otherLabel}</a>
+      <a href="${ptHref}"${ptNav}>PT</a>
     </nav>
   </header>
   <main>${innerHtml}</main>
