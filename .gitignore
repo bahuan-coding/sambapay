@@ -2,3 +2,12 @@ node_modules/
 dist/
 .env
 .env.*
+
+# One lockfile only: npm. Netlify must not see a second one.
+pnpm-lock.yaml
+
+# Local contract drafts (never commit to public repo)
+RBN-*.pdf
+Contrato_*.pdf
+ChoicePay*.docx
+gerar-*.py
