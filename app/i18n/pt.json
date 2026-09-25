@@ -1,0 +1,27 @@
+{
+  "nav": {
+    "acquirers": "Adquirentes",
+    "what": "O que fazemos",
+    "character": "Caráter"
+  },
+  "cta": {
+    "login": "Entrar",
+    "account": "Criar conta"
+  },
+  "footer": {
+    "privacy": "Privacidade",
+    "terms": "Termos"
+  },
+  "a11y": {
+    "mainNav": "Páginas",
+    "footer": "Rodapé",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "skip": "Ir para o conteúdo",
+    "language": "Idioma"
+  },
+  "notFound": {
+    "title": "Esta página não está aqui",
+    "home": "Início"
+  }
+}

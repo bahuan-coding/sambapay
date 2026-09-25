@@ -1,0 +1,27 @@
+{
+  "nav": {
+    "acquirers": "Acquirers",
+    "what": "What we do",
+    "character": "Character"
+  },
+  "cta": {
+    "login": "Log in",
+    "account": "Create account"
+  },
+  "footer": {
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "a11y": {
+    "mainNav": "Pages",
+    "footer": "Footer",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skip": "Skip to content",
+    "language": "Language"
+  },
+  "notFound": {
+    "title": "This page is not here",
+    "home": "Home"
+  }
+}

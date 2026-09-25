@@ -20,6 +20,8 @@
   },
   "devDependencies": {
     "drizzle-kit": "beta",
-    "marked": "^15.0.0"
+    "marked": "^15.0.0",
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/raleway": "^5.2.8"
   }
 }

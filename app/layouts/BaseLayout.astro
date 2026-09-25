@@ -1,0 +1,36 @@
+---
+import type { Lang } from '../i18n';
+import { t } from '../i18n';
+import Seo from '../components/Seo.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import '../styles/global.css';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+  title?: string;
+  description?: string;
+}
+
+const { lang, currentPath, title = 'SambaPay', description = 'SambaPay' } = Astro.props;
+const messages = t(lang);
+---
+
+<!doctype html>
+<html lang={lang === 'pt' ? 'pt-BR' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo title={title} description={description} lang={lang} currentPath={currentPath} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">{messages.a11y.skip}</a>
+    <SiteHeader lang={lang} currentPath={currentPath} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <SiteFooter lang={lang} />
+  </body>
+</html>

@@ -1,0 +1,51 @@
+---
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit';
+  variant?: 'primary' | 'secondary';
+  fullWidth?: boolean;
+}
+
+const { href, type = 'button', variant = 'primary', fullWidth = false } = Astro.props;
+const className = ['btn', `btn--${variant}`, fullWidth && 'btn--full'].filter(Boolean).join(' ');
+---
+
+{href ? (
+  <a class={className} href={href}><slot /></a>
+) : (
+  <button class={className} type={type}><slot /></button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    font-family: var(--font);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .btn--primary {
+    background: var(--blue);
+    color: var(--paper);
+  }
+
+  .btn--primary:hover { background: var(--anil); text-decoration: none; }
+
+  .btn--secondary {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--border);
+  }
+
+  .btn--secondary:hover { background: var(--field); text-decoration: none; }
+
+  .btn--full { width: 100%; }
+</style>

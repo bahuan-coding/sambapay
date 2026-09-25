@@ -1,45 +1,58 @@
+@import '@fontsource/inter/latin-400.css';
+@import '@fontsource/inter/latin-600.css';
+@import '@fontsource/raleway/latin-700.css';
 @import './tokens.css';
 
-* { box-sizing: border-box; }
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 
 body {
   margin: 0;
   min-height: 100vh;
   font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.5;
   color: var(--ink);
   background: var(--paper);
 }
 
+img, svg { display: block; max-width: 100%; }
+
 a { color: var(--blue); }
 
-.bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: var(--header-h);
-  padding: 0 24px;
-  background: var(--anil);
-  color: var(--field);
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
 }
 
-.bar strong {
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus { transform: translateY(0); }
+
+main { min-height: calc(100vh - var(--header-h)); }
+
+.shell-title {
+  margin: 0;
+  padding: var(--space-8) var(--space-4);
   font-family: var(--display);
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-}
-
-.mark { width: 32px; height: 32px; display: block; }
-
-main {
-  max-width: var(--measure);
-  margin: 0 auto;
-  padding: 48px 24px;
-}
-
-.chips { display: flex; gap: 12px; margin-top: 32px; }
-.chips i {
-  display: block;
-  width: 48px;
-  height: 48px;
-  border-radius: 4px;
 }

@@ -1,0 +1,312 @@
+---
+import type { Lang } from '../i18n';
+import { navLinks, pathForLang, t } from '../i18n';
+import LangToggle from './LangToggle.astro';
+import PrimaryButton from './PrimaryButton.astro';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const messages = t(lang);
+const homeHref = pathForLang('/', lang);
+const loginHref = pathForLang('/login', lang);
+const accountHref = pathForLang('/signup', lang);
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__brand" href={homeHref}>
+      <img src="/favicon.svg" alt="" width="32" height="32" />
+      <span class="site-header__word">SambaPay</span>
+    </a>
+    <nav class="site-header__nav" aria-label={messages.a11y.mainNav}>
+      {navLinks.map((link) => {
+        const href = lang === 'en' ? link.en : link.pt;
+        const active = currentPath === href || currentPath.startsWith(`${href}/`);
+        return (
+          <a class:list={['site-header__link', active && 'is-active']} href={href}>
+            {messages.nav[link.key]}
+          </a>
+        );
+      })}
+    </nav>
+    <div class="site-header__actions">
+      <a class="site-header__login site-header__login--bar" href={loginHref}>{messages.cta.login}</a>
+      <div class="site-header__desktop">
+        <PrimaryButton href={accountHref}>{messages.cta.account}</PrimaryButton>
+      </div>
+      <LangToggle lang={lang} currentPath={currentPath} />
+      <button
+        type="button"
+        class="site-header__menu-btn"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-open
+      >
+        <span class="site-header__menu-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">{messages.a11y.openMenu}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-menu" class="mobile-menu" hidden role="dialog" aria-modal="true" aria-label={messages.a11y.mainNav} data-mobile-menu>
+  <div class="mobile-menu__overlay" data-menu-close></div>
+  <div class="mobile-menu__panel">
+    <div class="mobile-menu__top">
+      <button type="button" class="mobile-menu__close" data-menu-close aria-label={messages.a11y.closeMenu}>×</button>
+    </div>
+    <nav class="mobile-menu__nav">
+      {navLinks.map((link) => {
+        const href = lang === 'en' ? link.en : link.pt;
+        const active = currentPath === href || currentPath.startsWith(`${href}/`);
+        return (
+          <a class:list={['mobile-menu__link', active && 'is-active']} href={href}>
+            {messages.nav[link.key]}
+          </a>
+        );
+      })}
+    </nav>
+    <div class="mobile-menu__cta">
+      <PrimaryButton href={accountHref} fullWidth>{messages.cta.account}</PrimaryButton>
+      <PrimaryButton href={loginHref} fullWidth variant="secondary">{messages.cta.login}</PrimaryButton>
+    </div>
+  </div>
+</div>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: var(--header-h);
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .site-header__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+  }
+
+  .site-header__word {
+    font-family: var(--display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--blue);
+  }
+
+  .site-header__nav {
+    display: none;
+    align-items: center;
+    gap: var(--space-1);
+    margin-left: auto;
+  }
+
+  .site-header__link {
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-header__link.is-active,
+  .site-header__link:hover {
+    color: var(--blue);
+    background: var(--field);
+    text-decoration: none;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+  }
+
+  .site-header__desktop { display: none; }
+
+  .site-header__login {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 var(--space-2);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-header__login:hover { color: var(--blue); text-decoration: none; }
+
+  @media (max-width: 767px) {
+    .site-header__login--bar { display: none; }
+  }
+
+  .site-header__menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .site-header__menu-icon,
+  .site-header__menu-icon::before,
+  .site-header__menu-icon::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--ink);
+    position: relative;
+  }
+
+  .site-header__menu-icon::before,
+  .site-header__menu-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .site-header__menu-icon::before { top: -6px; }
+  .site-header__menu-icon::after { top: 6px; }
+
+  @media (min-width: 768px) {
+    .site-header__nav { display: flex; }
+    .site-header__desktop { display: block; }
+    .site-header__login--bar { display: inline-flex; }
+    .site-header__menu-btn { display: none; }
+    .site-header__actions { margin-left: 0; }
+  }
+
+  .mobile-menu[hidden] { display: none; }
+
+  .mobile-menu { position: fixed; inset: 0; z-index: 50; }
+
+  .mobile-menu__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(28, 61, 74, 0.35);
+  }
+
+  .mobile-menu__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(100%, 22rem);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+  }
+
+  .mobile-menu__top {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .mobile-menu__close {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--ink);
+  }
+
+  .mobile-menu__nav {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4);
+    gap: var(--space-2);
+  }
+
+  .mobile-menu__link {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius);
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .mobile-menu__link.is-active { background: var(--field); color: var(--blue); }
+
+  .mobile-menu__cta {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-4) var(--space-8);
+    border-top: 1px solid var(--border);
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  const menu = document.querySelector('[data-mobile-menu]');
+  const openBtn = document.querySelector('[data-menu-open]');
+  const closeTargets = document.querySelectorAll('[data-menu-close]');
+
+  function openMenu() {
+    if (!menu || !openBtn) return;
+    menu.hidden = false;
+    openBtn.setAttribute('aria-expanded', 'true');
+    menu.querySelector<HTMLButtonElement>('.mobile-menu__close')?.focus();
+    document.addEventListener('keydown', onKeydown);
+  }
+
+  function closeMenu() {
+    if (!menu || !openBtn) return;
+    menu.hidden = true;
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.removeEventListener('keydown', onKeydown);
+    (openBtn as HTMLButtonElement).focus();
+  }
+
+  function onKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape') closeMenu();
+  }
+
+  openBtn?.addEventListener('click', openMenu);
+  closeTargets.forEach((target) => target.addEventListener('click', closeMenu));
+</script>

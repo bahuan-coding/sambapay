@@ -1,0 +1,43 @@
+---
+import type { Lang } from '../i18n';
+import { alternatePath, t } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const messages = t(lang);
+const enHref = alternatePath(currentPath, 'en');
+const ptHref = alternatePath(currentPath, 'pt');
+---
+
+<div class="lang" role="group" aria-label={messages.a11y.language}>
+  <a class:list={['lang__link', lang === 'en' && 'is-active']} href={enHref} aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+  <span class="lang__sep" aria-hidden="true">|</span>
+  <a class:list={['lang__link', lang === 'pt' && 'is-active']} href={ptHref} aria-current={lang === 'pt' ? 'true' : undefined}>PT</a>
+</div>
+
+<style>
+  .lang {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .lang__link {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .lang__link.is-active { color: var(--ink); }
+  .lang__sep { color: var(--border); }
+</style>

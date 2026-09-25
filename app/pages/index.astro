@@ -1,27 +1,7 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SambaPay</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
-  <body>
-    <header class="bar">
-      <img class="mark" src="/favicon.svg" alt="" width="32" height="32" />
-      <strong>SambaPay</strong>
-    </header>
-    <main>
-      <p>SambaPay</p>
-      <div class="chips" aria-hidden="true">
-        <i style="background:#52AE32"></i>
-        <i style="background:#FBBA00"></i>
-        <i style="background:#377EC1"></i>
-        <i style="background:#1351B4"></i>
-        <i style="background:#1C3D4A"></i>
-      </div>
-    </main>
-  </body>
-</html>
+
+<BaseLayout lang="en" currentPath="/">
+  <h1 class="shell-title">SambaPay</h1>
+</BaseLayout>

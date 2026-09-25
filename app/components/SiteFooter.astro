@@ -1,0 +1,91 @@
+---
+import type { Lang } from '../i18n';
+import { navLinks, pathForLang, t } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const messages = t(lang);
+const homeHref = pathForLang('/', lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <a class="site-footer__brand" href={homeHref}>
+      <img src="/favicon.svg" alt="" width="28" height="28" />
+      <span>SambaPay</span>
+    </a>
+    <nav class="site-footer__nav" aria-label={messages.a11y.footer}>
+      {navLinks.map((link) => (
+        <a href={lang === 'en' ? link.en : link.pt}>{messages.nav[link.key]}</a>
+      ))}
+    </nav>
+    <div class="site-footer__legal">
+      <a href={pathForLang('/legal/privacy', lang)}>{messages.footer.privacy}</a>
+      <a href={pathForLang('/legal/terms', lang)}>{messages.footer.terms}</a>
+      <a href="mailto:dpo@sambapay.tech">dpo@sambapay.tech</a>
+      <p>SambaPay · {year}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: var(--space-8) var(--space-4);
+    background: var(--paper);
+    border-top: 1px solid var(--border);
+  }
+
+  .site-footer__inner {
+    max-width: var(--measure);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__inner {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+  }
+
+  .site-footer__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--blue);
+    font-family: var(--display);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .site-footer__nav,
+  .site-footer__legal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .site-footer__nav a,
+  .site-footer__legal a {
+    color: var(--ink);
+    font-size: 0.875rem;
+    text-decoration: none;
+  }
+
+  .site-footer__nav a:hover,
+  .site-footer__legal a:hover { color: var(--blue); }
+
+  .site-footer__legal p {
+    margin: var(--space-3) 0 0;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+</style>
