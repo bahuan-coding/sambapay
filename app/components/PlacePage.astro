@@ -25,13 +25,13 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
       <div class="place__where">
         <CountryFlag code={flag} />
         <div>
-          <p class="place__name">{place}</p>
+          <a class="place__name" href={creditHref}>{place}</a>
           <p class="place__country">{country}</p>
+          <p class="place__credit">{credit}</p>
         </div>
       </div>
       <div class="place__sheet">
         <slot name="sheet" />
-        <a class="place__credit" href={creditHref}>{credit}</a>
       </div>
     </div>
   </section>
@@ -46,7 +46,6 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
     min-height: 70vh;
     display: flex;
     align-items: flex-end;
-    overflow: hidden;
   }
 
   @media (min-width: 768px) {
@@ -88,6 +87,7 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
   }
 
   .place__name {
+    display: inline-block;
     margin: 0;
     font-family: var(--place);
     font-size: clamp(1.05rem, 1.6vw, 1.25rem);
@@ -95,7 +95,10 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
     letter-spacing: -0.01em;
     line-height: 1.15;
     color: #f4efe4;
+    text-decoration: none;
   }
+
+  .place__name:hover { text-decoration: underline; }
 
   .place__country {
     margin: 2px 0 0;
@@ -115,13 +118,16 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
     line-height: 1.25;
   }
 
-  .place__sheet :global(.word) { color: var(--blue); }
+  .place__sheet :global(p) {
+    margin: 0 0 var(--space-4);
+    max-width: 36rem;
+  }
 
   .place__credit {
-    display: inline-block;
-    margin-top: var(--space-4);
-    font-size: 0.75rem;
-    color: var(--ink);
+    margin: 6px 0 0;
+    font-size: 0.6875rem;
+    line-height: 1.3;
+    color: #f4efe4;
   }
 
   .reading {
@@ -162,11 +168,17 @@ const { lang, currentPath, title, image, place, country, flag, credit, creditHre
   }
 
   .reading :global(.card) {
-    background: var(--paper);
+    display: grid;
+    grid-template-columns: 4px 1fr;
+    background: var(--field);
     border: 1px solid var(--border);
   }
 
-  .reading :global(.card__bar) { display: block; height: 4px; }
+  .reading :global(.card__bar) {
+    display: block;
+    grid-row: 1 / span 2;
+    width: 4px;
+  }
 
   .reading :global(.card h2) {
     margin: var(--space-4) var(--space-4) var(--space-2);
