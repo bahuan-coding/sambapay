@@ -1,5 +1,5 @@
 ---
-import FeatureChapters from './FeatureChapters.astro';
+import FeatureGroups from './FeatureGroups.astro';
 import PrimaryButton from './PrimaryButton.astro';
 import ProductMark from './ProductMark.astro';
 import { productCopy } from '../data/features';
@@ -32,7 +32,7 @@ const copy = productCopy(lang);
         </article>
       ))}
     </div>
-    <FeatureChapters lang={lang} />
+    <FeatureGroups lang={lang} />
     <aside class="catalog__refusal">
       <h2>{copy.refusalTitle}</h2>
       <p>{copy.refusal}</p>

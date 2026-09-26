@@ -25,6 +25,13 @@ export interface FeatureColumn {
   items: FeatureItem[];
 }
 
+export interface FeatureGroup {
+  title: string;
+  lede: string;
+  plate?: 'rails' | 'enable' | 'settle';
+  items: { title: string; body: string }[];
+}
+
 const en = {
   seoTitle: 'Product',
   lede: 'Local prices, a local signup and a direct connection. Several acquirers sit side by side. The digitised store includes the terminal. Money collected locally comes back in as few steps as possible.',
@@ -67,6 +74,65 @@ const en = {
       ],
     },
   ] as FeatureColumn[],
+  groups: [
+    {
+      title: 'PayIn',
+      lede: 'The shopper pays with the methods of that market.',
+      items: [
+        { title: 'Credit', body: 'Credit card charges, authorised and captured.' },
+        { title: 'Debit', body: 'Debit card charges.' },
+        { title: '3DS', body: "The shopper's bank confirms it is the shopper." },
+        { title: '2D', body: 'Card processing without that challenge.' },
+        { title: 'PIX', body: 'In Brazil, the instant payment.' },
+        { title: 'Boleto', body: 'The Brazilian bank slip.' },
+        { title: 'Local methods', body: 'The local instruments of that market.' },
+        { title: 'Brought methods', body: 'A client can bring its own payment methods to connect locally.' },
+        { title: 'Local prices', body: 'Your volume is priced at the MDR a local merchant gets.' },
+        { title: 'Card capture', body: 'The digitised store includes card capture for online sales.' },
+      ],
+    },
+    {
+      title: 'Account',
+      lede: 'The volume meets local acquiring in this order.',
+      plate: 'rails',
+      items: [
+        { title: 'Local signup', body: 'We gather your data and deliver it to the local partners.' },
+        { title: 'The licences', body: 'We help with the licences, the regulations and the requirements of regulated institutions, so the approval has a better chance.' },
+        { title: 'Direct connection', body: 'You do not meet each requirement on your own. You use the volume of our local commercial policy.' },
+        { title: 'Side by side', body: 'Several local acquirers sit in each market. No single one limits the volume or concentrates the risk.' },
+        { title: 'One system', body: 'A client with more than one nationality gets one system, with local entities and teams already in those markets.' },
+        { title: 'Screening', body: 'The company and its owners are screened before it goes live.' },
+      ],
+    },
+    {
+      title: 'Checkout',
+      lede: 'Where we have structure, the store is stood up in this order.',
+      plate: 'enable',
+      items: [
+        { title: 'The stock', body: 'The business brings its stock. A niche marketplace, or stock shared by physical shops.' },
+        { title: 'The online store', body: 'We digitise the store where we have structure.' },
+        { title: 'The terminal', body: 'The digitised store includes the card terminal for online sales.' },
+        { title: 'Included', body: 'The local client in each market has the service included. We do not charge a marketplace fee.' },
+        { title: 'Our checkout', body: 'A shopper pays at the checkout of a store we digitised.' },
+        { title: 'Their site', body: "Or at the merchant's own site, using our checkout." },
+        { title: 'The company', body: 'Digitisation runs from the CNPJ through the local entities, until payout.' },
+      ],
+    },
+    {
+      title: 'Settlement',
+      lede: 'Money collected locally comes back in this order.',
+      plate: 'settle',
+      items: [
+        { title: 'Captured locally', body: 'The payment is captured in the acquiring market.' },
+        { title: 'Authorised', body: 'The rail authorises the attempt. Approval is counted here.' },
+        { title: 'The window', body: "Funds settle on the acquirer's window. Every operator has a cut-off." },
+        { title: 'The book', body: "The acquirer's file is tied to the ledger, line by line. Nothing is paid out before the book ties." },
+        { title: 'What nets out', body: 'Fees, reserve, refunds and chargebacks net out before money moves.' },
+        { title: 'Few steps', body: 'Cleared funds reach you in as few hops as possible.' },
+        { title: 'Payout', body: 'Payout follows once the book ties.' },
+      ],
+    },
+  ] as FeatureGroup[],
 };
 
 const pt = {
@@ -111,6 +177,65 @@ const pt = {
       ],
     },
   ] as FeatureColumn[],
+  groups: [
+    {
+      title: 'PayIn',
+      lede: 'Quem compra paga com os meios daquele mercado.',
+      items: [
+        { title: 'Crédito', body: 'Cobranças no cartão de crédito, autorizadas e capturadas.' },
+        { title: 'Débito', body: 'Cobranças no cartão de débito.' },
+        { title: '3DS', body: 'O banco de quem compra confirma que é quem compra.' },
+        { title: '2D', body: 'Processamento de cartão sem esse desafio.' },
+        { title: 'PIX', body: 'No Brasil, o pagamento instantâneo.' },
+        { title: 'Boleto', body: 'O boleto bancário brasileiro.' },
+        { title: 'Meios locais', body: 'Os instrumentos locais daquele mercado.' },
+        { title: 'Meios trazidos', body: 'O cliente pode trazer os próprios meios de pagamento para conectar localmente.' },
+        { title: 'Preços locais', body: 'O volume é precificado no MDR que um merchant local recebe.' },
+        { title: 'Captura no cartão', body: 'A loja digitalizada inclui a captura no cartão para a venda online.' },
+      ],
+    },
+    {
+      title: 'Conta',
+      lede: 'O volume encontra o adquirente local nesta ordem.',
+      plate: 'rails',
+      items: [
+        { title: 'Local signup', body: 'Reunimos os seus dados e os entregamos aos parceiros locais.' },
+        { title: 'As licenças', body: 'Ajudamos com as licenças, as regulações e as exigências de instituições reguladas, para a aprovação ter mais chance.' },
+        { title: 'Direct connection', body: 'Você não atende a cada exigência sozinho. Você usa o volume da nossa política comercial local.' },
+        { title: 'Lado a lado', body: 'Vários adquirentes locais ficam em cada mercado. Nenhum sozinho limita o volume nem concentra o risco.' },
+        { title: 'Um sistema', body: 'Um cliente com mais de uma nacionalidade tem um sistema, com entidades e times locais já naqueles mercados.' },
+        { title: 'Triagem', body: 'A empresa e os sócios são verificados antes de ir ao ar.' },
+      ],
+    },
+    {
+      title: 'Checkout',
+      lede: 'Onde temos estrutura, a loja fica de pé nesta ordem.',
+      plate: 'enable',
+      items: [
+        { title: 'O estoque', body: 'O negócio traz o estoque. Um marketplace de nicho, ou estoque compartilhado entre lojistas físicos.' },
+        { title: 'A loja online', body: 'Digitalizamos a loja onde temos estrutura.' },
+        { title: 'A maquininha', body: 'A loja digitalizada inclui a maquininha para a venda online.' },
+        { title: 'Incluso', body: 'O cliente local de cada mercado tem o serviço incluso. Não cobramos a taxa de um marketplace.' },
+        { title: 'O nosso checkout', body: 'Quem compra paga no checkout de uma loja que digitalizamos.' },
+        { title: 'O site dele', body: 'Ou no próprio site do merchant, usando o nosso checkout.' },
+        { title: 'A empresa', body: 'A digitalização vai do CNPJ às entidades locais, até o payout.' },
+      ],
+    },
+    {
+      title: 'Liquidação',
+      lede: 'O dinheiro arrecadado localmente volta nesta ordem.',
+      plate: 'settle',
+      items: [
+        { title: 'Captura local', body: 'O pagamento é capturado no mercado de adquirência.' },
+        { title: 'Autorização', body: 'O trilho autoriza a tentativa. A aprovação é contada aqui.' },
+        { title: 'A janela', body: 'Os fundos liquidam na janela do adquirente. Todo operador tem um horário de corte.' },
+        { title: 'O livro', body: 'O arquivo do adquirente é amarrado ao livro, linha a linha. Nada é pago antes de o livro fechar.' },
+        { title: 'O que sai', body: 'Taxas, reserva, estornos e chargebacks saem antes de o dinheiro se mover.' },
+        { title: 'Poucos passos', body: 'O valor liquidado chega até você no menor número de saltos.' },
+        { title: 'Payout', body: 'O payout segue quando o livro fecha.' },
+      ],
+    },
+  ] as FeatureGroup[],
 };
 
 export function productCopy(lang: 'en' | 'pt') {

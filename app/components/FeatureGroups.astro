@@ -1,0 +1,147 @@
+---
+import ProcessPlate from './ProcessPlate.astro';
+import { productCopy } from '../data/features';
+
+interface Props {
+  lang: 'en' | 'pt';
+}
+
+const { lang } = Astro.props;
+const groups = productCopy(lang).groups;
+---
+
+<div class="groups" data-groups>
+  <div class="groups__tabs" role="tablist">
+    {groups.map((group, index) => (
+      <button type="button" role="tab" aria-selected={index === 0 ? 'true' : 'false'} data-tab={index}>
+        {group.title}
+      </button>
+    ))}
+  </div>
+  {groups.map((group, index) => (
+    <div class="groups__panel" role="tabpanel" hidden={index !== 0} data-panel={index}>
+      <p class="groups__lede">{group.lede}</p>
+      <div class:list={['groups__split', group.plate && 'groups__split--plate']}>
+        <ul>
+          {group.items.map((item) => (
+            <li>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </li>
+          ))}
+        </ul>
+        {group.plate && <ProcessPlate kind={group.plate} />}
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll('[data-groups]').forEach((root) => {
+    const tabs = [...root.querySelectorAll('[data-tab]')];
+    const panels = [...root.querySelectorAll('[data-panel]')];
+    const show = (next) => {
+      tabs.forEach((tab, index) => {
+        tab.setAttribute('aria-selected', index === next ? 'true' : 'false');
+      });
+      panels.forEach((panel, index) => {
+        panel.hidden = index !== next;
+      });
+    };
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => show(Number(tab.dataset.tab)));
+    });
+  });
+</script>
+
+<style>
+  .groups {
+    margin-top: 3.5rem;
+  }
+
+  .groups__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  button {
+    margin: 0;
+    padding: 0.7rem 1rem 0.65rem;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    border-radius: 8px 8px 0 0;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-family: var(--display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    cursor: pointer;
+  }
+
+  button[aria-selected='true'] {
+    color: var(--ink);
+    border-bottom-color: var(--blue);
+    background: var(--field);
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+
+  .groups__panel {
+    padding: 1.25rem 0 0;
+  }
+
+  .groups__lede {
+    margin: 0 0 1.25rem;
+    max-width: 36rem;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+
+  .groups__split {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 800px) {
+    .groups__split--plate {
+      grid-template-columns: minmax(0, 1fr) minmax(18rem, 26rem);
+      align-items: start;
+    }
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  li {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border-radius: 8px;
+    background: var(--field);
+  }
+
+  h3 {
+    margin: 0 0 0.25rem;
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  li p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+</style>
