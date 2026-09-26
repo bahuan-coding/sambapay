@@ -1,0 +1,15 @@
+---
+import MarketLedger from '../../components/MarketLedger.astro';
+import PlacePage from '../../components/PlacePage.astro';
+import PrimaryButton from '../../components/PrimaryButton.astro';
+import { marketsCopy } from '../../data/markets';
+
+const copy = marketsCopy('pt');
+---
+
+<PlacePage lang="pt" currentPath="/pt/mercados" title="Mercados" lead>
+  <h1 slot="sheet">Acesso por todas as Américas.</h1>
+  <p slot="sheet">{copy.lede}</p>
+  <PrimaryButton slot="sheet" href="/pt/signup">{copy.cta}</PrimaryButton>
+  <MarketLedger slot="fold" lang="pt" />
+</PlacePage>

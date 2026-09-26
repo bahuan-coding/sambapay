@@ -37,6 +37,7 @@ type Route = Record<Lang, string>;
 
 const routes: Route[] = [
   { en: '/', pt: '/pt', es: '/es' },
+  { en: '/markets', pt: '/pt/mercados', es: '/es/mercados' },
   { en: '/product', pt: '/pt/produto', es: '/es/producto' },
   { en: '/acquirers', pt: '/pt/adquirentes', es: '/es/adquirentes' },
   { en: '/what-we-do', pt: '/pt/o-que-fazemos', es: '/es/que-hacemos' },
@@ -85,6 +86,7 @@ export function alternatePath(currentPath: string, lang: Lang): string {
 }
 
 export const navLinks = [
+  { key: 'markets' as const, en: '/markets', pt: '/pt/mercados', es: '/es/mercados' },
   { key: 'product' as const, en: '/product', pt: '/pt/produto', es: '/es/producto' },
   { key: 'acquirers' as const, en: '/acquirers', pt: '/pt/adquirentes', es: '/es/adquirentes' },
   { key: 'what' as const, en: '/what-we-do', pt: '/pt/o-que-fazemos', es: '/es/que-hacemos' },

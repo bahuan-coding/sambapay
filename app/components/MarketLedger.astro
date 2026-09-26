@@ -1,0 +1,395 @@
+---
+import type { Lang } from '../i18n';
+import { pathForLang } from '../i18n';
+import CountryFlag from './CountryFlag.astro';
+import MethodIcon from './MethodIcon.astro';
+import PrimaryButton from './PrimaryButton.astro';
+import { marketGroups, marketsCopy } from '../data/markets';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const groups = marketGroups(lang);
+const copy = marketsCopy(lang);
+const signupHref = pathForLang('/signup', lang);
+---
+
+<section class="mk">
+  <div class="mk__inner">
+    <div class="mk__intro">
+      <p class="mk__eyebrow">{copy.eyebrow}</p>
+      <h2>{copy.title}</h2>
+      <p class="mk__lede">{copy.lede}</p>
+    </div>
+
+    <aside class="mk__access">
+      <h3>{copy.accessTitle}</h3>
+      <p>{copy.accessLede}</p>
+    </aside>
+
+    <div class="mk__group">
+      <header class="mk__ghead">
+        <h3>{copy.southTitle}</h3>
+        <span class="mk__rule"></span>
+      </header>
+      <ul class="mk__list">
+        {groups.south.map((market) => (
+          <li class="market">
+            <div class="market__id">
+              <CountryFlag code={market.code} />
+              <h3>{market.name}</h3>
+              <p class="market__ccy">{copy.currencyLabel} <span>{market.currency}</span></p>
+            </div>
+            <p class="market__note">{market.note}</p>
+            <ul class="market__methods">
+              {market.methods.map((kind) => (
+                <li><MethodIcon kind={kind} /></li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="mk__group">
+      <header class="mk__ghead">
+        <h3>{copy.centralTitle}</h3>
+        <span class="mk__rule"></span>
+      </header>
+      <ul class="mk__list">
+        {groups.central.map((market) => (
+          <li class="market">
+            <div class="market__id">
+              <CountryFlag code={market.code} />
+              <h3>{market.name}</h3>
+              <p class="market__ccy">{copy.currencyLabel} <span>{market.currency}</span></p>
+            </div>
+            <p class="market__note">{market.note}</p>
+            <ul class="market__methods">
+              {market.methods.map((kind) => (
+                <li><MethodIcon kind={kind} /></li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="mk__corridor">
+      <h2>{copy.corridorTitle}</h2>
+      <p class="mk__lede">{copy.corridorLede}</p>
+      <ol class="mk__steps">
+        {copy.corridor.map((step, index) => (
+          <li>
+            <p class="mk__step">{String(index + 1).padStart(2, '0')}</p>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <aside class="mk__refusal">
+      <h2>{copy.refuseTitle}</h2>
+      <p>{copy.refuse}</p>
+    </aside>
+
+    <div class="mk__cta">
+      <div>
+        <h2>{copy.ctaTitle}</h2>
+        <p>{copy.ctaLede}</p>
+      </div>
+      <PrimaryButton href={signupHref} arrow>{copy.cta}</PrimaryButton>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mk {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 4.5rem 0 6rem;
+  }
+
+  .mk__inner {
+    width: min(76rem, calc(100% - 4rem));
+    margin: 0 auto;
+  }
+
+  .mk__eyebrow {
+    margin: 0 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--anil);
+  }
+
+  .mk__eyebrow::before {
+    content: '';
+    width: 1.75rem;
+    height: 1px;
+    flex: none;
+    background: currentColor;
+    opacity: 0.55;
+  }
+
+  .mk h2 {
+    margin: 0;
+    max-width: 16em;
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+  }
+
+  .mk__lede {
+    margin: 1.25rem 0 0;
+    max-width: 46rem;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+  }
+
+  .mk__access {
+    margin-top: 3rem;
+    padding: 1.9rem 1.9rem 1.9rem 1.5rem;
+    background: var(--field);
+    border-left: 4px solid var(--blue);
+  }
+
+  .mk__access h3 {
+    margin: 0 0 0.6rem;
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .mk__access p {
+    margin: 0;
+    max-width: 48rem;
+    line-height: 1.5;
+  }
+
+  .mk__group { margin-top: 4.5rem; }
+
+  .mk__ghead {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .mk__ghead h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+
+  .mk__rule {
+    flex: 1;
+    height: 1px;
+    background: var(--ink);
+    opacity: 0.25;
+  }
+
+  .mk__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 3rem;
+  }
+
+  .market {
+    display: grid;
+    grid-template-columns: minmax(11rem, 1fr) minmax(0, 1.4fr) auto;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 1.15rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .market__id {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .market__id :global(.flag svg) {
+    height: 14px;
+  }
+
+  .market h3 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .market__ccy {
+    margin: 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .market__ccy span {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .market__note {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  .market__tag { display: none; }
+
+  .market__methods {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    justify-content: flex-end;
+  }
+
+  .market__methods li {
+    display: grid;
+    place-items: center;
+    opacity: 0.85;
+  }
+
+  .market__methods :global(.method-icon) {
+    width: 1.9rem;
+    height: 1.5rem;
+  }
+
+  .market__methods :global(.method-icon svg) {
+    width: 1.9rem;
+    height: 1.5rem;
+  }
+
+  .mk__corridor { margin-top: 5rem; }
+
+  .mk__steps {
+    list-style: none;
+    margin: 3rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .mk__steps li {
+    margin: 0;
+    padding-top: 1.35rem;
+    border-top: 1px solid var(--ink);
+  }
+
+  .mk__step {
+    margin: 0 0 0.7rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--anil);
+  }
+
+  .mk__steps h3 {
+    margin: 0 0 0.45rem;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .mk__steps li p:last-child {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .mk__refusal {
+    margin-top: 4.5rem;
+    padding: 1.9rem 1.9rem 1.9rem 1.5rem;
+    background: var(--field);
+    border-left: 4px solid var(--urucum);
+  }
+
+  .mk__refusal h2 {
+    max-width: none;
+    margin-bottom: 0.7rem;
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  }
+
+  .mk__refusal p {
+    margin: 0;
+    max-width: 46rem;
+    line-height: 1.5;
+  }
+
+  .mk__cta {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.75rem 2.5rem;
+    margin-top: 5rem;
+    padding-top: 2.75rem;
+  }
+
+  .mk__cta::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 8px;
+    background: linear-gradient(90deg, var(--green) 0 32%, var(--yellow) 32% 64%, var(--blue) 64% 100%);
+  }
+
+  .mk__cta h2 { max-width: 18em; }
+
+  .mk__cta p {
+    margin: 1rem 0 0;
+    max-width: 34rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .mk__cta :global(.btn) {
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 960px) {
+    .mk__list { grid-template-columns: 1fr; }
+    .mk__steps { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .mk { padding: 3rem 0 4rem; }
+    .mk__inner { width: min(76rem, calc(100% - 2rem)); }
+    .mk__steps { grid-template-columns: 1fr; }
+    .market { grid-template-columns: 1fr auto; }
+    .market__note { grid-column: 1 / -1; }
+  }
+</style>
