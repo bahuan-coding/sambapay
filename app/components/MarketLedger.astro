@@ -303,36 +303,35 @@ const signupHref = pathForLang('/signup', lang);
   .card__methods {
     list-style: none;
     margin: 0;
-    padding: 0.7rem 0 0;
+    padding: 0.6rem 0 0;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.35rem;
     border-top: 1px solid rgba(244, 239, 228, 0.28);
   }
 
-  .card__methods li { display: grid; place-items: center; }
+  .card__methods li {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.3rem;
+    padding: 0.12rem 0.2rem;
+    background: #f4efe4;
+    border-radius: 3px;
+  }
 
   .card__methods :global(.method-icon),
   .card__methods :global(.method-icon svg) {
-    width: 1.7rem;
-    height: 1.35rem;
+    width: 100%;
+    height: 100%;
   }
 
   .card__methods :global(.method-icon img) {
-    height: 1.35rem;
+    height: 100%;
     width: auto;
-    filter: grayscale(1) brightness(2.4) contrast(0.7);
-    opacity: 0.9;
-  }
-
-  .card__methods :global(.method-icon svg *) {
-    stroke: #f4efe4 !important;
-    fill: none !important;
-  }
-
-  .card__methods :global(.method-icon svg path[fill]) {
-    fill: #f4efe4 !important;
+    max-width: 100%;
+    object-fit: contain;
   }
 
   .card__credit {

@@ -8,7 +8,7 @@ const copy = marketsCopy('en');
 ---
 
 <PlacePage lang="en" currentPath="/markets" title="Markets" lead>
-  <h1 slot="sheet">Access across the Americas.</h1>
+  <h1 slot="sheet">{copy.title}</h1>
   <p slot="sheet">{copy.lede}</p>
   <PrimaryButton slot="sheet" href="/signup">{copy.cta}</PrimaryButton>
   <MarketLedger slot="fold" lang="en" />
