@@ -19,7 +19,7 @@ const steps: Record<Lang, EnablerStep[]> = {
     {
       kind: 'store',
       title: 'The online store',
-      body: 'We digitise the store where we have structure.',
+      body: 'We digitise the store where we have structure, from the CNPJ through the local entities.',
     },
     {
       kind: 'acquiring',
@@ -42,7 +42,7 @@ const steps: Record<Lang, EnablerStep[]> = {
     {
       kind: 'store',
       title: 'A loja online',
-      body: 'Digitalizamos a loja onde temos estrutura.',
+      body: 'Digitalizamos a loja onde temos estrutura, do CNPJ às entidades locais.',
     },
     {
       kind: 'acquiring',
@@ -65,7 +65,7 @@ const steps: Record<Lang, EnablerStep[]> = {
     {
       kind: 'store',
       title: 'La tienda en línea',
-      body: 'Digitalizamos la tienda donde tenemos estructura.',
+      body: 'Digitalizamos la tienda donde tenemos estructura, del CNPJ a las entidades locales.',
     },
     {
       kind: 'acquiring',

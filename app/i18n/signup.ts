@@ -100,7 +100,7 @@ const es = {
   countryPlaceholder: 'País',
   website: 'Sitio',
   websiteOptional: 'Opcional',
-  successTitle: 'Revise el correo',
+  successTitle: 'Revise su correo',
   successBody: 'El enlace expira en 15 minutos.',
   mailFailed: 'La cuenta está abierta. El correo no salió. Use Entrar en un momento.',
   errors: {

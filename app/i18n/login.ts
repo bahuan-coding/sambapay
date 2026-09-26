@@ -45,7 +45,7 @@ const es = {
   niches: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. Dos nichos, sin conflicto de interés.',
   email: 'Correo',
   submit: 'Recibir el enlace',
-  successTitle: 'Revise el correo',
+  successTitle: 'Revise su correo',
   successBody: 'Si este correo tiene cuenta, el enlace está en camino. Expira en 15 minutos.',
   create: 'Crear cuenta',
   invalidLink: 'Este enlace expiró. Pida otro.',

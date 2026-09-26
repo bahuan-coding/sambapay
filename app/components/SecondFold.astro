@@ -1,6 +1,8 @@
 ---
-import type { Lang } from '../i18n';
+import { pathForLang, type Lang } from '../i18n';
 import PartMark from './PartMark.astro';
+import PrimaryButton from './PrimaryButton.astro';
+import ProductMark from './ProductMark.astro';
 import { enablerSteps } from '../data/enablers';
 
 interface Props {
@@ -9,135 +11,268 @@ interface Props {
 
 const { lang } = Astro.props;
 const steps = enablerSteps(lang);
+const signupHref = pathForLang('/signup', lang);
 
-const fold = {
+const copy = {
   en: {
-    title: 'Local prices, local signup and direct connection.',
-    lead: 'We are online enablers. The business brings its stock. The store includes the terminal.',
-    refusalTitle: 'What we do not do',
-    refusal: "We do not take our clients' merchants. We do not dispute their accounts. Two niches, no conflict of interest.",
-    facts: [
+    whatEyebrow: 'What we do',
+    whatTitle: 'We open the local rails.',
+    whatLede:
+      'A business selling into Latin America does not need another gateway. It needs the local commercial policy: local prices, a local signup and a direct connection.',
+    pillars: [
       {
+        mark: 'prices' as const,
         title: 'Local prices',
-        body: 'Your volume gets the prices a local merchant gets.',
+        body: 'Your volume is priced the way a local merchant is priced. The book of many merchants together is what earns the policy.',
       },
       {
+        mark: 'signup' as const,
         title: 'Local signup',
-        body: 'We gather your data and deliver it to the local partners. We help with the licences, the regulations and the requirements of regulated institutions, so the approval has a better chance.',
+        body: 'We gather your data and deliver it to the local partners, and we carry the licences, the regulations and the requirements of regulated institutions.',
       },
       {
+        mark: 'connection' as const,
         title: 'Direct connection',
-        body: 'You do not meet each requirement on your own. You use the volume of our local commercial policy and enter the competitive market.',
+        body: 'You use the volume of our local commercial policy to enter the competitive market. You do not clear each acquirer requirement on your own.',
       },
     ],
+    origin:
+      'Built in Brazil, by Brazilians, for markets that are hard to enter. The bureaucracy of these markets is the difficulty we took on. It is our expertise.',
+    refusalTitle: 'What we do not do',
+    refusal:
+      "We do not take our clients' merchants. We do not dispute their accounts. Two niches, no conflict of interest.",
+    nicheEyebrow: 'The other niche',
+    nicheTitle: 'Local stores, stood up where we have structure.',
+    nicheLede:
+      'We are online enablers. The business brings its stock. The store we digitise already includes the terminal. The local client in each market has the service included, and we do not charge a marketplace fee.',
+    craftTitle: 'The system is new. What it knows is not.',
+    craftLede:
+      'Reconciliation first. Several acquirers side by side, so no single rail limits the volume or concentrates the risk. An engine that is not allowed to go down.',
+    craft: [
+      {
+        mark: 'book' as const,
+        title: 'Reconciliation first',
+        body: 'Nothing is paid before the book ties.',
+      },
+      {
+        mark: 'rails' as const,
+        title: 'Side by side',
+        body: 'Several acquirers sit in each market. No single one caps the volume or holds the risk alone.',
+      },
+      {
+        mark: 'collect' as const,
+        title: 'Availability',
+        body: 'The engine runs for a client who counts on it. Availability is the product.',
+      },
+    ],
+    craftClose: 'None of this was chosen in a room. It is what that volume cost us to learn.',
+    ctaTitle: 'Tell us which market you need to enter.',
+    ctaLede: 'The local path is designed around it: the prices, the signup and the connection.',
+    cta: 'Create account',
   },
   pt: {
-    title: 'Preços locais, local signup e direct connection.',
-    lead: 'Somos online enablers. O negócio traz o estoque. A loja inclui a maquininha.',
-    refusalTitle: 'O que não fazemos',
-    refusal: 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Dois nichos, sem conflito de interesse.',
-    facts: [
+    whatEyebrow: 'O que fazemos',
+    whatTitle: 'Abrimos os trilhos locais.',
+    whatLede:
+      'Um negócio que vende para a América Latina não precisa de mais um gateway. Precisa da política comercial local: preços locais, local signup e direct connection.',
+    pillars: [
       {
+        mark: 'prices' as const,
         title: 'Preços locais',
-        body: 'O seu volume recebe os preços que um merchant local recebe.',
+        body: 'O seu volume é precificado como um merchant local é precificado. O livro de muitos merchants juntos é o que conquista a política.',
       },
       {
+        mark: 'signup' as const,
         title: 'Local signup',
-        body: 'Reunimos os seus dados e os entregamos aos parceiros locais. Ajudamos com as licenças, as regulações e as exigências de instituições reguladas, para a aprovação ter mais chance.',
+        body: 'Reunimos os seus dados e os entregamos aos parceiros locais, e carregamos as licenças, as regulações e as exigências de instituições reguladas.',
       },
       {
+        mark: 'connection' as const,
         title: 'Direct connection',
-        body: 'Você não atende a cada exigência sozinho. Você usa o volume da nossa política comercial local e entra no mercado competitivo.',
+        body: 'Você usa o volume da nossa política comercial local para entrar no mercado competitivo. Você não cumpre cada exigência do adquirente sozinho.',
       },
     ],
+    origin:
+      'Feito no Brasil, por brasileiros, para mercados difíceis de entrar. A burocracia desses mercados é a dificuldade que assumimos. É a nossa expertise.',
+    refusalTitle: 'O que não fazemos',
+    refusal:
+      'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Dois nichos, sem conflito de interesse.',
+    nicheEyebrow: 'O outro nicho',
+    nicheTitle: 'Lojas locais, de pé onde temos estrutura.',
+    nicheLede:
+      'Somos online enablers. O negócio traz o estoque. A loja que digitalizamos já inclui a maquininha. O cliente local de cada mercado tem o serviço incluso, e não cobramos a taxa de um marketplace.',
+    craftTitle: 'O sistema é novo. O que ele sabe não é.',
+    craftLede:
+      'Conciliação primeiro. Vários adquirentes lado a lado, para que nenhum trilho sozinho limite o volume nem concentre o risco. Um motor que não pode cair.',
+    craft: [
+      {
+        mark: 'book' as const,
+        title: 'Conciliação primeiro',
+        body: 'Nada é pago antes de o livro fechar.',
+      },
+      {
+        mark: 'rails' as const,
+        title: 'Lado a lado',
+        body: 'Vários adquirentes em cada mercado. Nenhum sozinho limita o volume nem carrega o risco.',
+      },
+      {
+        mark: 'collect' as const,
+        title: 'Disponibilidade',
+        body: 'O motor roda para um cliente que conta com ele. A disponibilidade é o produto.',
+      },
+    ],
+    craftClose: 'Nada disso foi escolhido numa sala. Foi o que aquele volume nos custou a aprender.',
+    ctaTitle: 'Diga-nos em qual mercado você precisa entrar.',
+    ctaLede: 'O caminho local é desenhado em volta dele: os preços, o signup e a conexão.',
+    cta: 'Criar conta',
   },
   es: {
-    title: 'Precios locales, local signup y direct connection.',
-    lead: 'Somos online enablers. El negocio trae el stock. La tienda incluye la terminal.',
-    refusalTitle: 'Lo que no hacemos',
-    refusal: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. Dos nichos, sin conflicto de interés.',
-    facts: [
+    whatEyebrow: 'Lo que hacemos',
+    whatTitle: 'Abrimos los rieles locales.',
+    whatLede:
+      'Un negocio que vende hacia América Latina no necesita otra pasarela. Necesita la política comercial local: precios locales, local signup y direct connection.',
+    pillars: [
       {
+        mark: 'prices' as const,
         title: 'Precios locales',
-        body: 'Su volumen recibe los precios que recibe un merchant local.',
+        body: 'Su volumen recibe el precio que recibe un merchant local. El libro de muchos merchants juntos es lo que hace posible la política.',
       },
       {
+        mark: 'signup' as const,
         title: 'Local signup',
-        body: 'Reunimos sus datos y los entregamos a los socios locales. Ayudamos con las licencias, las regulaciones y las exigencias de instituciones reguladas, para que la aprobación tenga más chance.',
+        body: 'Reunimos sus datos y los entregamos a los socios locales, y cargamos las licencias, las regulaciones y las exigencias de instituciones reguladas.',
       },
       {
+        mark: 'connection' as const,
         title: 'Direct connection',
-        body: 'Usted no cumple cada exigencia por su cuenta. Usa el volumen de nuestra política comercial local y entra en el mercado competitivo.',
+        body: 'Usted usa el volumen de nuestra política comercial local para entrar en el mercado competitivo. No cumple cada exigencia del adquirente por su cuenta.',
       },
     ],
+    origin:
+      'Hecho en Brasil, por brasileños, para mercados difíciles de entrar. La burocracia de estos mercados es la dificultad que asumimos. Es nuestra especialidad.',
+    refusalTitle: 'Lo que no hacemos',
+    refusal:
+      'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. Dos nichos, sin conflicto de interés.',
+    nicheEyebrow: 'El otro nicho',
+    nicheTitle: 'Tiendas locales, de pie donde tenemos estructura.',
+    nicheLede:
+      'Somos online enablers. El negocio trae el stock. La tienda que digitalizamos ya incluye la terminal. El cliente local de cada mercado tiene el servicio incluido, y no cobramos la tasa de un marketplace.',
+    craftTitle: 'El sistema es nuevo. Lo que sabe no lo es.',
+    craftLede:
+      'Conciliación primero. Varios adquirentes lado a lado, para que ningún riel por sí solo limite el volumen ni concentre el riesgo. Un motor que no puede caerse.',
+    craft: [
+      {
+        mark: 'book' as const,
+        title: 'Conciliación primero',
+        body: 'Nada se paga antes de que el libro cuadre.',
+      },
+      {
+        mark: 'rails' as const,
+        title: 'Lado a lado',
+        body: 'Varios adquirentes en cada mercado. Ninguno por sí solo limita el volumen ni carga el riesgo.',
+      },
+      {
+        mark: 'collect' as const,
+        title: 'Disponibilidad',
+        body: 'El motor corre para un cliente que cuenta con él. La disponibilidad es el producto.',
+      },
+    ],
+    craftClose: 'Nada de esto se eligió en una sala. Es lo que ese volumen nos costó aprender.',
+    ctaTitle: 'Díganos en qué mercado necesita entrar.',
+    ctaLede: 'El camino local se diseña alrededor de él: los precios, el signup y la conexión.',
+    cta: 'Crear cuenta',
   },
 }[lang];
-
-const facts = fold.facts;
-const lead = fold.lead;
-const refusalTitle = fold.refusalTitle;
-const refusal = fold.refusal;
 ---
 
-<section class="fold" aria-labelledby="fold-title">
-  <div class="fold__inner">
-    <h2 id="fold-title">
-      {fold.title}
-    </h2>
-    <ol class="fold__facts">
-      {facts.map((fact, index) => (
-        <li>
-          <p class="fold__index">{String(index + 1).padStart(2, '0')}</p>
-          <h3>{fact.title}</h3>
-          <p>
-            {fact.href && fact.link ? (
-              <>
-                {fact.body.split(fact.link)[0]}
-                <a href={fact.href}>{fact.link}</a>
-                {fact.body.split(fact.link)[1]}
-              </>
-            ) : fact.body}
-          </p>
-        </li>
-      ))}
-    </ol>
-    <aside class="fold__refusal">
-      <h2>{refusalTitle}</h2>
-      <p>{refusal}</p>
+<section class="home" aria-labelledby="home-what">
+  <div class="home__inner">
+    <div class="home__block">
+      <p class="home__eyebrow">{copy.whatEyebrow}</p>
+      <h2 id="home-what">{copy.whatTitle}</h2>
+      <p class="home__lede">{copy.whatLede}</p>
+      <ul class="home__pillars">
+        {copy.pillars.map((pillar, index) => (
+          <li>
+            <span class="home__index">{String(index + 1).padStart(2, '0')}</span>
+            <ProductMark kind={pillar.mark} />
+            <h3>{pillar.title}</h3>
+            <p>{pillar.body}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="home__origin">{copy.origin}</p>
+    </div>
+
+    <aside class="home__refusal" aria-labelledby="home-refusal">
+      <h2 id="home-refusal">{copy.refusalTitle}</h2>
+      <p>{copy.refusal}</p>
     </aside>
-    <div class="fold__enable">
-      <h2>Online enablers</h2>
-      <p class="fold__lead">{lead}</p>
-      <ol class="fold__steps">
+
+    <div class="home__block home__niche">
+      <p class="home__eyebrow">{copy.nicheEyebrow}</p>
+      <h2>{copy.nicheTitle}</h2>
+      <p class="home__lede">{copy.nicheLede}</p>
+      <ol class="home__steps">
         {steps.map((step, index) => (
           <li>
             <PartMark kind={step.kind} />
-            <p class="fold__index">{String(index + 1).padStart(2, '0')}</p>
-            <h3>
-              {step.href ? <a href={step.href}>{step.title}</a> : step.title}
-            </h3>
+            <p class="home__index">{String(index + 1).padStart(2, '0')}</p>
+            <h3>{step.href ? <a href={step.href}>{step.title}</a> : step.title}</h3>
             <p>{step.body}</p>
           </li>
         ))}
       </ol>
     </div>
+
+    <div class="home__block home__craft" aria-labelledby="home-craft">
+      <h2 id="home-craft">{copy.craftTitle}</h2>
+      <p class="home__lede">{copy.craftLede}</p>
+      <ul class="home__craft-list">
+        {copy.craft.map((item) => (
+          <li>
+            <ProductMark kind={item.mark} />
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="home__close">{copy.craftClose}</p>
+    </div>
+
+    <div class="home__cta">
+      <div>
+        <h2>{copy.ctaTitle}</h2>
+        <p>{copy.ctaLede}</p>
+      </div>
+      <PrimaryButton href={signupHref} arrow>{copy.cta}</PrimaryButton>
+    </div>
   </div>
 </section>
 
 <style>
-  .fold {
+  .home {
     background: var(--paper);
     color: var(--ink);
     padding: 6.5rem 0 6rem;
   }
 
-  .fold__inner {
+  .home__inner {
     width: min(76rem, calc(100% - 4rem));
     margin: 0 auto;
   }
 
-  .fold__eyebrow {
+  .home__block + .home__block,
+  .home__refusal + .home__block,
+  .home__block + .home__refusal {
+    margin-top: 5.5rem;
+  }
+
+  .home__eyebrow {
     margin: 0 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.18em;
@@ -145,122 +280,247 @@ const refusal = fold.refusal;
     color: var(--anil);
   }
 
-  .fold h2 {
-    margin: 0;
-    max-width: 11em;
-    font-family: var(--display);
-    font-size: clamp(2.6rem, 5vw, 4.25rem);
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    line-height: 0.94;
+  .home__eyebrow::before {
+    content: '';
+    width: 1.75rem;
+    height: 6px;
+    flex: none;
+    background: linear-gradient(90deg, var(--green) 0 32%, var(--yellow) 32% 64%, var(--blue) 64% 100%);
   }
 
-  .fold__facts,
-  .fold__steps {
+  .home h2 {
+    margin: 0;
+    max-width: 14em;
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+  }
+
+  .home__lede {
+    margin: 1.25rem 0 0;
+    max-width: 44rem;
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .home__pillars,
+  .home__steps,
+  .home__craft-list {
     list-style: none;
-    margin: 3.5rem 0 0;
+    margin: 3.25rem 0 0;
     padding: 0;
   }
 
-  .fold__facts {
+  .home__pillars {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2.75rem;
+    gap: 1.25rem;
   }
 
-  .fold__facts li,
-  .fold__steps li {
-    margin: 0;
-    padding: 1.35rem 0 0;
-    border-top: 2px solid var(--ipe);
+  .home__pillars li {
+    position: relative;
+    padding: 1.6rem 1.4rem 1.5rem;
+    border: 1px solid var(--border);
+    border-top: 6px solid var(--tone);
+    border-radius: var(--radius);
+    background: var(--wash);
   }
 
-  .fold__index {
-    margin: 0 0 1rem;
-    font-size: 0.75rem;
+  .home__pillars li:nth-child(1) { --tone: var(--green); --wash: #f3faf4; }
+  .home__pillars li:nth-child(2) { --tone: var(--ipe); --wash: #fffbeb; }
+  .home__pillars li:nth-child(3) { --tone: var(--blue); --wash: #f3f7fd; }
+
+  .home__pillars :global(.product-mark) {
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .home__pillars :global(.product-mark circle) { stroke: var(--tone); }
+
+  .home__index {
+    margin: 0 0 0.85rem;
+    font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.16em;
-    color: var(--anil);
+    color: var(--tone, var(--anil));
   }
 
-  .fold h3 {
-    margin: 0 0 0.85rem;
-    font-family: var(--display);
-    font-size: 1.5rem;
-    font-weight: 700;
+  .home__pillars .home__index {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.25rem;
+    margin: 0;
+  }
+
+  .home h3 {
+    margin: 0 0 0.5rem;
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    font-weight: 600;
     letter-spacing: -0.03em;
-    line-height: 1.1;
+    line-height: 1.12;
   }
 
-  .fold h3 a {
+  .home h3 a {
     color: inherit;
     text-decoration: none;
   }
 
-  .fold h3 a:hover { text-decoration: underline; }
+  .home h3 a:hover { text-decoration: underline; }
 
-  .fold li p:last-child,
-  .fold__lead,
-  .fold__refusal p {
+  .home__pillars li p,
+  .home__steps li p:last-child,
+  .home__craft-list li p {
     margin: 0;
-    max-width: 28rem;
+    max-width: 30rem;
     color: var(--muted);
     line-height: 1.5;
   }
 
-  .fold__refusal {
-    margin-top: 4rem;
-    padding: 1.75rem 1.75rem 1.75rem 1.35rem;
+  .home__origin {
+    margin: 2.5rem 0 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    max-width: 44rem;
+    font-family: var(--serif);
+    font-size: clamp(1.15rem, 1.9vw, 1.5rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .home__refusal {
+    padding: 1.9rem 1.9rem 1.9rem 1.5rem;
     background: var(--field);
     border-left: 4px solid var(--urucum);
   }
 
-  .fold__refusal h2 {
+  .home__refusal h2 {
     max-width: none;
     margin-bottom: 0.75rem;
-    font-size: 1.5rem;
-    letter-spacing: -0.03em;
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
     line-height: 1.1;
   }
 
-  .fold__refusal p { color: var(--ink); }
-
-  .fold__enable { margin-top: 5.5rem; }
-
-  .fold__enable h2 { max-width: none; }
-
-  .fold__lead {
-    margin-top: 1.35rem;
-    max-width: 38rem;
+  .home__refusal p {
+    margin: 0;
+    max-width: 46rem;
     color: var(--ink);
+    font-size: 1.0625rem;
+    line-height: 1.5;
   }
 
-  .fold__steps {
+  .home__steps {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
   }
 
-  .fold__steps :global(.part-mark) {
-    width: 5.25rem;
-    height: 5.25rem;
+  .home__steps li {
+    margin: 0;
+    padding-top: 1.35rem;
+    border-top: 2px solid var(--ipe);
+  }
+
+  .home__steps :global(.part-mark) {
+    width: 5rem;
+    height: 5rem;
     margin-bottom: 1.35rem;
     background: var(--paper);
     border-radius: 50%;
   }
 
-  .fold__steps .fold__index { margin-bottom: 0.65rem; }
+  .home__steps h3 { font-size: 1.25rem; }
 
-  .fold__steps h3 { font-size: 1.25rem; }
+  .home__craft {
+    padding: 3.25rem 3rem;
+    background: var(--field);
+    border-radius: var(--radius);
+  }
+
+  .home__craft-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .home__craft-list li {
+    margin: 0;
+    padding-top: 1.35rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .home__craft-list :global(.product-mark) {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .home__close {
+    margin: 2.75rem 0 0;
+    max-width: 40rem;
+    font-family: var(--serif);
+    font-size: clamp(1.15rem, 1.9vw, 1.5rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .home__cta {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.75rem 2.5rem;
+    margin-top: 5.5rem;
+    padding-top: 2.75rem;
+  }
+
+  .home__cta::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 8px;
+    background: linear-gradient(90deg, var(--green) 0 32%, var(--yellow) 32% 64%, var(--blue) 64% 100%);
+  }
+
+  .home__cta h2 { max-width: 16em; }
+
+  .home__cta p {
+    margin: 1rem 0 0;
+    max-width: 34rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .home__cta :global(.btn) {
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+  }
 
   @media (max-width: 960px) {
-    .fold__facts { grid-template-columns: 1fr; gap: 2rem; }
-    .fold__steps { grid-template-columns: 1fr 1fr; }
+    .home__pillars { grid-template-columns: 1fr; }
+    .home__steps { grid-template-columns: 1fr 1fr; }
+    .home__craft-list { grid-template-columns: 1fr; gap: 1.5rem; }
+    .home__craft { padding: 2.5rem 2rem; }
   }
 
   @media (max-width: 640px) {
-    .fold { padding: 3.5rem 0 4rem; }
-    .fold__inner { width: min(76rem, calc(100% - 2rem)); }
-    .fold__steps { grid-template-columns: 1fr; }
+    .home { padding: 3.5rem 0 4rem; }
+    .home__inner { width: min(76rem, calc(100% - 2rem)); }
+    .home__block + .home__block,
+    .home__refusal + .home__block,
+    .home__block + .home__refusal { margin-top: 3.5rem; }
+    .home__steps { grid-template-columns: 1fr; }
+    .home__craft { padding: 2rem 1.4rem; }
+    .home__cta { margin-top: 3.5rem; }
   }
 </style>
