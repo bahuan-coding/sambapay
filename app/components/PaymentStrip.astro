@@ -1,0 +1,42 @@
+---
+import MethodIcon from './MethodIcon.astro';
+import type { MethodIcon as Kind } from '../data/features';
+
+interface Props {
+  items: Kind[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="strip" role="list" aria-label="Payment methods">
+  {items.map((kind) => (
+    <span class="strip__item" role="listitem">
+      <MethodIcon kind={kind} />
+    </span>
+  ))}
+</div>
+
+<style>
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+    gap: 0.9rem 0.75rem;
+    margin: 1.5rem 0 0;
+    padding-top: 1.35rem;
+    border-top: 1px solid var(--ink);
+  }
+
+  .strip__item {
+    display: grid;
+    place-items: center;
+    min-height: 2.5rem;
+  }
+
+  .strip :global(.method-icon) {
+    opacity: 0.92;
+    transition: opacity 150ms ease;
+  }
+
+  .strip :global(.method-icon):hover { opacity: 1; }
+</style>

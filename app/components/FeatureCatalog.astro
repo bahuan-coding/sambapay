@@ -1,6 +1,7 @@
 ---
 import FeatureGroups from './FeatureGroups.astro';
 import LineMark from './LineMark.astro';
+import PaymentStrip from './PaymentStrip.astro';
 import PrimaryButton from './PrimaryButton.astro';
 import type { Lang } from '../i18n';
 import { productCopy } from '../data/features';
@@ -35,6 +36,7 @@ const copy = productCopy(lang);
               </li>
             ))}
           </ul>
+          {column.pay && <PaymentStrip items={column.pay as never[]} />}
         </article>
       ))}
     </div>

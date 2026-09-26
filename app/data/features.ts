@@ -25,6 +25,7 @@ export interface FeatureItem {
 export interface FeatureColumn {
   title: string;
   items: FeatureItem[];
+  pay?: string[];
 }
 
 export type MethodIcon =
@@ -71,6 +72,7 @@ const en = {
   columns: [
     {
       title: 'Accept',
+      pay: ['credit', 'debit', '3ds', 'pix', 'boleto', 'spei', 'oxxo', 'qr', 'pagofacil', 'transfer'],
       items: [
         { mark: 'prices', title: 'Local prices', body: 'Your volume is charged the MDR a local merchant is charged. Our technology makes that rate possible.' },
         { mark: 'methods', title: 'Cards and local methods', body: 'Credit and debit, 3DS and 2D, plus the local methods of that market.' },
@@ -79,6 +81,7 @@ const en = {
     },
     {
       title: 'Connect',
+      pay: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
       items: [
         { mark: 'signup', title: 'Local signup', body: 'We file the client data with the local partners, including the licences the acquirer requires.' },
         { mark: 'connection', title: 'Direct connection', body: 'The client uses our local commercial policy. It does not clear each acquirer requirement on its own.' },
@@ -111,19 +114,17 @@ const en = {
         { icon: 'debit', title: 'Debit', body: 'Debit card charges.' },
         {
           icon: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
-          title: '',
-          body: "Reduce your chargebacks. Use 3DS. The shopper's bank confirms it is the shopper. Without that challenge, the charge is 2D.",
+          title: '3DS',
+          body: "Reduce your chargebacks. The shopper's bank confirms it is the shopper. Without that challenge, the charge is 2D.",
         },
-        { icon: 'pix', title: '', body: 'In Brazil, the instant payment.' },
+        { icon: 'pix', title: 'Pix', body: 'In Brazil, the instant payment.' },
         { icon: 'boleto', title: 'Boleto', body: 'In Brazil, the bank slip.' },
-        { icon: 'spei', title: '', body: 'In Mexico, the instant bank transfer.' },
+        { icon: 'spei', title: 'SPEI', body: 'In Mexico, the instant bank transfer.' },
         { icon: 'oxxo', title: 'OXXO Pay', body: 'In Mexico, the cash payment.' },
-        { icon: 'qra', title: 'QR Argentina', body: 'In Argentina, one code at the till. The shopper pays from the wallet already on their phone.' },
+        { icon: 'qra', title: 'QR Argentina', body: 'In Argentina, one code at the till.' },
         { icon: 'pagofacil', title: 'Pago Fácil', body: 'In Argentina, the cash payment.' },
         { icon: 'transfer', title: 'Bank transfer', body: 'In Chile, the bank transfer.' },
         { icon: 'brought', title: 'Brought methods', body: 'A client can bring its own payment methods to connect locally.' },
-        { icon: 'prices', title: 'Local prices', body: 'Your volume is charged the MDR a local merchant is charged. Our technology makes that rate possible.' },
-        { icon: 'capture', title: 'Card capture', body: 'The digitised store includes card capture for online sales.' },
       ],
     },
     {
