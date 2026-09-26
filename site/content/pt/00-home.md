@@ -10,7 +10,7 @@ title: SambaPay
 </section>
 
 <section class="beat beat-fact">
-<p>Um negócio na Europa ou nos Estados Unidos que quer vender aqui não precisa de mais um gateway. Precisa de preços locais, aprovação local e regras locais: as mesmas condições que um merchant local tem. Consegui-las exige entidade local regulada, conformidade PCI, contratos com adquirentes e bancos locais, e alguém que mantenha cada uma dessas relações viva, todo dia.</p>
+<p>Um negócio na Europa ou nos Estados Unidos que quer vender aqui não precisa de mais um gateway. Precisa de preços locais, de um local signup e de uma direct connection. O local signup reúne os dados do cliente, entrega aos parceiros locais, e ajuda com as licenças, as regulações e as exigências de instituições reguladas, para a aprovação ter mais chance. Na direct connection o cliente não atende a cada exigência sozinho: usa o volume da nossa política comercial local e entra no mercado competitivo.</p>
 
 <!-- src: welcome-kit/03-how-we-win.md § Five reasons a client chooses us -->
 

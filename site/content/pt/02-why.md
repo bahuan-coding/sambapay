@@ -14,7 +14,7 @@ title: Por que existimos
 
 <!-- src: welcome-kit/01-why-we-exist.md § Why a local commercial policy is the product -->
 
-<p>Um negócio na Europa ou nos Estados Unidos que quer vender aqui não precisa de mais um gateway. Precisa de preços locais, aprovação local e regras locais: as mesmas condições que um merchant local tem. Consegui-las exige entidade local regulada, conformidade PCI, contratos com adquirentes e bancos locais, e alguém que mantenha cada uma dessas relações viva, todo dia. Esse trabalho é uma barreira severa de entrada.</p>
+<p>Um negócio na Europa ou nos Estados Unidos que quer vender aqui não precisa de mais um gateway. Precisa de preços locais, de um local signup e de uma direct connection. O local signup reúne os dados do cliente, entrega aos parceiros locais, e ajuda com as licenças, as regulações e as exigências de instituições reguladas, para a aprovação ter mais chance. Na direct connection o cliente não atende a cada exigência sozinho: usa o volume da nossa política comercial local e entra no mercado competitivo. Esse trabalho é uma barreira severa de entrada.</p>
 <p>A estrutura existe para que o cliente possa usar o dinheiro que circula nessa economia, a preços locais.</p>
 </section>
 

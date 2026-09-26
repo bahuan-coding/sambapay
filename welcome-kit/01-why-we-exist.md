@@ -18,9 +18,7 @@ We do not take our clients' merchants and we do not dispute their accounts.
 
 ## Why a local commercial policy is the product
 
-In most countries in this region, more payment traffic runs on local methods than on the big global brands. A business in Europe or the United States that wants to sell here does not need another gateway. It needs local prices, local approval and local rules: the same conditions a local merchant gets.
-
-Getting them means a regulated local entity, PCI compliance, contracts with local acquirers and banks, and someone who keeps every one of those relationships alive, every day. That work is a severe barrier to entry.
+In most countries in this region, more payment traffic runs on local methods than on the big global brands. A business in Europe or the United States that wants to sell here does not need another gateway. It needs local prices, a local signup and a direct connection. Local signup gathers the client's data, delivers it to the local partners, and helps with the licences, the regulations and the requirements of regulated institutions, so the approval has a better chance. On a direct connection the client does not meet each requirement alone: it uses the volume of our local commercial policy and enters the competitive market. That work is a severe barrier to entry.
 
 We offer a local connection as a presence for businesses that do not have access to cheap markets. We create a local structure in the country, or we connect with partners, and we hold a direct connection to local acquirers. The structure exists so the client can use the money that circulates in that economy, at local prices.
 

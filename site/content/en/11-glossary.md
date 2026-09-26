@@ -33,7 +33,7 @@ title: Glossary
 <dt>Digitisation</dt>
 <dd>Standing a local merchant, or a client's Brazil store, up as a digital business, case by case, through the Website Factory: from the CNPJ through operational management with the local entities, until payout.</dd>
 <dt>Direct connection</dt>
-<dd>A live rail to a local acquirer in the country, through our own entity or a partner: the presence we offer so a business that does not have access to a cheap market can use the local commercial policy.</dd>
+<dd>A live rail to a local acquirer in the country, through our own entity or a partner: the client does not meet each requirement alone, and uses the volume of our local commercial policy to enter the competitive market.</dd>
 <dt>DPO</dt>
 <dd>Data protection officer, the LGPD contact; dpo@sambapay.tech.</dd>
 <dt>Horizontal scaling</dt>
@@ -45,11 +45,9 @@ title: Glossary
 <dt>LGPD</dt>
 <dd>Brazil's personal-data protection law.</dd>
 <dt>Local commercial policy</dt>
-<dd>Local prices, local approval and local rules, as a local merchant would get them.</dd>
-<dt>Local entity</dt>
-<dd>An acquirer, bank, PIX rail or FX partner in a given country, or our own regulated company there.</dd>
-<dt>Local merchant</dt>
-<dd>A business in a geography where we have structure, digitised through the Website Factory. Entrepreneurs and service providers in the digital economy who want online payments. They use our capture channels as a local player. Not a client's merchant.</dd>
+<dd>Local prices, a local signup and a direct connection.</dd>
+<dt>Local signup</dt>
+<dd>We help the client gather its data and deliver it to the local partners, and we help with the licences, the regulations and the requirements of regulated institutions, so the approval has a better chance.</dd>
 <dt>Merchant</dt>
 <dd>A business that sells and gets paid on our rails: a local merchant on the Website Factory, or a merchant who arrives through a client. We do not take a client's merchants.</dd>
 <dt>Merchant of Record</dt>

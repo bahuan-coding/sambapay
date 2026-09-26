@@ -40,7 +40,7 @@ Every term used in this kit, one sentence each. If you meet a word that is not h
 - **DD2** — Our secondary entity template in Brazil, built on Double Diamond's requirements: Cielo, Asaas and EFI side by side, Factoring covering all volume at a competitive price, and two on-ramp desks (MIPPO/GFS/OrbiFi and Transfero). We open it in parallel with DD1 Cielo production volume. It does not gate that volume. Date the accounts open: Open.
 - **Digitisation** — Standing a local merchant, or a client's Brazil store, up as a digital business, case by case, through the Website Factory: from the CNPJ through operational management with the local entities, until payout.
 - **Direct acquirer** — An acquirer that is itself a direct participant of its country's central bank settlement system; the partners Abner signs us up with, so no intermediary sits between our rail and settlement.
-- **Direct connection** — A live rail to a local acquirer in the country, through our own entity or a partner: the presence we offer so a business that does not have access to a cheap market can use the local commercial policy.
+- **Direct connection** — A live rail to a local acquirer in the country, through our own entity or a partner: the client does not meet each requirement alone, and uses the volume of our local commercial policy to enter the competitive market.
 - **Decision log** — One line per decision that changes direction: options, choice, reason, owner.
 - **Double Diamond** — The firm mapping the requirements to open an entity in Brazil. DD1 is the Cielo production path. DD2 is its secondary template. Its deliverable is the checklist package: all documents needed to open acquirer accounts.
 - **DPO** — Data protection officer, the LGPD contact; dpo@sambapay.tech.
@@ -61,9 +61,10 @@ Every term used in this kit, one sentence each. If you meet a word that is not h
 - **KYB** — Know your business: verifying a merchant company, its owners and its risk before onboarding.
 - **KYC** — Know your customer: verifying a person's identity.
 - **LGPD** — Brazil's personal-data protection law.
-- **Local commercial policy** — Expand your payments, integrated into the most sophisticated and cost-efficient ecosystem: local prices, local approval and local rules, as a local merchant would get them.
+- **Local commercial policy** — Local prices, a local signup and a direct connection.
 - **Local entity** — An acquirer, bank, PIX rail or FX partner in a given country, or our own regulated company there.
 - **Local merchant** — A business in a geography where we have structure, digitised through the Website Factory. Entrepreneurs and service providers in the digital economy who want online payments. They use our capture channels as a local player. Not a client's merchant.
+- **Local signup** — We help the client gather its data and deliver it to the local partners, and we help with the licences, the regulations and the requirements of regulated institutions, so the approval has a better chance.
 - **Market enabler** — Our role for a client: we open and hold the local rails; the client brings the volume. Distinct from serving local merchants on the Website Factory.
 - **MCC** — Merchant category code, the code that tells the schemes what a merchant sells; must be honest.
 - **MDR** — Merchant discount rate, the total percentage an acquirer charges the merchant per transaction.

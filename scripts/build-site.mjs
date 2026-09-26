@@ -122,7 +122,7 @@ function checkForbidden(label, text, fail, { allowName = false } = {}) {
 function generateGlossary() {
   const kit = readFileSync(join(ROOT, "welcome-kit/09-glossary.md"), "utf8");
   const pairs = JSON.parse(readFileSync(join(SITE, "lib/glossary-bilingue.json"), "utf8"));
-  const drop = ["counterparties", "goals", "people", "aiSubstance", "aiSubstanceLoose", "licence"].flatMap((name) =>
+  const drop = ["counterparties", "goals", "people", "aiSubstance", "aiSubstanceLoose", "aiTexture", "licence"].flatMap((name) =>
     compile(FORBIDDEN[name] || {})
   );
   drop.push(...(FORBIDDEN.figures?.banned || []).map((p) => new RegExp(p, "i")));

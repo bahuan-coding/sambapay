@@ -19,9 +19,9 @@ const NAME = /André Silva/;
 // replacement character, and the loose bytes that came with them.
 const NAME_BROKEN = /AndrÃ©|AndrC3A9|AndrAc|Andr\uFFFD|\bAndre Silva\b/;
 const MOJIBAKE = /â€|\uFFFD|\u0000/;
-const WORD_LIMIT_DEFAULT = 780; // raised for the evolution register in 01 and 03; never cut a fact to fit // 06 holds eight titled roles plus named processes; raised separately
+const WORD_LIMIT_DEFAULT = 800; // 01 holds local signup and direct connection; never cut a fact to fit // 06 holds eight titled roles plus named processes; raised separately
 const WORD_LIMIT_ROLES = 900; // 06: eight roles, named processes, and how André Silva participates
-const WORD_LIMIT_LONG = 2720; // 04 and 09; 09 holds the public meaning of the ecosystem line — do not cut entries to fit
+const WORD_LIMIT_LONG = 2740; // 04 and 09; 09 holds local signup and the direct-connection line — do not cut entries to fit
 const PT_LEAK = [" não ", " você ", " também ", " então ", " porque ", " para "];
 // Board view that must never appear in the Welcome Kit.
 const BOARD_ONLY = [/\bSPA\b/, /Side Letter/i, /Exhibit E/, /\bUnits\b/, /Group Holdings/, /180,680/, /1,905,924/, /1\.70M/, /680[–-]710K/];
@@ -41,7 +41,7 @@ const JARGON = [
   ["infrastructure", /\binfrastructure\b/i], ["ICC++", /ICC\+\+/], ["interchange", /\binterchange\b/i],
   ["Jumio", /\bJumio\b/], ["Key Vault", /\bKey Vault\b/], ["KYB", /\bKYB\b/], ["KYC", /\bKYC\b/],
   ["LGPD", /\bLGPD\b/], ["local commercial policy", /\blocal commercial policy\b/i],
-  ["local entity", /\blocal entit(y|ies)\b/i], ["local merchant", /\blocal merchants?\b/i], ["market enabler", /\bmarket enabler\b/i], ["online enabler", /\bonline enablers?\b/i],
+  ["local entity", /\blocal entit(y|ies)\b/i], ["local merchant", /\blocal merchants?\b/i], ["local signup", /\blocal signups?\b/i], ["market enabler", /\bmarket enabler\b/i], ["online enabler", /\bonline enablers?\b/i],
   ["MCC", /\bMCC\b|merchant category code/i], ["MDR", /\bMDR\b/], ["merchant", /\bmerchants?\b/i],
   ["Merchant of Record", /\bMerchant of Record\b/], ["MID", /\bMIDs?\b/], ["on-ramp", /\bon-ramp\b/i],
   ["OTC", /\bOTC\b/], ["orchestration", /\borchestration\b/i], ["orchestration swarm", /\borchestration swarm\b/i], ["PayFac", /\bPayFac\b/], ["payment facilitator", /\bpayment facilitator\b/i],

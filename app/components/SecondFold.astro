@@ -17,14 +17,12 @@ const facts = pt
         body: 'O seu volume recebe os preços que um merchant local recebe.',
       },
       {
-        title: 'Aprovação local',
-        body: 'O adquirente local dá a aprovação.',
+        title: 'Local signup',
+        body: 'Reunimos os seus dados e os entregamos aos parceiros locais. Ajudamos com as licenças, as regulações e as exigências de instituições reguladas, para a aprovação ter mais chance.',
       },
       {
-        title: 'Regras locais',
-        body: 'Essas regras são uma entidade local regulada, a conformidade PCI, e contratos com adquirentes locais e com bancos locais.',
-        href: '/pt/adquirentes',
-        link: 'adquirentes locais',
+        title: 'Direct connection',
+        body: 'Você não atende a cada exigência sozinho. Você usa o volume da nossa política comercial local e entra no mercado competitivo.',
       },
     ]
   : [
@@ -33,14 +31,12 @@ const facts = pt
         body: 'Your volume gets the prices a local merchant gets.',
       },
       {
-        title: 'Local approval',
-        body: 'The local acquirer gives the approval.',
+        title: 'Local signup',
+        body: 'We gather your data and deliver it to the local partners. We help with the licences, the regulations and the requirements of regulated institutions, so the approval has a better chance.',
       },
       {
-        title: 'Local rules',
-        body: 'These rules are a regulated local entity, PCI compliance, and contracts with local acquirers and banks.',
-        href: '/acquirers',
-        link: 'local acquirers',
+        title: 'Direct connection',
+        body: 'You do not meet each requirement on your own. You use the volume of our local commercial policy and enter the competitive market.',
       },
     ];
 
@@ -59,9 +55,9 @@ const refusal = pt
     <p class="fold__eyebrow">{eyebrow}</p>
     <h2 id="fold-title">
       {pt ? (
-        <>Preços locais, aprovação local e regras locais.</>
+        <>Preços locais, local signup e direct connection.</>
       ) : (
-        <>Local prices, local approval and local rules.</>
+        <>Local prices, local signup and direct connection.</>
       )}
     </h2>
     <ol class="fold__facts">
