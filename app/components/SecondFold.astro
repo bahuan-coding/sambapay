@@ -1,0 +1,246 @@
+---
+import PartMark from './PartMark.astro';
+import { enablerSteps } from '../data/enablers';
+
+interface Props {
+  lang: 'en' | 'pt';
+}
+
+const { lang } = Astro.props;
+const pt = lang === 'pt';
+const steps = enablerSteps(lang);
+
+const facts = pt
+  ? [
+      {
+        title: 'Preços locais',
+        body: 'O seu volume recebe os preços que um merchant local recebe.',
+      },
+      {
+        title: 'Aprovação local',
+        body: 'O adquirente local dá a aprovação.',
+      },
+      {
+        title: 'Regras locais',
+        body: 'Essas regras são uma entidade local regulada, a conformidade PCI, e contratos com adquirentes locais e com bancos locais.',
+        href: '/pt/adquirentes',
+        link: 'adquirentes locais',
+      },
+    ]
+  : [
+      {
+        title: 'Local prices',
+        body: 'Your volume gets the prices a local merchant gets.',
+      },
+      {
+        title: 'Local approval',
+        body: 'The local acquirer gives the approval.',
+      },
+      {
+        title: 'Local rules',
+        body: 'These rules are a regulated local entity, PCI compliance, and contracts with local acquirers and banks.',
+        href: '/acquirers',
+        link: 'local acquirers',
+      },
+    ];
+
+const eyebrow = pt ? 'O ecossistema' : 'The ecosystem';
+const lead = pt
+  ? 'Dentro desse ecossistema somos online enablers. O negócio traz o estoque. A loja inclui a maquininha.'
+  : 'Inside that ecosystem we are online enablers. The business brings its stock. The store includes the terminal.';
+const refusalTitle = pt ? 'O que não fazemos' : 'What we do not do';
+const refusal = pt
+  ? 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Dois nichos, sem conflito de interesse.'
+  : "We do not take our clients' merchants. We do not dispute their accounts. Two niches, no conflict of interest.";
+---
+
+<section class="fold" aria-labelledby="fold-title">
+  <div class="fold__inner">
+    <p class="fold__eyebrow">{eyebrow}</p>
+    <h2 id="fold-title">
+      {pt ? (
+        <>Preços locais, aprovação local e regras locais.</>
+      ) : (
+        <>Local prices, local approval and local rules.</>
+      )}
+    </h2>
+    <ol class="fold__facts">
+      {facts.map((fact, index) => (
+        <li>
+          <p class="fold__index">{String(index + 1).padStart(2, '0')}</p>
+          <h3>{fact.title}</h3>
+          <p>
+            {fact.href && fact.link ? (
+              <>
+                {fact.body.split(fact.link)[0]}
+                <a href={fact.href}>{fact.link}</a>
+                {fact.body.split(fact.link)[1]}
+              </>
+            ) : fact.body}
+          </p>
+        </li>
+      ))}
+    </ol>
+    <aside class="fold__refusal">
+      <h2>{refusalTitle}</h2>
+      <p>{refusal}</p>
+    </aside>
+    <div class="fold__enable">
+      <h2>Online enablers</h2>
+      <p class="fold__lead">{lead}</p>
+      <ol class="fold__steps">
+        {steps.map((step, index) => (
+          <li>
+            <PartMark kind={step.kind} />
+            <p class="fold__index">{String(index + 1).padStart(2, '0')}</p>
+            <h3>
+              {step.href ? <a href={step.href}>{step.title}</a> : step.title}
+            </h3>
+            <p>{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fold {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 6.5rem 0 6rem;
+  }
+
+  .fold__inner {
+    width: min(76rem, calc(100% - 4rem));
+    margin: 0 auto;
+  }
+
+  .fold__eyebrow {
+    margin: 0 0 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--anil);
+  }
+
+  .fold h2 {
+    margin: 0;
+    max-width: 11em;
+    font-family: var(--display);
+    font-size: clamp(2.6rem, 5vw, 4.25rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.94;
+  }
+
+  .fold__facts,
+  .fold__steps {
+    list-style: none;
+    margin: 3.5rem 0 0;
+    padding: 0;
+  }
+
+  .fold__facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.75rem;
+  }
+
+  .fold__facts li,
+  .fold__steps li {
+    margin: 0;
+    padding: 1.35rem 0 0;
+    border-top: 2px solid var(--ipe);
+  }
+
+  .fold__index {
+    margin: 0 0 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--anil);
+  }
+
+  .fold h3 {
+    margin: 0 0 0.85rem;
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .fold h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .fold h3 a:hover { text-decoration: underline; }
+
+  .fold li p:last-child,
+  .fold__lead,
+  .fold__refusal p {
+    margin: 0;
+    max-width: 28rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .fold__refusal {
+    margin-top: 4rem;
+    padding: 1.75rem 1.75rem 1.75rem 1.35rem;
+    background: var(--field);
+    border-left: 4px solid var(--urucum);
+  }
+
+  .fold__refusal h2 {
+    max-width: none;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .fold__refusal p { color: var(--ink); }
+
+  .fold__enable { margin-top: 5.5rem; }
+
+  .fold__enable h2 { max-width: none; }
+
+  .fold__lead {
+    margin-top: 1.35rem;
+    max-width: 38rem;
+    color: var(--ink);
+  }
+
+  .fold__steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .fold__steps :global(.part-mark) {
+    width: 5.25rem;
+    height: 5.25rem;
+    margin-bottom: 1.35rem;
+    background: var(--paper);
+    border-radius: 50%;
+  }
+
+  .fold__steps .fold__index { margin-bottom: 0.65rem; }
+
+  .fold__steps h3 { font-size: 1.25rem; }
+
+  @media (max-width: 960px) {
+    .fold__facts { grid-template-columns: 1fr; gap: 2rem; }
+    .fold__steps { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .fold { padding: 3.5rem 0 4rem; }
+    .fold__inner { width: min(76rem, calc(100% - 2rem)); }
+    .fold__steps { grid-template-columns: 1fr; }
+  }
+</style>

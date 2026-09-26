@@ -61,7 +61,7 @@ Every term used in this kit, one sentence each. If you meet a word that is not h
 - **KYB** — Know your business: verifying a merchant company, its owners and its risk before onboarding.
 - **KYC** — Know your customer: verifying a person's identity.
 - **LGPD** — Brazil's personal-data protection law.
-- **Local commercial policy** — Local prices, local approval and local rules, as a local merchant would get them.
+- **Local commercial policy** — Expand your payments, integrated into the most sophisticated and cost-efficient ecosystem: local prices, local approval and local rules, as a local merchant would get them.
 - **Local entity** — An acquirer, bank, PIX rail or FX partner in a given country, or our own regulated company there.
 - **Local merchant** — A business in a geography where we have structure, digitised through the Website Factory. Entrepreneurs and service providers in the digital economy who want online payments. They use our capture channels as a local player. Not a client's merchant.
 - **Market enabler** — Our role for a client: we open and hold the local rails; the client brings the volume. Distinct from serving local merchants on the Website Factory.

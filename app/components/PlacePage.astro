@@ -78,9 +78,12 @@ const next = lang === 'pt' ? 'Próximo país' : 'Next country';
       </div>
     </div>
   </section>
-  <div class="reading">
-    <slot />
-  </div>
+  {Astro.slots.has('default') && (
+    <div class="reading">
+      <slot />
+    </div>
+  )}
+  <slot name="fold" />
 </BaseLayout>
 
 <script>

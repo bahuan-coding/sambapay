@@ -21,7 +21,7 @@ const NAME_BROKEN = /AndrÃ©|AndrC3A9|AndrAc|Andr\uFFFD|\bAndre Silva\b/;
 const MOJIBAKE = /â€|\uFFFD|\u0000/;
 const WORD_LIMIT_DEFAULT = 780; // raised for the evolution register in 01 and 03; never cut a fact to fit // 06 holds eight titled roles plus named processes; raised separately
 const WORD_LIMIT_ROLES = 900; // 06: eight roles, named processes, and how André Silva participates
-const WORD_LIMIT_LONG = 2700; // 04 and 09; 09 is the full glossary — do not cut entries to fit
+const WORD_LIMIT_LONG = 2720; // 04 and 09; 09 holds the public meaning of the ecosystem line — do not cut entries to fit
 const PT_LEAK = [" não ", " você ", " também ", " então ", " porque ", " para "];
 // Board view that must never appear in the Welcome Kit.
 const BOARD_ONLY = [/\bSPA\b/, /Side Letter/i, /Exhibit E/, /\bUnits\b/, /Group Holdings/, /180,680/, /1,905,924/, /1\.70M/, /680[–-]710K/];

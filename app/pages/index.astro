@@ -1,7 +1,7 @@
 ---
 import PlacePage from '../components/PlacePage.astro';
 import PrimaryButton from '../components/PrimaryButton.astro';
-import ProcessCarousel from '../components/ProcessCarousel.astro';
+import SecondFold from '../components/SecondFold.astro';
 import { shore } from '../data/shore';
 ---
 
@@ -14,9 +14,5 @@ import { shore } from '../data/shore';
   <h1 slot="sheet">Enter Latin America like a local.</h1>
   <p slot="sheet">Expand your payments, integrated into the most sophisticated and cost-efficient ecosystem.</p>
   <PrimaryButton slot="sheet" href="/signup">Create account</PrimaryButton>
-  <p>Local prices, local approval and local rules. That takes a regulated local entity, PCI compliance, and contracts with local acquirers and banks.</p>
-  <h2>What we do not do</h2>
-  <p>We do not take our clients' merchants. We do not dispute their accounts. Two niches, no conflict of interest.</p>
-  <h2>Online enablers</h2>
-  <ProcessCarousel lang="en" />
+  <SecondFold slot="fold" lang="en" />
 </PlacePage>
