@@ -30,11 +30,7 @@ const { kind } = Astro.props;
     </span>
   )}
   {kind === 'amex_safekey' && <img src="/methods/amex-safekey.png" alt="" />}
-  {kind === 'qra' && (
-    <svg viewBox="0 0 24 24">
-      <path fill="#1C3D4A" d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm10 0h2v2h-2zm4 0h4v2h-4zm-4 4h2v2h-2zm2 2h2v2h-2zm2-2h2v2h-2z"/>
-    </svg>
-  )}
+  {kind === 'qra' && <img class="qra" src="/methods/qr-argentina.svg" alt="" />}
   {kind === 'transfer' && (
     <svg viewBox="0 0 24 24" fill="none">
       <path d="M4 8h12M13 5l3 3-3 3M20 16H8M11 13l-3 3 3 3" stroke="#1351B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -98,6 +94,10 @@ const { kind } = Astro.props;
     display: block;
     height: 2rem;
     width: auto;
+  }
+
+  img.qra {
+    height: 3.25rem;
   }
 
   .id-check {
