@@ -203,7 +203,10 @@ const next = lang === 'pt' ? 'Próximo país' : 'Next country';
   .place__sheet {
     width: 100%;
     padding: var(--space-5);
-    background: var(--field);
+    background: rgba(244, 239, 228, 0.62);
+    border: 1px solid rgba(244, 239, 228, 0.4);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
   }
 
   .place__where {
