@@ -41,17 +41,23 @@ const signupHref = pathForLang('/signup', lang);
             <div class="card__veil"></div>
             <div class="card__top">
               <CountryFlag code={market.code} />
-              <p class="card__money" aria-label={`${market.currencyName} (${market.currency})`}>
-                <span class="card__sym">{market.currencySymbol}</span>
-                <span class="card__iso">{market.currency}</span>
-              </p>
+              <span class="card__place">{market.name}</span>
+            </div>
+            <div class="card__face">
+              <span class="card__sym">{market.currencySymbol}</span>
             </div>
             <div class="card__base">
-              <h3>{market.name}</h3>
+              <p class="card__coin">
+                <span class="card__coinname">{market.currencyName}</span>
+                <span class="card__iso">{market.currency}</span>
+              </p>
               <p class="card__note">{market.note}</p>
               <ul class="card__methods">
-                {market.methods.map((kind) => (
-                  <li><MethodIcon kind={kind} /></li>
+                {market.methods.map((chip) => (
+                  <li>
+                    <MethodIcon kind={chip.icon} />
+                    <span>{chip.label[lang === 'pt' ? 1 : lang === 'es' ? 2 : 0]}</span>
+                  </li>
                 ))}
               </ul>
               <a class="card__credit" href={market.creditHref} rel="noopener">{market.credit}</a>
@@ -73,17 +79,23 @@ const signupHref = pathForLang('/signup', lang);
             <div class="card__veil"></div>
             <div class="card__top">
               <CountryFlag code={market.code} />
-              <p class="card__money" aria-label={`${market.currencyName} (${market.currency})`}>
-                <span class="card__sym">{market.currencySymbol}</span>
-                <span class="card__iso">{market.currency}</span>
-              </p>
+              <span class="card__place">{market.name}</span>
+            </div>
+            <div class="card__face">
+              <span class="card__sym">{market.currencySymbol}</span>
             </div>
             <div class="card__base">
-              <h3>{market.name}</h3>
+              <p class="card__coin">
+                <span class="card__coinname">{market.currencyName}</span>
+                <span class="card__iso">{market.currency}</span>
+              </p>
               <p class="card__note">{market.note}</p>
               <ul class="card__methods">
-                {market.methods.map((kind) => (
-                  <li><MethodIcon kind={kind} /></li>
+                {market.methods.map((chip) => (
+                  <li>
+                    <MethodIcon kind={chip.icon} />
+                    <span>{chip.label[lang === 'pt' ? 1 : lang === 'es' ? 2 : 0]}</span>
+                  </li>
                 ))}
               </ul>
               <a class="card__credit" href={market.creditHref} rel="noopener">{market.credit}</a>
@@ -231,11 +243,12 @@ const signupHref = pathForLang('/signup', lang);
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 17rem;
+    min-height: 18rem;
     margin: 0;
     overflow: hidden;
-    background: var(--anil);
+    background: var(--field);
+    border: 1px solid rgba(28, 61, 74, 0.16);
+    border-radius: 2px;
   }
 
   .card > img {
@@ -244,10 +257,15 @@ const signupHref = pathForLang('/signup', lang);
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    opacity: 0.16;
+    filter: grayscale(0.35) contrast(1.05);
+    transition: opacity 500ms ease, transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
   }
 
-  .card:hover > img { transform: scale(1.05); }
+  .card:hover > img {
+    opacity: 0.28;
+    transform: scale(1.03);
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .card > img { transition: none; }
@@ -257,7 +275,7 @@ const signupHref = pathForLang('/signup', lang);
   .card__veil {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(12, 20, 18, 0.85) 0%, rgba(12, 20, 18, 0.28) 52%, rgba(12, 20, 18, 0.12) 100%);
+    background: linear-gradient(160deg, rgba(244, 239, 228, 0.65) 0%, rgba(244, 239, 228, 0.25) 45%, rgba(244, 239, 228, 0.7) 100%);
   }
 
   .card__top {
@@ -265,32 +283,70 @@ const signupHref = pathForLang('/signup', lang);
     z-index: 1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0.8rem 0.85rem;
+    gap: 0.5rem;
+    padding: 0.75rem 0.8rem 0;
   }
+
+  .card__top :global(.flag) { flex: none; }
 
   .card__top :global(.flag svg) {
-    height: 15px;
-    box-shadow: 0 0 0 1px rgba(244, 239, 228, 0.35);
+    height: 14px;
+    box-shadow: 0 0 0 1px rgba(28, 61, 74, 0.22);
   }
 
-  .card__money {
-    margin: 0;
-    display: flex;
-    align-items: baseline;
-    gap: 0.3rem;
-    min-width: 0;
-    color: #f4efe4;
+  .card__place {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .card__face {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.4rem 0.8rem 1.1rem;
   }
 
   .card__sym {
     font-family: var(--serif);
-    font-size: 1.45rem;
+    font-size: clamp(2.6rem, 3.4vw, 3.9rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--anil);
+    text-shadow: 0 1px 0 rgba(244, 239, 228, 0.6);
+  }
+
+  .card__base {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    padding: 0.9rem 0.9rem 0.8rem;
+    border-top: 1px solid rgba(28, 61, 74, 0.16);
+    background: rgba(244, 239, 228, 0.5);
+  }
+
+  .card__coin {
+    margin: 0 0 0.35rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .card__coinname {
+    font-family: var(--serif);
+    font-size: 1.05rem;
     font-weight: 600;
     letter-spacing: -0.02em;
-    line-height: 1;
-    text-shadow: 0 1px 6px rgba(12, 20, 18, 0.5);
+    color: var(--ink);
   }
 
   .card__iso {
@@ -298,76 +354,71 @@ const signupHref = pathForLang('/signup', lang);
     font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.14em;
-    opacity: 0.72;
-  }
-
-  .card__base {
-    position: relative;
-    z-index: 1;
-    padding: 0.9rem 0.9rem 0.8rem;
-  }
-
-  .card__base h3 {
-    margin: 0 0 0.3rem;
-    font-family: var(--serif);
-    font-size: 1.35rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-    color: #f4efe4;
+    color: var(--anil);
+    opacity: 0.7;
   }
 
   .card__note {
     margin: 0 0 0.75rem;
     font-size: 0.72rem;
-    line-height: 1.35;
-    color: rgba(244, 239, 228, 0.78);
+    line-height: 1.4;
+    color: var(--muted);
   }
 
   .card__methods {
     list-style: none;
     margin: 0;
-    padding: 0.6rem 0 0;
+    padding: 0;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.35rem;
-    border-top: 1px solid rgba(244, 239, 228, 0.28);
+    flex-direction: column;
+    gap: 0.3rem;
   }
 
   .card__methods li {
-    display: grid;
-    place-items: center;
-    width: 1.75rem;
-    height: 1.3rem;
-    padding: 0.12rem 0.2rem;
-    background: #f4efe4;
-    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--ink);
   }
 
-  .card__methods :global(.method-icon),
+  .card__methods :global(.method-icon) {
+    width: 1.5rem;
+    height: 1.15rem;
+    flex: none;
+  }
+
   .card__methods :global(.method-icon svg) {
-    width: 100%;
-    height: 100%;
+    width: 1.5rem;
+    height: 1.15rem;
+  }
+
+  .card__methods :global(.method-icon:has(img)) {
+    width: 1.5rem;
+    height: 1.15rem;
+    display: grid;
+    place-items: center;
   }
 
   .card__methods :global(.method-icon img) {
-    height: 100%;
+    height: 1.15rem;
     width: auto;
-    max-width: 100%;
+    max-width: 1.5rem;
     object-fit: contain;
   }
 
   .card__credit {
     display: block;
-    margin-top: 0.6rem;
-    font-size: 0.6rem;
+    margin-top: 0.55rem;
+    font-size: 0.55rem;
     letter-spacing: 0.01em;
-    color: rgba(244, 239, 228, 0.5);
+    color: var(--muted);
+    opacity: 0.75;
     text-decoration: none;
   }
 
-  .card__credit:hover { color: rgba(244, 239, 228, 0.85); text-decoration: underline; }
+  .card__credit:hover { opacity: 1; text-decoration: underline; }
 
   .mk__corridor { margin-top: 5rem; }
 
@@ -475,13 +526,12 @@ const signupHref = pathForLang('/signup', lang);
     .mk { padding: 3rem 0 4rem; }
     .mk__inner { width: min(80rem, calc(100% - 2rem)); }
     .mk__grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
-    .card { min-height: 13rem; }
-    .card__base h3 { font-size: 1.1rem; }
+    .card { min-height: 15rem; }
+    .card__face { padding: 1rem 0.7rem 0.8rem; }
+    .card__sym { font-size: 2.4rem; }
+    .card__base { padding: 0.7rem 0.7rem 0.65rem; }
     .card__note { display: none; }
-    .card__sym { font-size: 1.1rem; }
-    .card__iso { font-size: 0.5rem; letter-spacing: 0.1em; }
-    .card__top { padding: 0.6rem 0.65rem; }
-    .card__base { padding: 0.75rem 0.7rem 0.65rem; }
+    .card__methods li { font-size: 0.7rem; }
     .mk__steps { grid-template-columns: 1fr; }
   }
 </style>

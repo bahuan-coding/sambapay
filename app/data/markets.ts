@@ -1,13 +1,19 @@
 import type { Lang } from '../i18n';
 import type { MethodIcon } from './features';
 
+export interface MethodChip {
+  icon: MethodIcon;
+  /** Index 0 EN, 1 PT, 2 ES. */
+  label: [string, string, string];
+}
+
 export interface Market {
   code: string;
   name: string;
   currency: string;
   currencySymbol: string;
   currencyName: string;
-  methods: MethodIcon[];
+  methods: MethodChip[];
   note: string;
   image: string;
   focus: string;
@@ -167,32 +173,32 @@ interface Copy {
 
 const southCodes = ['AR', 'BO', 'BR', 'CL', 'CO', 'EC', 'PY', 'PE', 'UY', 'VE'];
 const centralCodes = ['CR', 'CU', 'DO', 'SV', 'GT', 'HT', 'HN', 'NI', 'PA', 'MX'];
-const base = new Set(['CL', 'CO', 'PE']);
 
-function methodsFor(code: string): MethodIcon[] {
-  const base: MethodIcon[] = ['credit', 'debit', 'threeds'];
-  switch (code) {
-    case 'BR':
-      return [...base, 'pix', 'boleto', 'transfer'];
-    case 'MX':
-      return [...base, 'spei', 'oxxo'];
-    case 'AR':
-      return [...base, 'qra', 'pagofacil'];
-    case 'CL':
-    case 'CO':
-    case 'PE':
-      return [...base, 'transfer'];
-    case 'CR':
-    case 'DO':
-    case 'GT':
-    case 'HN':
-    case 'NI':
-    case 'PA':
-    case 'SV':
-      return [...base, 'transfer'];
-    default:
-      return base;
-  }
+const CARDS: MethodChip = { icon: 'credit', label: ['Cards', 'Cartões', 'Tarjetas'] };
+const BANK: MethodChip = { icon: 'transfer', label: ['Bank transfer', 'Transferência', 'Transferencia'] };
+
+// Only the methods that distinguish a market. Cards once, never twice.
+const extras: Record<string, MethodChip[]> = {
+  BR: [
+    { icon: 'pix', label: ['Pix', 'Pix', 'Pix'] },
+    { icon: 'boleto', label: ['Boleto', 'Boleto', 'Boleto'] },
+    BANK,
+  ],
+  MX: [
+    { icon: 'spei', label: ['SPEI', 'SPEI', 'SPEI'] },
+    { icon: 'oxxo', label: ['OXXO', 'OXXO', 'OXXO'] },
+  ],
+  AR: [
+    { icon: 'qra', label: ['QR', 'QR', 'QR'] },
+    { icon: 'pagofacil', label: ['Pago Fácil', 'Pago Fácil', 'Pago Fácil'] },
+  ],
+  CL: [{ icon: 'transfer', label: ['Bank transfer', 'Transferência', 'Transferencia'] }],
+  CO: [{ icon: 'transfer', label: ['Bank transfer', 'Transferência', 'Transferencia'] }],
+  PE: [{ icon: 'transfer', label: ['Bank transfer', 'Transferência', 'Transferencia'] }],
+};
+
+function methodsFor(code: string): MethodChip[] {
+  return [CARDS, ...(extras[code] ?? [])];
 }
 
 export function markets(lang: Lang): Market[] {
@@ -299,7 +305,7 @@ export function markets(lang: Lang): Market[] {
     ],
   };
   const noteByTierResolved = (code: string, i: number) =>
-    (noteByMarket[code] ?? noteByTier[base.has(code) ? 'local' : 'network'])[i];
+    (noteByMarket[code] ?? noteByTier[['CL', 'CO', 'PE'].includes(code) ? 'local' : 'network'])[i];
 
   return [...southCodes, ...centralCodes].map((code) => {
     const i = lang === 'pt' ? 1 : lang === 'es' ? 2 : 0;
