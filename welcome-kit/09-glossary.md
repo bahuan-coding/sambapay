@@ -44,6 +44,7 @@ Every term used in this kit, one sentence each. If you meet a word that is not h
 - **Decision log** — One line per decision that changes direction: options, choice, reason, owner.
 - **Double Diamond** — The firm mapping the requirements to open an entity in Brazil. DD1 is the Cielo production path. DD2 is its secondary template. Its deliverable is the checklist package: all documents needed to open acquirer accounts.
 - **DPO** — Data protection officer, the LGPD contact; dpo@sambapay.tech.
+- **Ecosystem** — The sum of every country in Latin America and Central America.
 - **EFI** — One of the three Brazilian acquirers on the DD2 template (Efi Bank, formerly Gerencianet), integrated side by side with Cielo and Asaas.
 - **Factoring** — Our model going forward: all volumes anticipated, even where Brazilian credit would take D+30, at a competitive price. Nobody sells this to us as a vendor. Distinct from the closed AmFi pools.
 - **Finnera** — A prospective client with about USD 25 million a month in volume from European merchants. Renato Paulino will follow up.
