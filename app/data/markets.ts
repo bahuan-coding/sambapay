@@ -7,7 +7,141 @@ export interface Market {
   currency: string;
   methods: MethodIcon[];
   note: string;
+  image: string;
+  focus: string;
+  credit: string;
+  creditHref: string;
 }
+
+interface Photo {
+  file: string;
+  focus: string;
+  credit: string;
+  href: string;
+}
+
+const photos: Record<string, Photo> = {
+  AR: {
+    file: '/places/market-ar.jpg',
+    focus: 'center 55%',
+    credit: 'Dpalma01, CC BY-SA 4.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Obelisco_de_Buenos_Aires_at_sunset.jpg',
+  },
+  BO: {
+    file: '/places/market-bo.jpg',
+    focus: 'center 45%',
+    credit: 'Parallelepiped09, CC BY-SA 4.0',
+    href: 'https://commons.wikimedia.org/wiki/File:City_of_La_Paz,_Bolivia.jpg',
+  },
+  BR: {
+    file: '/places/market-br.jpg',
+    focus: 'center 42%',
+    credit: 'Paul R. Burley, CC BY-SA 4.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Largo_do_Pelourinho_Salvador_2019-9754_(cropped).jpg',
+  },
+  CL: {
+    file: '/places/market-cl.jpg',
+    focus: 'center 45%',
+    credit: 'Rjcastillo, CC BY-SA 4.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Mural_en_Santiago,_Chile_A74003520250517.jpg',
+  },
+  CO: {
+    file: '/places/market-co.jpg',
+    focus: 'center 48%',
+    credit: 'Felipe Restrepo Acosta, CC BY-SA 3.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Centro_internacional.JPG',
+  },
+  CR: {
+    file: '/places/market-cr.jpg',
+    focus: 'center 45%',
+    credit: 'Wikimedia Commons, CC BY-SA 4.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Partial_view_of_Downtown_San_Jose,_Costa_Rica.jpg',
+  },
+  CU: {
+    file: '/places/market-cu.jpg',
+    focus: 'center 45%',
+    credit: 'Detroit Publishing Company, public domain',
+    href: 'https://commons.wikimedia.org/wiki/File:Havana_-_Malecon_and_El_Morro.jpg',
+  },
+  DO: {
+    file: '/places/market-do.jpg',
+    focus: 'center 50%',
+    credit: 'He Yifeng, CC BY 3.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Av._George_Washington_457,_Santo_Domingo,_Dominican_Republic_-_panoramio.jpg',
+  },
+  EC: {
+    file: '/places/market-ec.jpg',
+    focus: 'center 45%',
+    credit: 'Diego Delso, CC BY-SA 4.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Vista_de_Quito_desde_El_Panecillo,_Ecuador,_2015-07-22,_DD_25-29_PAN.JPG',
+  },
+  SV: {
+    file: '/places/market-sv.jpg',
+    focus: 'center 45%',
+    credit: 'Mariordo, CC BY-SA 3.0',
+    href: 'https://commons.wikimedia.org/wiki/File:El_Salvador_Wikivoyage_banner.JPG',
+  },
+  GT: {
+    file: '/places/market-gt.jpg',
+    focus: 'center 45%',
+    credit: 'amslerPIX, CC BY 2.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Parque_Central,_Antigua_Guatemala_7.jpg',
+  },
+  HT: {
+    file: '/places/market-ht.jpg',
+    focus: 'center 45%',
+    credit: 'Elena Heredero, CC BY 2.0',
+    href: 'https://commons.wikimedia.org/wiki/File:View_of_Port-au-Prince_from_Hotel_Montana.jpg',
+  },
+  HN: {
+    file: '/places/market-hn.jpg',
+    focus: 'center 45%',
+    credit: 'Nan Palmero, CC BY 2.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Sunset_in_Tegucigalpa,_Honduras_at_Cafemania.jpg',
+  },
+  MX: {
+    file: '/places/market-mx.jpg',
+    focus: 'center 55%',
+    credit: 'JavierDo, CC BY-SA 3.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Skyline_Paseo_de_la_Reforma_-_panoramio.jpg',
+  },
+  NI: {
+    file: '/places/market-ni.jpg',
+    focus: 'center 45%',
+    credit: 'Mark Larson, CC BY-SA 2.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Granada,_Nicaragua_panorama.jpg',
+  },
+  PA: {
+    file: '/places/market-pa.jpg',
+    focus: 'center 45%',
+    credit: 'Virpana, CC0',
+    href: 'https://commons.wikimedia.org/wiki/File:V%C3%ADa_Brasil_(Ciudad_de_Panam%C3%A1).jpg',
+  },
+  PY: {
+    file: '/places/market-py.jpg',
+    focus: 'center 45%',
+    credit: 'W. Bulach, CC BY-SA 4.0',
+    href: 'https://commons.wikimedia.org/wiki/File:00_3819_Asunci%C3%B3n_-_Paraguay_(S%C3%BCdamerika).jpg',
+  },
+  PE: {
+    file: '/places/market-pe.jpg',
+    focus: 'center 45%',
+    credit: 'Wasiwatana, CC BY-SA 4.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Malec%C3%B3n_de_Miraflores_frente_al_Parque_Intihuatana.jpg',
+  },
+  UY: {
+    file: '/places/market-uy.jpg',
+    focus: 'center 45%',
+    credit: 'Ezarate, CC BY-SA 4.0',
+    href: 'https://commons.wikimedia.org/wiki/File:AtardecerenMontevideo-feb2015.JPG',
+  },
+  VE: {
+    file: '/places/market-ve.jpg',
+    focus: 'center 45%',
+    credit: 'Paolo Costa Baldi, CC BY-SA 3.0',
+    href: 'https://commons.wikimedia.org/wiki/File:Caribbean_Sea,_Avila_Mt,_Caracas_Panorama.jpg',
+  },
+};
 
 interface Copy {
   eyebrow: string;
@@ -91,14 +225,14 @@ export function markets(lang: Lang): Market[] {
   };
   const noteByTier: Record<string, [string, string, string]> = {
     deep: [
-      'Cards, local methods and local settlement.',
-      'Cartões, meios locais e liquidação local.',
-      'Tarjetas, medios locales y liquidación local.',
+      'Cards, local instant payments and local settlement.',
+      'Cartões, pagamentos instantâneos locais e liquidação local.',
+      'Tarjetas, pagos instantáneos locales y liquidación local.',
     ],
     local: [
-      'Cards and the local rails the market uses.',
-      'Cartões e os trilhos locais que o mercado usa.',
-      'Tarjetas y los rieles locales que usa el mercado.',
+      'Cards and the local rails that market runs on.',
+      'Cartões e os trilhos locais em que aquele mercado roda.',
+      'Tarjetas y los rieles locales en los que corre ese mercado.',
     ],
     network: [
       'Cards and bank transfer through our local partners.',
@@ -106,16 +240,54 @@ export function markets(lang: Lang): Market[] {
       'Tarjetas y transferencia bancaria a través de nuestros socios locales.',
     ],
   };
+  const noteByMarket: Record<string, [string, string, string]> = {
+    BR: [
+      'Pix, cards and boleto, with local settlement.',
+      'Pix, cartões e boleto, com liquidação local.',
+      'Pix, tarjetas y boleto, con liquidación local.',
+    ],
+    MX: [
+      'Cards, SPEI and cash at OXXO.',
+      'Cartões, SPEI e dinheiro no OXXO.',
+      'Tarjetas, SPEI y efectivo en OXXO.',
+    ],
+    AR: [
+      'Cards, QR and cash at Pago Fácil.',
+      'Cartões, QR e dinheiro no Pago Fácil.',
+      'Tarjetas, QR y efectivo en Pago Fácil.',
+    ],
+    CL: [
+      'Cards and the local bank transfer.',
+      'Cartões e a transferência bancária local.',
+      'Tarjetas y la transferencia bancaria local.',
+    ],
+    CO: [
+      'Cards and the local bank transfer.',
+      'Cartões e a transferência bancária local.',
+      'Tarjetas y la transferencia bancaria local.',
+    ],
+    PE: [
+      'Cards and the local bank transfer.',
+      'Cartões e a transferência bancária local.',
+      'Tarjetas y la transferencia bancaria local.',
+    ],
+  };
+  const noteByTierResolved = (code: string, i: number) =>
+    (noteByMarket[code] ?? noteByTier[base.has(code) ? 'local' : 'network'])[i];
 
   return [...southCodes, ...centralCodes].map((code) => {
     const i = lang === 'pt' ? 1 : lang === 'es' ? 2 : 0;
-    const tier = code === 'BR' || code === 'MX' || code === 'AR' ? 'deep' : base.has(code) ? 'local' : 'network';
+    const photo = photos[code];
     return {
       code: code.toLowerCase(),
       name: names[code][i],
       currency: currencies[code],
       methods: methodsFor(code),
-      note: noteByTier[tier][i],
+      note: noteByTierResolved(code, i),
+      image: photo.file,
+      focus: photo.focus,
+      credit: photo.credit,
+      creditHref: photo.href,
     };
   });
 }
@@ -144,7 +316,7 @@ const copy: Record<Lang, Copy> = {
     corridorTitle: 'One corridor, many rails.',
     corridorLede: 'A single client reaches every market through the same path: the local rail collects, the money settles, and reconciliation closes before anything moves.',
     corridor: [
-      { title: 'Partner access', body: 'A known partner in each market stands the local rail up.' },
+      { title: 'Partner access', body: 'A known partner brings each local rail live.' },
       { title: 'Local policy', body: 'Your volume is priced the way a local merchant is priced.' },
       { title: 'One connection', body: 'You do not clear each market requirement on your own.' },
       { title: 'One book', body: 'Every market reconciles against the same ledger.' },
@@ -170,7 +342,7 @@ const copy: Record<Lang, Copy> = {
     corridorTitle: 'Um corredor, muitos trilhos.',
     corridorLede: 'Um cliente alcança todos os mercados pelo mesmo caminho: o trilho local captura, o dinheiro liquida, e a conciliação fecha antes de qualquer coisa se mover.',
     corridor: [
-      { title: 'Acesso por parceiro', body: 'Um parceiro conhecido em cada mercado põe o trilho local de pé.' },
+      { title: 'Acesso por parceiro', body: 'Um parceiro conhecido coloca cada trilho local em produção.' },
       { title: 'Política local', body: 'O seu volume é precificado como o de um merchant local.' },
       { title: 'Uma conexão', body: 'Você não cumpre cada exigência de cada mercado sozinho.' },
       { title: 'Um livro', body: 'Todos os mercados conciliam contra o mesmo livro.' },
@@ -196,7 +368,7 @@ const copy: Record<Lang, Copy> = {
     corridorTitle: 'Un corredor, muchos rieles.',
     corridorLede: 'Un cliente alcanza todos los mercados por el mismo camino: el riel local captura, el dinero liquida, y la conciliación cierra antes de que algo se mueva.',
     corridor: [
-      { title: 'Acceso por socio', body: 'Un socio conocido en cada mercado levanta el riel local.' },
+      { title: 'Acceso por socio', body: 'Un socio conocido pone cada riel local en producción.' },
       { title: 'Política local', body: 'Su volumen se precifica como el de un merchant local.' },
       { title: 'Una conexión', body: 'Usted no cumple cada exigencia de cada mercado por su cuenta.' },
       { title: 'Un libro', body: 'Todos los mercados concilian contra el mismo libro.' },

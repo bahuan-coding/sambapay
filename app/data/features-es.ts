@@ -4,8 +4,8 @@ export const esCopy = {
   seoTitle: 'Producto',
   lede: 'Precios locales, local signup y direct connection. Varios adquirentes lado a lado. La tienda digitalizada incluye la terminal. El dinero recaudado localmente vuelve en el menor número de pasos.',
   refusalTitle: 'Lo que no hacemos',
-  refusal: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. No hacemos fulfilment ni envío. Dos nichos, sin conflicto de interés.',
-  close: 'Un camino, de punta a punta. El pago se autoriza y se captura en el mercado donde paga el comprador, liquida en la ventana del adquirente y llega al payout cuando comisiones, reserva, devoluciones y chargebacks cierran contra el libro.',
+  refusal: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. No hacemos fulfilment ni envío. Solo los rieles, la tienda digitalizada y la liquidación que lleva el dinero afuera. Dos nichos, sin conflicto de interés.',
+  close: 'El comprador paga, el riel autoriza y captura en el mercado, los fondos liquidan en la ventana del adquirente y el payout sale cuando la conciliación cierra el libro.',
   cta: 'Crear cuenta',
   ctaHref: '/es/signup',
   columns: [

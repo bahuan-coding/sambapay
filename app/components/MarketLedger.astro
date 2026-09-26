@@ -18,11 +18,11 @@ const signupHref = pathForLang('/signup', lang);
 
 <section class="mk">
   <div class="mk__inner">
-    <div class="mk__intro">
+    <header class="mk__head">
       <p class="mk__eyebrow">{copy.eyebrow}</p>
-      <h2>{copy.title}</h2>
-      <p class="mk__lede">{copy.lede}</p>
-    </div>
+      <h2>{copy.mapTitle}</h2>
+      <p class="mk__lede">{copy.mapLede}</p>
+    </header>
 
     <aside class="mk__access">
       <h3>{copy.accessTitle}</h3>
@@ -34,20 +34,25 @@ const signupHref = pathForLang('/signup', lang);
         <h3>{copy.southTitle}</h3>
         <span class="mk__rule"></span>
       </header>
-      <ul class="mk__list">
+      <ul class="mk__grid">
         {groups.south.map((market) => (
-          <li class="market">
-            <div class="market__id">
+          <li class="card">
+            <img src={market.image} alt="" loading="lazy" decoding="async" style={`object-position:${market.focus}`} />
+            <div class="card__veil"></div>
+            <div class="card__top">
               <CountryFlag code={market.code} />
-              <h3>{market.name}</h3>
-              <p class="market__ccy">{copy.currencyLabel} <span>{market.currency}</span></p>
+              <p class="card__ccy">{market.currency}</p>
             </div>
-            <p class="market__note">{market.note}</p>
-            <ul class="market__methods">
-              {market.methods.map((kind) => (
-                <li><MethodIcon kind={kind} /></li>
-              ))}
-            </ul>
+            <div class="card__base">
+              <h3>{market.name}</h3>
+              <p class="card__note">{market.note}</p>
+              <ul class="card__methods">
+                {market.methods.map((kind) => (
+                  <li><MethodIcon kind={kind} /></li>
+                ))}
+              </ul>
+              <a class="card__credit" href={market.creditHref} rel="noopener">{market.credit}</a>
+            </div>
           </li>
         ))}
       </ul>
@@ -58,20 +63,25 @@ const signupHref = pathForLang('/signup', lang);
         <h3>{copy.centralTitle}</h3>
         <span class="mk__rule"></span>
       </header>
-      <ul class="mk__list">
+      <ul class="mk__grid">
         {groups.central.map((market) => (
-          <li class="market">
-            <div class="market__id">
+          <li class="card">
+            <img src={market.image} alt="" loading="lazy" decoding="async" style={`object-position:${market.focus}`} />
+            <div class="card__veil"></div>
+            <div class="card__top">
               <CountryFlag code={market.code} />
-              <h3>{market.name}</h3>
-              <p class="market__ccy">{copy.currencyLabel} <span>{market.currency}</span></p>
+              <p class="card__ccy">{market.currency}</p>
             </div>
-            <p class="market__note">{market.note}</p>
-            <ul class="market__methods">
-              {market.methods.map((kind) => (
-                <li><MethodIcon kind={kind} /></li>
-              ))}
-            </ul>
+            <div class="card__base">
+              <h3>{market.name}</h3>
+              <p class="card__note">{market.note}</p>
+              <ul class="card__methods">
+                {market.methods.map((kind) => (
+                  <li><MethodIcon kind={kind} /></li>
+                ))}
+              </ul>
+              <a class="card__credit" href={market.creditHref} rel="noopener">{market.credit}</a>
+            </div>
           </li>
         ))}
       </ul>
@@ -114,7 +124,7 @@ const signupHref = pathForLang('/signup', lang);
   }
 
   .mk__inner {
-    width: min(76rem, calc(100% - 4rem));
+    width: min(80rem, calc(100% - 4rem));
     margin: 0 auto;
   }
 
@@ -183,7 +193,7 @@ const signupHref = pathForLang('/signup', lang);
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
   }
 
   .mk__ghead h3 {
@@ -202,90 +212,139 @@ const signupHref = pathForLang('/signup', lang);
     opacity: 0.25;
   }
 
-  .mk__list {
+  .mk__grid {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0 3rem;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.9rem;
   }
 
-  .market {
-    display: grid;
-    grid-template-columns: minmax(11rem, 1fr) minmax(0, 1.4fr) auto;
-    align-items: center;
-    gap: 0.5rem 1.25rem;
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 17rem;
     margin: 0;
-    padding: 1.15rem 0;
-    border-top: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--anil);
   }
 
-  .market__id {
+  .card > img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .card:hover > img { transform: scale(1.05); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card > img { transition: none; }
+    .card:hover > img { transform: none; }
+  }
+
+  .card__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(12, 20, 18, 0.85) 0%, rgba(12, 20, 18, 0.28) 52%, rgba(12, 20, 18, 0.12) 100%);
+  }
+
+  .card__top {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
-    gap: 0.65rem;
+    justify-content: space-between;
+    padding: 0.8rem 0.85rem;
   }
 
-  .market__id :global(.flag svg) {
-    height: 14px;
+  .card__top :global(.flag svg) {
+    height: 15px;
+    box-shadow: 0 0 0 1px rgba(244, 239, 228, 0.35);
   }
 
-  .market h3 {
+  .card__ccy {
     margin: 0;
+    font-family: var(--display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #f4efe4;
+  }
+
+  .card__base {
+    position: relative;
+    z-index: 1;
+    padding: 0.9rem 0.9rem 0.8rem;
+  }
+
+  .card__base h3 {
+    margin: 0 0 0.3rem;
     font-family: var(--serif);
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     font-weight: 600;
     letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: #f4efe4;
   }
 
-  .market__ccy {
-    margin: 0;
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    white-space: nowrap;
-  }
-
-  .market__ccy span {
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .market__note {
-    margin: 0;
-    font-size: 0.8125rem;
+  .card__note {
+    margin: 0 0 0.75rem;
+    font-size: 0.72rem;
     line-height: 1.35;
-    color: var(--muted);
+    color: rgba(244, 239, 228, 0.78);
   }
 
-  .market__tag { display: none; }
-
-  .market__methods {
+  .card__methods {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0.7rem 0 0;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 0.35rem;
-    justify-content: flex-end;
+    gap: 0.4rem;
+    border-top: 1px solid rgba(244, 239, 228, 0.28);
   }
 
-  .market__methods li {
-    display: grid;
-    place-items: center;
-    opacity: 0.85;
+  .card__methods li { display: grid; place-items: center; }
+
+  .card__methods :global(.method-icon),
+  .card__methods :global(.method-icon svg) {
+    width: 1.7rem;
+    height: 1.35rem;
   }
 
-  .market__methods :global(.method-icon) {
-    width: 1.9rem;
-    height: 1.5rem;
+  .card__methods :global(.method-icon img) {
+    height: 1.35rem;
+    width: auto;
+    filter: grayscale(1) brightness(2.4) contrast(0.7);
+    opacity: 0.9;
   }
 
-  .market__methods :global(.method-icon svg) {
-    width: 1.9rem;
-    height: 1.5rem;
+  .card__methods :global(.method-icon svg *) {
+    stroke: #f4efe4 !important;
+    fill: none !important;
   }
+
+  .card__methods :global(.method-icon svg path[fill]) {
+    fill: #f4efe4 !important;
+  }
+
+  .card__credit {
+    display: block;
+    margin-top: 0.6rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.01em;
+    color: rgba(244, 239, 228, 0.5);
+    text-decoration: none;
+  }
+
+  .card__credit:hover { color: rgba(244, 239, 228, 0.85); text-decoration: underline; }
 
   .mk__corridor { margin-top: 5rem; }
 
@@ -380,16 +439,22 @@ const signupHref = pathForLang('/signup', lang);
     font-size: 0.9375rem;
   }
 
-  @media (max-width: 960px) {
-    .mk__list { grid-template-columns: 1fr; }
+  @media (max-width: 1100px) {
+    .mk__grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  @media (max-width: 900px) {
+    .mk__grid { grid-template-columns: repeat(3, 1fr); }
     .mk__steps { grid-template-columns: 1fr 1fr; }
   }
 
   @media (max-width: 640px) {
     .mk { padding: 3rem 0 4rem; }
-    .mk__inner { width: min(76rem, calc(100% - 2rem)); }
+    .mk__inner { width: min(80rem, calc(100% - 2rem)); }
+    .mk__grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .card { min-height: 14rem; }
+    .card__base h3 { font-size: 1.15rem; }
+    .card__note { display: none; }
     .mk__steps { grid-template-columns: 1fr; }
-    .market { grid-template-columns: 1fr auto; }
-    .market__note { grid-column: 1 / -1; }
   }
 </style>

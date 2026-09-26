@@ -65,8 +65,8 @@ const en = {
   seoTitle: 'Product',
   lede: 'Local prices, a local signup and a direct connection. Several acquirers sit side by side. The digitised store includes the terminal. Money collected locally comes back in as few steps as possible.',
   refusalTitle: 'What we do not do',
-  refusal: "We do not take our clients' merchants. We do not dispute their accounts. We do not do fulfilment or shipping. Two niches, no conflict of interest.",
-  close: 'One path, end to end. The payment is authorised and captured in the market where the shopper pays, settles on the acquirer\u2019s window, and reaches the payout once fees, reserve, refunds and chargebacks settle against the book.',
+  refusal: "We do not take our clients' merchants. We do not dispute their accounts. We do not do fulfilment or shipping. Only the rails, the digitised store and the settlement that carries money out. Two niches, no conflict of interest.",
+  close: 'The shopper pays, the rail authorises and captures in the market, the funds settle on the acquirer\u2019s window, and the payout leaves once reconciliation closes the book.',
   cta: 'Create account',
   ctaHref: '/signup',
   columns: [
@@ -175,8 +175,8 @@ const pt = {
   seoTitle: 'Produto',
   lede: 'Preços locais, local signup e direct connection. Vários adquirentes lado a lado. A loja digitalizada inclui a maquininha. O dinheiro arrecadado localmente volta no menor número de passos.',
   refusalTitle: 'O que não fazemos',
-  refusal: 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Não fazemos fulfilment nem envio. Dois nichos, sem conflito de interesse.',
-  close: 'Um caminho, ponta a ponta. O pagamento é autorizado e capturado no mercado onde o cliente paga, liquida na janela do adquirente e chega ao payout quando taxas, reserva, estornos e chargebacks fecham contra o livro.',
+  refusal: 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Não fazemos fulfilment nem envio. Só os trilhos, a loja digitalizada e a liquidação que leva o dinheiro embora. Dois nichos, sem conflito de interesse.',
+  close: 'O cliente paga, o trilho autoriza e captura no mercado, os fundos liquidam na janela do adquirente e o payout sai quando a conciliação fecha o livro.',
   cta: 'Criar conta',
   ctaHref: '/pt/signup',
   columns: [
