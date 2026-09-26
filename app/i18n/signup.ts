@@ -4,6 +4,7 @@ import { countries } from './countries';
 const niches = {
   en: "We do not take our clients' merchants. We do not dispute their accounts. Two niches, no conflict of interest.",
   pt: 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Dois nichos, sem conflito de interesse.',
+  es: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. Dos nichos, sin conflicto de interés.',
 };
 
 const en = {
@@ -76,6 +77,43 @@ const pt = {
   countries: countries.map((c) => ({ code: c.code, label: c.pt })),
 };
 
+const es = {
+  title: 'Crear cuenta',
+  h1: 'Crear cuenta',
+  sub: 'Merchant local, en una geografía donde tenemos estructura.',
+  niches: niches.es,
+  step1: 'Usted',
+  step2: 'Empresa',
+  next: 'Continuar',
+  back: 'Volver',
+  submit: 'Crear cuenta',
+  name: 'Nombre completo',
+  email: 'Correo',
+  phone: 'Teléfono',
+  termsBefore: 'Acepto los ',
+  termsLink: 'Términos',
+  termsMid: ' y la ',
+  privacyLink: 'Privacidad',
+  termsAfter: '.',
+  company: 'Nombre de la empresa',
+  country: 'País',
+  countryPlaceholder: 'País',
+  website: 'Sitio',
+  websiteOptional: 'Opcional',
+  successTitle: 'Revise el correo',
+  successBody: 'El enlace expira en 15 minutos.',
+  mailFailed: 'La cuenta está abierta. El correo no salió. Use Entrar en un momento.',
+  errors: {
+    generic: 'Algo falló. Intente de nuevo.',
+    emailTaken: 'Este correo ya tiene cuenta. Use Entrar.',
+    required: 'Complete los campos obligatorios.',
+    validation: 'Revise los campos. El sitio necesita una dirección completa, como https://ejemplo.com.',
+  },
+  countries: countries.map((c) => ({ code: c.code, label: c.es })),
+};
+
+const signupCatalog = { en, pt, es };
+
 export function signupCopy(lang: Lang) {
-  return lang === 'pt' ? pt : en;
+  return signupCatalog[lang];
 }

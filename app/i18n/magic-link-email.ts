@@ -16,6 +16,16 @@ const pt = {
   footer: 'Se você não pediu este e-mail, ignore.',
 };
 
+const es = {
+  subject: 'Su enlace de SambaPay',
+  heading: 'Entrar en SambaPay',
+  body: 'El enlace expira en 15 minutos.',
+  cta: 'Entrar',
+  footer: 'Si usted no pidió este correo, ignórelo.',
+};
+
+const mailCatalog = { en, pt, es };
+
 export function magicLinkEmailCopy(lang: Lang) {
-  return lang === 'pt' ? pt : en;
+  return mailCatalog[lang];
 }

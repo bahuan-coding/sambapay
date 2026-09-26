@@ -10,7 +10,7 @@ export default defineConfig({
   site: 'https://sambapay.tech',
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'pt'],
+    locales: ['en', 'pt', 'es'],
     routing: { prefixDefaultLocale: false },
   },
 });

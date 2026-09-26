@@ -16,6 +16,16 @@ const pt = {
   niches: 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Dois nichos, sem conflito de interesse.',
 };
 
+const es = {
+  title: 'Cuenta',
+  h1: 'Cuenta',
+  in: 'Usted entró.',
+  logout: 'Salir',
+  niches: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. Dos nichos, sin conflicto de interés.',
+};
+
+const accountCatalog = { en, pt, es };
+
 export function accountCopy(lang: Lang) {
-  return lang === 'pt' ? pt : en;
+  return accountCatalog[lang];
 }

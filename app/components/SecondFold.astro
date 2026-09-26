@@ -1,31 +1,22 @@
 ---
+import type { Lang } from '../i18n';
 import PartMark from './PartMark.astro';
 import { enablerSteps } from '../data/enablers';
 
 interface Props {
-  lang: 'en' | 'pt';
+  lang: Lang;
 }
 
 const { lang } = Astro.props;
-const pt = lang === 'pt';
 const steps = enablerSteps(lang);
 
-const facts = pt
-  ? [
-      {
-        title: 'Preços locais',
-        body: 'O seu volume recebe os preços que um merchant local recebe.',
-      },
-      {
-        title: 'Local signup',
-        body: 'Reunimos os seus dados e os entregamos aos parceiros locais. Ajudamos com as licenças, as regulações e as exigências de instituições reguladas, para a aprovação ter mais chance.',
-      },
-      {
-        title: 'Direct connection',
-        body: 'Você não atende a cada exigência sozinho. Você usa o volume da nossa política comercial local e entra no mercado competitivo.',
-      },
-    ]
-  : [
+const fold = {
+  en: {
+    title: 'Local prices, local signup and direct connection.',
+    lead: 'We are online enablers. The business brings its stock. The store includes the terminal.',
+    refusalTitle: 'What we do not do',
+    refusal: "We do not take our clients' merchants. We do not dispute their accounts. Two niches, no conflict of interest.",
+    facts: [
       {
         title: 'Local prices',
         body: 'Your volume gets the prices a local merchant gets.',
@@ -38,25 +29,60 @@ const facts = pt
         title: 'Direct connection',
         body: 'You do not meet each requirement on your own. You use the volume of our local commercial policy and enter the competitive market.',
       },
-    ];
+    ],
+  },
+  pt: {
+    title: 'Preços locais, local signup e direct connection.',
+    lead: 'Somos online enablers. O negócio traz o estoque. A loja inclui a maquininha.',
+    refusalTitle: 'O que não fazemos',
+    refusal: 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Dois nichos, sem conflito de interesse.',
+    facts: [
+      {
+        title: 'Preços locais',
+        body: 'O seu volume recebe os preços que um merchant local recebe.',
+      },
+      {
+        title: 'Local signup',
+        body: 'Reunimos os seus dados e os entregamos aos parceiros locais. Ajudamos com as licenças, as regulações e as exigências de instituições reguladas, para a aprovação ter mais chance.',
+      },
+      {
+        title: 'Direct connection',
+        body: 'Você não atende a cada exigência sozinho. Você usa o volume da nossa política comercial local e entra no mercado competitivo.',
+      },
+    ],
+  },
+  es: {
+    title: 'Precios locales, local signup y direct connection.',
+    lead: 'Somos online enablers. El negocio trae el stock. La tienda incluye la terminal.',
+    refusalTitle: 'Lo que no hacemos',
+    refusal: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. Dos nichos, sin conflicto de interés.',
+    facts: [
+      {
+        title: 'Precios locales',
+        body: 'Su volumen recibe los precios que recibe un merchant local.',
+      },
+      {
+        title: 'Local signup',
+        body: 'Reunimos sus datos y los entregamos a los socios locales. Ayudamos con las licencias, las regulaciones y las exigencias de instituciones reguladas, para que la aprobación tenga más chance.',
+      },
+      {
+        title: 'Direct connection',
+        body: 'Usted no cumple cada exigencia por su cuenta. Usa el volumen de nuestra política comercial local y entra en el mercado competitivo.',
+      },
+    ],
+  },
+}[lang];
 
-const lead = pt
-  ? 'Somos online enablers. O negócio traz o estoque. A loja inclui a maquininha.'
-  : 'We are online enablers. The business brings its stock. The store includes the terminal.';
-const refusalTitle = pt ? 'O que não fazemos' : 'What we do not do';
-const refusal = pt
-  ? 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Dois nichos, sem conflito de interesse.'
-  : "We do not take our clients' merchants. We do not dispute their accounts. Two niches, no conflict of interest.";
+const facts = fold.facts;
+const lead = fold.lead;
+const refusalTitle = fold.refusalTitle;
+const refusal = fold.refusal;
 ---
 
 <section class="fold" aria-labelledby="fold-title">
   <div class="fold__inner">
     <h2 id="fold-title">
-      {pt ? (
-        <>Preços locais, local signup e direct connection.</>
-      ) : (
-        <>Local prices, local signup and direct connection.</>
-      )}
+      {fold.title}
     </h2>
     <ol class="fold__facts">
       {facts.map((fact, index) => (

@@ -10,8 +10,13 @@ import { shore } from '../data/shore';
   currentPath="/"
   title="SambaPay"
   frames={shore('en')}
+  poster
 >
-  <h1 slot="sheet">Enter Latin America like a local.</h1>
-  <PrimaryButton slot="sheet" href="/signup">Create account</PrimaryButton>
+  <h1 slot="sheet">
+    <span class="poster-line">Payments in</span>
+    <span class="poster-line">Latin America,</span>
+    <span class="poster-line poster-line--last">engineered.</span>
+  </h1>
+  <PrimaryButton slot="sheet" href="/signup" arrow>Create account</PrimaryButton>
   <SecondFold slot="fold" lang="en" />
 </PlacePage>

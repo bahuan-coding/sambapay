@@ -1,0 +1,138 @@
+---
+import type { MethodIcon as Kind } from '../data/features';
+
+interface Props {
+  kind: Kind;
+}
+
+const { kind } = Astro.props;
+---
+
+<span class="method-icon" aria-hidden={kind === 'spei' ? undefined : 'true'}>
+  {kind === 'pix' && (
+    <svg viewBox="0 0 24 24">
+      <path fill="#32BCAD" d="M5.283 18.36a3.505 3.505 0 0 0 2.493-1.032l3.6-3.6a.684.684 0 0 1 .946 0l3.613 3.613a3.504 3.504 0 0 0 2.493 1.032h.71l-4.56 4.56a3.647 3.647 0 0 1-5.156 0L4.85 18.36ZM18.428 5.627a3.505 3.505 0 0 0-2.493 1.032l-3.613 3.614a.67.67 0 0 1-.946 0l-3.6-3.6A3.505 3.505 0 0 0 5.283 5.64h-.434l4.573-4.572a3.646 3.646 0 0 1 5.156 0l4.559 4.559ZM1.068 9.422 3.79 6.699h1.492a2.483 2.483 0 0 1 1.744.722l3.6 3.6a1.73 1.73 0 0 0 2.443 0l3.614-3.613a2.482 2.482 0 0 1 1.744-.723h1.767l2.737 2.737a3.646 3.646 0 0 1 0 5.156l-2.736 2.736h-1.768a2.482 2.482 0 0 1-1.744-.722l-3.613-3.613a1.77 1.77 0 0 0-2.444 0l-3.6 3.6a2.483 2.483 0 0 1-1.744.722H3.791l-2.723-2.723a3.646 3.646 0 0 1 0-5.156"/>
+    </svg>
+  )}
+  {kind === 'boleto' && (
+    <svg viewBox="0 0 24 24">
+      <path fill="#1C3D4A" d="M3 4h2v16H3zm3 0h1v16H6zm2 0h2v16H8zm3 0h1v16h-1zm2 0h3v16h-3zm4 0h1v16h-1zm2 0h2v16h-2z"/>
+    </svg>
+  )}
+  {kind === 'oxxo' && <img src="/methods/oxxo.svg" alt="" />}
+  {kind === 'spei' && <img src="/methods/spei.png" alt="SPEI" />}
+  {kind === 'pagofacil' && <img src="/methods/pago-facil.svg" alt="" />}
+  {kind === 'visa_secure' && <img src="/methods/visa-secure.png" alt="" />}
+  {kind === 'mastercard_id_check' && (
+    <span class="id-check">
+      <img src="/methods/mastercard-id-check.png" alt="" />
+      <span>ID Check</span>
+    </span>
+  )}
+  {kind === 'amex_safekey' && <img src="/methods/amex-safekey.png" alt="" />}
+  {kind === 'qra' && (
+    <svg viewBox="0 0 24 24">
+      <path fill="#1C3D4A" d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm10 0h2v2h-2zm4 0h4v2h-4zm-4 4h2v2h-2zm2 2h2v2h-2zm2-2h2v2h-2z"/>
+    </svg>
+  )}
+  {kind === 'transfer' && (
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M4 8h12M13 5l3 3-3 3M20 16H8M11 13l-3 3 3 3" stroke="#1351B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  )}
+  {(kind === 'credit' || kind === 'debit') && (
+    <svg viewBox="0 0 24 24">
+      <rect x="2" y="5" width="20" height="14" rx="2" fill="none" stroke="#1C3D4A" stroke-width="1.6"/>
+      <path d="M2 9h20" stroke="#1351B4" stroke-width="2"/>
+      <rect x="4.5" y="13" width="4" height="3" rx="0.5" fill="#C4890A"/>
+    </svg>
+  )}
+  {kind === 'local' && (
+    <svg viewBox="0 0 24 24">
+      <rect x="3" y="6" width="4" height="12" rx="1" fill="#1C3D4A"/>
+      <rect x="10" y="6" width="4" height="12" rx="1" fill="#1351B4"/>
+      <rect x="17" y="6" width="4" height="12" rx="1" fill="#C4890A"/>
+    </svg>
+  )}
+  {kind === 'brought' && (
+    <svg viewBox="0 0 24 24" fill="none">
+      <circle cx="6" cy="16" r="2.2" stroke="#1C3D4A" stroke-width="1.6"/>
+      <circle cx="18" cy="7" r="2.2" fill="#1351B4"/>
+      <path d="M8 14.5c2.2-.2 3.2-4 6.2-4.6" stroke="#C4890A" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  )}
+  {kind === 'prices' && (
+    <svg viewBox="0 0 24 24" fill="none">
+      <path d="M5 9h8l5 5-8 8-5-5z" stroke="#1C3D4A" stroke-width="1.6" stroke-linejoin="round"/>
+      <circle cx="9" cy="13" r="1" fill="#C4890A"/>
+    </svg>
+  )}
+  {kind === 'capture' && (
+    <svg viewBox="0 0 24 24" fill="none">
+      <rect x="8" y="2.5" width="8" height="19" rx="2" stroke="#1C3D4A" stroke-width="1.6"/>
+      <rect x="10" y="5" width="4" height="4" rx="0.5" fill="#FFCD07"/>
+      <circle cx="12" cy="17" r="1.2" fill="#168821"/>
+    </svg>
+  )}
+</span>
+
+<style>
+  .method-icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .method-icon:has(img) {
+    width: auto;
+    height: auto;
+  }
+
+  svg {
+    width: 1.85rem;
+    height: 1.85rem;
+  }
+
+  img {
+    display: block;
+    height: 2rem;
+    width: auto;
+  }
+
+  .id-check {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+  }
+
+  .id-check img {
+    height: 2.6rem;
+  }
+
+  .id-check span {
+    font-family: var(--display);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  b {
+    display: grid;
+    place-items: center;
+    min-width: 1.85rem;
+    height: 1.85rem;
+    padding: 0 0.28rem;
+    border: 1.5px solid var(--blue);
+    border-radius: 4px;
+    font-family: var(--display);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--blue);
+  }
+
+</style>

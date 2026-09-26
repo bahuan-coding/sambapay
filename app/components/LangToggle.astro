@@ -1,6 +1,7 @@
 ---
 import type { Lang } from '../i18n';
 import { alternatePath, t } from '../i18n';
+import CountryFlag from './CountryFlag.astro';
 
 interface Props {
   lang: Lang;
@@ -9,35 +10,66 @@ interface Props {
 
 const { lang, currentPath } = Astro.props;
 const messages = t(lang);
-const enHref = alternatePath(currentPath, 'en');
-const ptHref = alternatePath(currentPath, 'pt');
+const items: { code: Lang; flag: string; label: string }[] = [
+  { code: 'en', flag: 'us', label: 'English' },
+  { code: 'pt', flag: 'br', label: 'Português' },
+  { code: 'es', flag: 'es', label: 'Español' },
+];
 ---
 
 <div class="lang" role="group" aria-label={messages.a11y.language}>
-  <a class:list={['lang__link', lang === 'en' && 'is-active']} href={enHref} aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
-  <span class="lang__sep" aria-hidden="true">|</span>
-  <a class:list={['lang__link', lang === 'pt' && 'is-active']} href={ptHref} aria-current={lang === 'pt' ? 'true' : undefined}>PT</a>
+  {items.map((item) => (
+    <a
+      class:list={['lang__link', lang === item.code && 'is-active']}
+      href={alternatePath(currentPath, item.code)}
+      aria-current={lang === item.code ? 'true' : undefined}
+      aria-label={item.label}
+      title={item.label}
+    >
+      <CountryFlag code={item.flag} />
+      <span class="lang__name">{item.label}</span>
+    </a>
+  ))}
 </div>
 
 <style>
   .lang {
     display: flex;
     align-items: center;
-    gap: var(--space-1);
-    font-size: 0.875rem;
-    font-weight: 600;
+    flex: none;
+    gap: 2px;
   }
 
   .lang__link {
-    min-width: 44px;
-    min-height: 44px;
+    width: 32px;
+    height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: var(--muted);
+    border-radius: 2px;
+    opacity: 0.55;
     text-decoration: none;
   }
 
-  .lang__link.is-active { color: var(--ink); }
-  .lang__sep { color: var(--border); }
+  .lang__link:hover { opacity: 1; }
+
+  .lang__link.is-active {
+    opacity: 1;
+  }
+
+  .lang__link.is-active :global(.flag svg) {
+    box-shadow: 0 0 0 1.5px var(--ink);
+  }
+
+  .lang__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 </style>

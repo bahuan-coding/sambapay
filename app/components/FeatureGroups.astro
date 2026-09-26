@@ -1,9 +1,16 @@
 ---
+import MethodIcon from './MethodIcon.astro';
 import ProcessPlate from './ProcessPlate.astro';
-import { productCopy } from '../data/features';
+import type { Lang } from '../i18n';
+import { productCopy, type MethodIcon as MethodKind } from '../data/features';
+
+function iconsOf(icon?: MethodKind | MethodKind[]) {
+  if (!icon) return [];
+  return Array.isArray(icon) ? icon : [icon];
+}
 
 interface Props {
-  lang: 'en' | 'pt';
+  lang: Lang;
 }
 
 const { lang } = Astro.props;
@@ -23,12 +30,23 @@ const groups = productCopy(lang).groups;
       <p class="groups__lede">{group.lede}</p>
       <div class:list={['groups__split', group.plate && 'groups__split--plate']}>
         <ul>
-          {group.items.map((item) => (
-            <li>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </li>
-          ))}
+          {group.items.map((item) => {
+            const icons = iconsOf(item.icon);
+            const lockup = icons.length === 1 && icons[0] === 'spei';
+            return (
+              <li class:list={[icons.length > 0 && 'has-icon', icons.length > 1 && 'schemes', lockup && 'lockup']}>
+                {icons.length > 0 && (
+                  <span class:list={['method-icons', icons.length > 1 && 'method-icons--schemes', lockup && 'method-icons--lockup']}>
+                    {icons.map((kind) => <MethodIcon kind={kind} />)}
+                  </span>
+                )}
+                <div>
+                  {item.title && <h3>{item.title}</h3>}
+                  <p>{item.body}</p>
+                </div>
+              </li>
+            );
+          })}
         </ul>
         {group.plate && <ProcessPlate kind={group.plate} />}
       </div>
@@ -129,6 +147,52 @@ const groups = productCopy(lang).groups;
     padding: 0.9rem 1rem;
     border-radius: 8px;
     background: var(--field);
+  }
+
+  li.has-icon {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.85rem;
+    align-items: center;
+  }
+
+  .method-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .method-icons--schemes {
+    gap: 0.85rem;
+  }
+
+  .method-icons--schemes :global(img) {
+    height: 3.5rem;
+  }
+
+  .method-icons--schemes :global(.id-check img) {
+    height: 2.35rem;
+  }
+
+  li.schemes h3 {
+    font-size: 0.95rem;
+  }
+
+  li.schemes p {
+    max-width: 28rem;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+  }
+
+  .method-icons--lockup :global(img) {
+    width: 25rem;
+    height: auto;
+  }
+
+  li.lockup p {
+    max-width: 16rem;
+    font-size: 0.8125rem;
+    line-height: 1.35;
   }
 
   h3 {

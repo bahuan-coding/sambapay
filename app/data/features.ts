@@ -1,4 +1,6 @@
+import type { Lang } from '../i18n';
 import type { ShoreFrame } from './shore';
+import { esChapters, esCopy } from './features-es';
 
 export type Mark =
   | 'prices'
@@ -25,11 +27,37 @@ export interface FeatureColumn {
   items: FeatureItem[];
 }
 
+export type MethodIcon =
+  | 'credit'
+  | 'debit'
+  | 'threeds'
+  | 'visa_secure'
+  | 'mastercard_id_check'
+  | 'amex_safekey'
+  | 'pix'
+  | 'boleto'
+  | 'oxxo'
+  | 'spei'
+  | 'qra'
+  | 'pagofacil'
+  | 'transfer'
+  | 'local'
+  | 'brought'
+  | 'prices'
+  | 'capture';
+
+export interface FeatureLine {
+  title: string;
+  body: string;
+  icon?: MethodIcon | MethodIcon[];
+  section?: string;
+}
+
 export interface FeatureGroup {
   title: string;
   lede: string;
   plate?: 'rails' | 'enable' | 'settle';
-  items: { title: string; body: string }[];
+  items: FeatureLine[];
 }
 
 const en = {
@@ -37,7 +65,7 @@ const en = {
   lede: 'Local prices, a local signup and a direct connection. Several acquirers sit side by side. The digitised store includes the terminal. Money collected locally comes back in as few steps as possible.',
   refusalTitle: 'What we do not do',
   refusal: "We do not take our clients' merchants. We do not dispute their accounts. We do not do fulfilment or shipping. Two niches, no conflict of interest.",
-  close: 'Collected locally. Returned in few steps.',
+  close: 'Captured in the acquiring market. Paid out once the book ties.',
   cta: 'Create account',
   ctaHref: '/signup',
   columns: [
@@ -45,7 +73,7 @@ const en = {
       title: 'Accept',
       items: [
         { mark: 'prices', title: 'Local prices', body: 'Your volume is priced at the MDR a local merchant gets.' },
-        { mark: 'methods', title: 'Cards and local methods', body: 'Credit and debit, 3DS and 2D, plus the local methods of that market. In Brazil, PIX.' },
+        { mark: 'methods', title: 'Cards and local methods', body: 'Credit and debit, 3DS and 2D, plus the local methods of that market.' },
         { mark: 'terminal', title: 'Card capture', body: 'The digitised store includes card capture for online sales.' },
       ],
     },
@@ -79,16 +107,23 @@ const en = {
       title: 'PayIn',
       lede: 'The shopper pays with the methods of that market.',
       items: [
-        { title: 'Credit', body: 'Credit card charges, authorised and captured.' },
-        { title: 'Debit', body: 'Debit card charges.' },
-        { title: '3DS', body: "The shopper's bank confirms it is the shopper." },
-        { title: '2D', body: 'Card processing without that challenge.' },
-        { title: 'PIX', body: 'In Brazil, the instant payment.' },
-        { title: 'Boleto', body: 'The Brazilian bank slip.' },
-        { title: 'Local methods', body: 'The local instruments of that market.' },
-        { title: 'Brought methods', body: 'A client can bring its own payment methods to connect locally.' },
-        { title: 'Local prices', body: 'Your volume is priced at the MDR a local merchant gets.' },
-        { title: 'Card capture', body: 'The digitised store includes card capture for online sales.' },
+        { icon: 'credit', title: 'Credit', body: 'Credit card charges, authorised and captured.' },
+        { icon: 'debit', title: 'Debit', body: 'Debit card charges.' },
+        {
+          icon: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
+          title: '3DS',
+          body: "Reduce your chargebacks. Use 3DS. The shopper's bank confirms it is the shopper. Without that challenge, the charge is 2D.",
+        },
+        { icon: 'pix', title: 'PIX', body: 'In Brazil, the instant payment.' },
+        { icon: 'boleto', title: 'Boleto', body: 'In Brazil, the bank slip.' },
+        { icon: 'spei', title: '', body: 'In Mexico, the instant bank transfer.' },
+        { icon: 'oxxo', title: 'OXXO Pay', body: 'In Mexico, the cash payment.' },
+        { icon: 'qra', title: 'QR Argentina', body: 'In Argentina, the QR payment.' },
+        { icon: 'pagofacil', title: 'Pago Fácil', body: 'In Argentina, the cash payment.' },
+        { icon: 'transfer', title: 'Bank transfer', body: 'In Chile, the bank transfer.' },
+        { icon: 'brought', title: 'Brought methods', body: 'A client can bring its own payment methods to connect locally.' },
+        { icon: 'prices', title: 'Local prices', body: 'Your volume is priced at the MDR a local merchant gets.' },
+        { icon: 'capture', title: 'Card capture', body: 'The digitised store includes card capture for online sales.' },
       ],
     },
     {
@@ -140,7 +175,7 @@ const pt = {
   lede: 'Preços locais, local signup e direct connection. Vários adquirentes lado a lado. A loja digitalizada inclui a maquininha. O dinheiro arrecadado localmente volta no menor número de passos.',
   refusalTitle: 'O que não fazemos',
   refusal: 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Não fazemos fulfilment nem envio. Dois nichos, sem conflito de interesse.',
-  close: 'Arrecadado aqui. Devolvido em poucos passos.',
+  close: 'Capturado no mercado de adquirência. O payout segue quando o livro fecha.',
   cta: 'Criar conta',
   ctaHref: '/pt/signup',
   columns: [
@@ -148,7 +183,7 @@ const pt = {
       title: 'Receber',
       items: [
         { mark: 'prices', title: 'Preços locais', body: 'O volume é precificado no MDR que um merchant local recebe.' },
-        { mark: 'methods', title: 'Cartão e meios locais', body: 'Crédito e débito, 3DS e 2D, mais os meios locais daquele mercado. No Brasil, PIX.' },
+        { mark: 'methods', title: 'Cartão e meios locais', body: 'Crédito e débito, 3DS e 2D, mais os meios locais daquele mercado.' },
         { mark: 'terminal', title: 'Captura no cartão', body: 'A loja digitalizada inclui a captura no cartão para a venda online.' },
       ],
     },
@@ -182,16 +217,23 @@ const pt = {
       title: 'PayIn',
       lede: 'Quem compra paga com os meios daquele mercado.',
       items: [
-        { title: 'Crédito', body: 'Cobranças no cartão de crédito, autorizadas e capturadas.' },
-        { title: 'Débito', body: 'Cobranças no cartão de débito.' },
-        { title: '3DS', body: 'O banco de quem compra confirma que é quem compra.' },
-        { title: '2D', body: 'Processamento de cartão sem esse desafio.' },
-        { title: 'PIX', body: 'No Brasil, o pagamento instantâneo.' },
-        { title: 'Boleto', body: 'O boleto bancário brasileiro.' },
-        { title: 'Meios locais', body: 'Os instrumentos locais daquele mercado.' },
-        { title: 'Meios trazidos', body: 'O cliente pode trazer os próprios meios de pagamento para conectar localmente.' },
-        { title: 'Preços locais', body: 'O volume é precificado no MDR que um merchant local recebe.' },
-        { title: 'Captura no cartão', body: 'A loja digitalizada inclui a captura no cartão para a venda online.' },
+        { icon: 'credit', title: 'Crédito', body: 'Cobranças no cartão de crédito, autorizadas e capturadas.' },
+        { icon: 'debit', title: 'Débito', body: 'Cobranças no cartão de débito.' },
+        {
+          icon: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
+          title: '3DS',
+          body: 'Reduza o chargeback. Use 3DS. O banco de quem compra confirma que é quem compra. Sem esse desafio, a cobrança é 2D.',
+        },
+        { icon: 'pix', title: 'PIX', body: 'No Brasil, o pagamento instantâneo.' },
+        { icon: 'boleto', title: 'Boleto', body: 'No Brasil, o boleto bancário.' },
+        { icon: 'spei', title: '', body: 'No México, a transferência bancária instantânea.' },
+        { icon: 'oxxo', title: 'OXXO Pay', body: 'No México, o pagamento em dinheiro.' },
+        { icon: 'qra', title: 'QR Argentina', body: 'Na Argentina, o pagamento por QR.' },
+        { icon: 'pagofacil', title: 'Pago Fácil', body: 'Na Argentina, o pagamento em dinheiro.' },
+        { icon: 'transfer', title: 'Transferência bancária', body: 'No Chile, a transferência bancária.' },
+        { icon: 'brought', title: 'Meios trazidos', body: 'O cliente pode trazer os próprios meios de pagamento para conectar localmente.' },
+        { icon: 'prices', title: 'Preços locais', body: 'O volume é precificado no MDR que um merchant local recebe.' },
+        { icon: 'capture', title: 'Captura no cartão', body: 'A loja digitalizada inclui a captura no cartão para a venda online.' },
       ],
     },
     {
@@ -238,8 +280,10 @@ const pt = {
   ] as FeatureGroup[],
 };
 
-export function productCopy(lang: 'en' | 'pt') {
-  return lang === 'pt' ? pt : en;
+const productCatalog = { en, pt, es: esCopy };
+
+export function productCopy(lang: Lang) {
+  return productCatalog[lang];
 }
 
 const chapterMeta = {
@@ -311,15 +355,16 @@ const chapterMeta = {
       ],
     },
   ],
+  es: esChapters,
 };
 
-function chapterFrames(lang: 'en' | 'pt'): Record<string, ShoreFrame> {
-  const country = (en: string, pt: string) => (lang === 'pt' ? pt : en);
+function chapterFrames(lang: Lang): Record<string, ShoreFrame> {
+  const country = (en: string, pt: string, es: string) => (lang === 'pt' ? pt : lang === 'es' ? es : en);
   return {
     '/places/ouro-preto-2009.jpg': {
       image: '/places/ouro-preto-2009.jpg',
       place: 'Ouro Preto',
-      country: country('Brazil', 'Brasil'),
+      country: country('Brazil', 'Brasil', 'Brasil'),
       flag: 'br',
       credit: 'Alvesgaspar, CC BY-SA 3.0',
       creditHref: 'https://commons.wikimedia.org/wiki/File:Ouro_Preto_November_2009-13.jpg',
@@ -328,7 +373,7 @@ function chapterFrames(lang: 'en' | 'pt'): Record<string, ShoreFrame> {
     '/places/guatape-town.jpg': {
       image: '/places/guatape-town.jpg',
       place: 'Guatapé',
-      country: country('Colombia', 'Colômbia'),
+      country: country('Colombia', 'Colômbia', 'Colombia'),
       flag: 'co',
       credit: 'Adriana García, CC BY-SA 4.0',
       creditHref: 'https://commons.wikimedia.org/wiki/File:Plazoleta_de_los_Z%C3%B3calos_de_colores_en_Guatap%C3%A9_-_Pueblo_de_los_z%C3%B3calos.jpg',
@@ -337,7 +382,7 @@ function chapterFrames(lang: 'en' | 'pt'): Record<string, ShoreFrame> {
     '/places/guanajuato.jpg': {
       image: '/places/guanajuato.jpg',
       place: 'Guanajuato',
-      country: country('Mexico', 'México'),
+      country: country('Mexico', 'México', 'México'),
       flag: 'mx',
       credit: 'Cesarloar, CC BY-SA 4.0',
       creditHref: 'https://commons.wikimedia.org/wiki/File:Guanajuato_panor%C3%A1mica.jpg',
@@ -346,7 +391,7 @@ function chapterFrames(lang: 'en' | 'pt'): Record<string, ShoreFrame> {
   };
 }
 
-export function productFrames(lang: 'en' | 'pt'): ShoreFrame[] {
+export function productFrames(lang: Lang): ShoreFrame[] {
   const frames = chapterFrames(lang);
   return [
     frames['/places/guanajuato.jpg'],
@@ -355,6 +400,6 @@ export function productFrames(lang: 'en' | 'pt'): ShoreFrame[] {
   ];
 }
 
-export function productChapters(lang: 'en' | 'pt') {
+export function productChapters(lang: Lang) {
   return chapterMeta[lang];
 }

@@ -4,16 +4,31 @@ interface Props {
   type?: 'button' | 'submit';
   variant?: 'primary' | 'secondary';
   fullWidth?: boolean;
+  arrow?: boolean;
 }
 
-const { href, type = 'button', variant = 'primary', fullWidth = false } = Astro.props;
+const { href, type = 'button', variant = 'primary', fullWidth = false, arrow = false } = Astro.props;
 const className = ['btn', `btn--${variant}`, fullWidth && 'btn--full'].filter(Boolean).join(' ');
 ---
 
 {href ? (
-  <a class={className} href={href}><slot /></a>
+  <a class={className} href={href}>
+    <slot />
+    {arrow && (
+      <svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    )}
+  </a>
 ) : (
-  <button class={className} type={type}><slot /></button>
+  <button class={className} type={type}>
+    <slot />
+    {arrow && (
+      <svg class="btn__arrow" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    )}
+  </button>
 )}
 
 <style>
@@ -21,6 +36,7 @@ const className = ['btn', `btn--${variant}`, fullWidth && 'btn--full'].filter(Bo
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.45rem;
     min-height: 40px;
     padding: 0 var(--space-4);
     border-radius: var(--radius);
@@ -28,8 +44,21 @@ const className = ['btn', `btn--${variant}`, fullWidth && 'btn--full'].filter(Bo
     font-family: var(--font);
     font-size: 0.875rem;
     font-weight: 600;
+    white-space: nowrap;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  .btn__arrow {
+    width: 15px;
+    height: 15px;
+    flex: none;
+  }
+
+  .btn:hover .btn__arrow { transform: translateX(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn:hover .btn__arrow { transform: none; }
   }
 
   .btn--primary {

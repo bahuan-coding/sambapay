@@ -21,7 +21,7 @@ const year = new Date().getFullYear();
     </a>
     <nav class="site-footer__nav" aria-label={messages.a11y.footer}>
       {navLinks.map((link) => (
-        <a href={lang === 'en' ? link.en : link.pt}>{messages.nav[link.key]}</a>
+        <a href={link[lang]}>{messages.nav[link.key]}</a>
       ))}
     </nav>
     <div class="site-footer__legal">

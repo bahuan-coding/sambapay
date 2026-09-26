@@ -1,18 +1,23 @@
 ---
+import type { Lang } from '../i18n';
 import PartMark from './PartMark.astro';
 import { enablerSteps } from '../data/enablers';
 
 interface Props {
-  lang: 'en' | 'pt';
+  lang: Lang;
 }
 
 const { lang } = Astro.props;
-const pt = lang === 'pt';
 const steps = enablerSteps(lang);
 
 const label = 'Online enablers';
-const previous = pt ? 'Anterior' : 'Previous';
-const next = pt ? 'Próximo' : 'Next';
+const nav = {
+  en: { previous: 'Previous', next: 'Next' },
+  pt: { previous: 'Anterior', next: 'Próximo' },
+  es: { previous: 'Anterior', next: 'Siguiente' },
+}[lang];
+const previous = nav.previous;
+const next = nav.next;
 ---
 
 <section class="carousel" data-carousel tabindex="0" aria-roledescription="carousel" aria-label={label}>

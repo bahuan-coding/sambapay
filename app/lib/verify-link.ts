@@ -1,9 +1,12 @@
+import { asLang, pathForLang } from '../i18n';
 import { isSecureRequest } from './auth';
 import { consumeMagicLink } from './magic-link';
 import { createSession, sessionCookieHeader } from './session';
 
 export async function verifyMagicLink(request: Request, token: string | undefined): Promise<Response> {
-  const loginPath = new URL(request.url).pathname.startsWith('/pt/') ? '/pt/login' : '/login';
+  const pathname = new URL(request.url).pathname;
+  const requestLang = pathname.startsWith('/pt/') ? 'pt' : pathname.startsWith('/es/') ? 'es' : 'en';
+  const loginPath = pathForLang('/login', requestLang);
 
   if (!token) {
     return new Response(null, {
@@ -21,7 +24,7 @@ export async function verifyMagicLink(request: Request, token: string | undefine
   }
 
   const sessionToken = await createSession(merchant.id);
-  const accountPath = merchant.preferredLocale === 'pt' ? '/pt/conta' : '/account';
+  const accountPath = pathForLang('/account', asLang(merchant.preferredLocale));
 
   return new Response(null, {
     status: 302,

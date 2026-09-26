@@ -1,9 +1,10 @@
 ---
 import ProcessPlate from './ProcessPlate.astro';
+import type { Lang } from '../i18n';
 import { productChapters } from '../data/features';
 
 interface Props {
-  lang: 'en' | 'pt';
+  lang: Lang;
 }
 
 const { lang } = Astro.props;

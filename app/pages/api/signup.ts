@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { z } from 'zod';
 import { db } from '../../../db/index';
 import { merchants, onboardingEvents } from '../../../db/schema';
-import type { Lang } from '../../i18n';
+import { langPrefix, type Lang } from '../../i18n';
 import { sendMagicLinkEmail } from '../../lib/email';
 import { getAppUrl } from '../../lib/env';
 import { createMagicLink, findMerchantByEmail, normalizeEmail } from '../../lib/magic-link';
@@ -24,7 +24,7 @@ const bodySchema = z.object({
   companyName: z.string().trim().min(2).max(300),
   country: z.string().trim().length(2),
   website: z.preprocess(normalizeWebsite, z.union([z.literal(''), z.string().url()])),
-  locale: z.enum(['en', 'pt']).optional(),
+  locale: z.enum(['en', 'pt', 'es']).optional(),
 });
 
 export const POST: APIRoute = async ({ request }) => {
@@ -73,7 +73,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     const token = await createMagicLink(merchant.id);
-    const prefix = lang === 'pt' ? '/pt' : '';
+    const prefix = langPrefix(lang);
     const verifyUrl = `${getAppUrl()}${prefix}/auth/verify/${encodeURIComponent(token)}`;
     await sendMagicLinkEmail(email, verifyUrl, lang);
   } catch {

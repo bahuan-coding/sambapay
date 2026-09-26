@@ -8,13 +8,13 @@ export interface ShoreFrame {
   focus: string;
 }
 
-export function shore(lang: 'en' | 'pt'): ShoreFrame[] {
-  const country = (en: string, pt: string) => (lang === 'pt' ? pt : en);
+export function shore(lang: 'en' | 'pt' | 'es'): ShoreFrame[] {
+  const country = (en: string, pt: string, es: string) => (lang === 'pt' ? pt : lang === 'es' ? es : en);
   return [
     {
       image: '/places/rio.jpg',
       place: 'Rio de Janeiro',
-      country: country('Brazil', 'Brasil'),
+      country: country('Brazil', 'Brasil', 'Brasil'),
       flag: 'br',
       credit: 'Márcia Regina Machado, CC BY-SA 4.0',
       creditHref: 'https://commons.wikimedia.org/wiki/File:P%C3%A3o_de_A%C3%A7%C3%BAcar_visto_da_praia_de_Botafogo_-_M%C3%A1rcia_Regina_Machado_-_(11).jpg',
@@ -23,7 +23,7 @@ export function shore(lang: 'en' | 'pt'): ShoreFrame[] {
     {
       image: '/places/cartagena.jpg',
       place: 'Cartagena',
-      country: country('Colombia', 'Colômbia'),
+      country: country('Colombia', 'Colômbia', 'Colombia'),
       flag: 'co',
       credit: 'Bernard Gagnon, CC BY-SA 4.0',
       creditHref: 'https://commons.wikimedia.org/wiki/File:City_walls_of_Cartagena_01.jpg',
@@ -32,7 +32,7 @@ export function shore(lang: 'en' | 'pt'): ShoreFrame[] {
     {
       image: '/places/bellas-artes-fachada.jpg',
       place: 'Palacio de Bellas Artes',
-      country: country('Mexico', 'México'),
+      country: country('Mexico', 'México', 'México'),
       flag: 'mx',
       credit: 'Diego Delso, CC BY-SA 4.0',
       creditHref: 'https://commons.wikimedia.org/wiki/File:Palacio_de_Bellas_Artes,_Ciudad_de_M%C3%A9xico,_M%C3%A9xico,_2015-07-18,_DD_10.JPG',

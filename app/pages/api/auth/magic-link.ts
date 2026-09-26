@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { z } from 'zod';
-import type { Lang } from '../../../i18n';
+import { asLang, langPrefix, type Lang } from '../../../i18n';
 import { sendMagicLinkEmail } from '../../../lib/email';
 import { getAppUrl } from '../../../lib/env';
 import { createMagicLink, findMerchantByEmail, normalizeEmail } from '../../../lib/magic-link';
@@ -9,7 +9,7 @@ export const prerender = false;
 
 const bodySchema = z.object({
   email: z.string().trim().email(),
-  locale: z.enum(['en', 'pt']).optional(),
+  locale: z.enum(['en', 'pt', 'es']).optional(),
 });
 
 export const POST: APIRoute = async ({ request }) => {
@@ -29,10 +29,10 @@ export const POST: APIRoute = async ({ request }) => {
   const merchant = await findMerchantByEmail(email);
 
   if (merchant) {
-    const lang: Lang = parsed.data.locale ?? (merchant.preferredLocale === 'pt' ? 'pt' : 'en');
+    const lang: Lang = parsed.data.locale ?? asLang(merchant.preferredLocale);
     try {
       const token = await createMagicLink(merchant.id);
-      const prefix = lang === 'pt' ? '/pt' : '';
+      const prefix = langPrefix(lang);
       const verifyUrl = `${getAppUrl()}${prefix}/auth/verify/${encodeURIComponent(token)}`;
       await sendMagicLinkEmail(email, verifyUrl, lang);
     } catch {

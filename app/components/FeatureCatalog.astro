@@ -2,10 +2,11 @@
 import FeatureGroups from './FeatureGroups.astro';
 import PrimaryButton from './PrimaryButton.astro';
 import ProductMark from './ProductMark.astro';
+import type { Lang } from '../i18n';
 import { productCopy } from '../data/features';
 
 interface Props {
-  lang: 'en' | 'pt';
+  lang: Lang;
 }
 
 const { lang } = Astro.props;
@@ -145,13 +146,13 @@ const copy = productCopy(lang);
   }
 
   .catalog__close {
-    margin: 4rem 0 1.5rem;
-    max-width: 12em;
+    margin: 3.5rem 0 1.5rem;
+    max-width: 36rem;
     font-family: var(--serif);
-    font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+    font-size: clamp(1.55rem, 2.4vw, 2rem);
     font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 0.96;
+    letter-spacing: -0.03em;
+    line-height: 1.25;
   }
 
   @media (max-width: 1100px) {

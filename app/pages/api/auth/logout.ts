@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { asLang, pathForLang } from '../../../i18n';
 import { isSecureRequest } from '../../../lib/auth';
 import { SESSION_COOKIE, clearSessionCookieHeader, destroySession } from '../../../lib/session';
 
@@ -10,8 +11,8 @@ export const POST: APIRoute = async ({ request, cookies }) => {
   cookies.delete(SESSION_COOKIE, { path: '/' });
 
   const url = new URL(request.url);
-  const lang = url.searchParams.get('lang') === 'pt' ? 'pt' : 'en';
-  const dest = lang === 'pt' ? '/pt/' : '/';
+  const lang = asLang(url.searchParams.get('lang'));
+  const dest = pathForLang('/', lang);
 
   return new Response(null, {
     status: 302,

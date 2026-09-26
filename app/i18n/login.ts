@@ -38,6 +38,27 @@ const pt = {
   },
 };
 
+const es = {
+  title: 'Entrar',
+  h1: 'Entrar',
+  sub: 'Enviamos un enlace por correo. Expira en 15 minutos.',
+  niches: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. Dos nichos, sin conflicto de interés.',
+  email: 'Correo',
+  submit: 'Recibir el enlace',
+  successTitle: 'Revise el correo',
+  successBody: 'Si este correo tiene cuenta, el enlace está en camino. Expira en 15 minutos.',
+  create: 'Crear cuenta',
+  invalidLink: 'Este enlace expiró. Pida otro.',
+  mailFailed: 'El correo no salió. Intente de nuevo.',
+  errors: {
+    generic: 'Algo falló. Intente de nuevo.',
+    required: 'Indique el correo.',
+    invalid: 'Indique un correo válido.',
+  },
+};
+
+const loginCatalog = { en, pt, es };
+
 export function loginCopy(lang: Lang) {
-  return lang === 'pt' ? pt : en;
+  return loginCatalog[lang];
 }

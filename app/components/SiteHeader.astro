@@ -25,7 +25,7 @@ const accountHref = pathForLang('/signup', lang);
     </a>
     <nav class="site-header__nav" aria-label={messages.a11y.mainNav}>
       {navLinks.map((link) => {
-        const href = lang === 'en' ? link.en : link.pt;
+        const href = link[lang];
         const active = currentPath === href || currentPath.startsWith(`${href}/`);
         return (
           <a class:list={['site-header__link', active && 'is-active']} href={href}>
@@ -62,7 +62,7 @@ const accountHref = pathForLang('/signup', lang);
     </div>
     <nav class="mobile-menu__nav">
       {navLinks.map((link) => {
-        const href = lang === 'en' ? link.en : link.pt;
+        const href = link[lang];
         const active = currentPath === href || currentPath.startsWith(`${href}/`);
         return (
           <a class:list={['mobile-menu__link', active && 'is-active']} href={href}>
@@ -140,7 +140,7 @@ const accountHref = pathForLang('/signup', lang);
     margin-left: auto;
   }
 
-  .site-header__desktop { display: none; }
+  .site-header__desktop { display: none; flex: none; }
 
   .site-header__login {
     display: inline-flex;
@@ -190,6 +190,11 @@ const accountHref = pathForLang('/signup', lang);
 
   .site-header__menu-icon::before { top: -6px; }
   .site-header__menu-icon::after { top: 6px; }
+
+  @media (min-width: 768px) and (max-width: 1100px) {
+    .site-header__link { padding-left: var(--space-2); padding-right: var(--space-2); }
+    .site-header__inner { gap: var(--space-2); }
+  }
 
   @media (min-width: 768px) {
     .site-header__nav { display: flex; }

@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../i18n';
-import { t } from '../i18n';
+import { htmlLang, t } from '../i18n';
 import Seo from '../components/Seo.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
@@ -18,7 +18,7 @@ const messages = t(lang);
 ---
 
 <!doctype html>
-<html lang={lang === 'pt' ? 'pt-BR' : 'en'}>
+<html lang={htmlLang(lang)}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

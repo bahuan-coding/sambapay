@@ -64,7 +64,7 @@ Every term used in this kit, one sentence each. If you meet a word that is not h
 - **LGPD** — Brazil's personal-data protection law.
 - **Local commercial policy** — Local prices, a local signup and a direct connection.
 - **Local entity** — An acquirer, bank, PIX rail or FX partner in a given country, or our own regulated company there.
-- **Local merchant** — A business in a geography where we have structure, digitised through the Website Factory. Entrepreneurs and service providers in the digital economy who want online payments. They use our capture channels as a local player. Not a client's merchant.
+- **Local merchant** — A business in a geography where we have structure, digitised through the Website Factory. They use our capture channels as a local player. Not a client's merchant.
 - **Local signup** — We help the client gather its data and deliver it to the local partners, and we help with the licences, the regulations and the requirements of regulated institutions, so the approval has a better chance.
 - **Market enabler** — Our role for a client: we open and hold the local rails; the client brings the volume. Distinct from serving local merchants on the Website Factory.
 - **MCC** — Merchant category code, the code that tells the schemes what a merchant sells; must be honest.
@@ -77,6 +77,7 @@ Every term used in this kit, one sentence each. If you meet a word that is not h
 - **Orchestration** — Putting a client's volume on local rails and PaySecure's white label as one system, including across nationalities. Distinct from the Website Factory orchestration swarm.
 - **Orchestration swarm** — How the Website Factory works: AI and product managers specialised in each business, producing each digitisation case specifically.
 - **OTC** — Over the counter; a desk that takes our reais by same-day PIX and sells us USDC into our own wallet, the first hop of the remittance to PaySecure; we use two: MIPPO/GFS/OrbiFi and Transfero.
+- **OXXO** — OXXO Pay, the cash payment in Mexico.
 - **PTAX** — The Central Bank of Brazil's official daily exchange rate; the benchmark we measure every on-ramp cost against.
 - **PayFac** — Informal English for payment facilitator. Visa's scheme name is Payment Facilitator; Mastercard's is Submerchant Aggregator. Not a synonym for sub-acquirer.
 - **Payment facilitator** — Visa's name for a company that onboards merchants under an acquirer agreement. What we operate as today, on the partner Merchant of Record. Distinct from sub-acquirer.
@@ -84,12 +85,14 @@ Every term used in this kit, one sentence each. If you meet a word that is not h
 - **PaySecure** — paysecure.net, the global payments platform we are part of; brings the volume; we report to London; we run its white label and inherit its PCI structure and its commercial policies in other markets.
 - **Partner signup** — Getting SambaPay signed up and live on a new acquirer or on-ramp desk, from first contact to first live transaction; Abner's process.
 - **Payout** — Paying what is due after reconciliation. Taina executes money out. The Website Factory runs until the local merchant or the client receives its payout.
-- **Paytech** — A fintech specialised in payments; what SambaPay is. Focused pay technology: a focused system is an efficient system, and the business model is infrastructure.
+- **Paytech** — A fintech specialised in payments; what SambaPay is. A focused system is efficient. The business model is infrastructure.
 - **PCI DSS** — The card industry security standard. Card data is handled only inside PaySecure's white label, tokenised. The PCI structure we operate under is PaySecure's.
 - **PEP** — Politically exposed person; a person in or near public office who requires extra checks.
 - **Power of Attorney** — Written authority Sridhar helps André Silva obtain, so the FX contact and contract can be re-established and settlements can start.
 - **Production API keys** — Live credentials an acquirer issues for production traffic. We obtain them and deliver them to the core team. They live in Key Vault.
 - **PIX** — Brazil's instant payment system, run by the Central Bank of Brazil; settles in seconds, all day.
+- **Pago Fácil** — The cash payment in Argentina.
+- **QR Argentina** — The QR payment in Argentina.
 - **Rail** — Any connection through which a payment or a settlement moves: an acquirer, PIX, a bank, a remittance path.
 - **Reconciliation** — Tying the operator's file to our ledger, line by line, so the day's figure is right.
 - **Remittance** — Sending the reconciled money onward, from our local bank to PaySecure.
@@ -97,8 +100,9 @@ Every term used in this kit, one sentence each. If you meet a word that is not h
 - **Sanctions** — Lists of people, companies and countries we are forbidden to do business with.
 - **SAQ-D** — The PCI DSS self-assessment questionnaire for service providers that store, process or transmit card data. PaySecure's PCI on the white label is the structure we operate under. SambaPay's own questionnaire remains Open. Not a description of Cielo's Merchant of Record role.
 - **Scheme** — A card network: Visa, Mastercard.
+- **SPEI** — Mexico's instant bank transfer.
 - **Settlement** — The acquirer paying out the money from authorised transactions, on its window.
-- **SimilarWeb** — A web traffic analytics company. Website Factory live sites are engineered so SimilarWeb and online page validators read them as genuine, high-quality pages ("top A"): traffic profile, authenticity, organic competitiveness.
+- **SimilarWeb** — A web traffic analytics company. Website Factory sites are engineered to read as genuine.
 - **Sridhar** — PaySecure counterpart. sri@paysecure.net. Helps André Silva obtain the Power of Attorney for the FX contract. Receives the weekly pulse and monthly pack with Viktoria and Hansraj.
 - **Sub-acquirer** — Central Bank of Brazil term (Circular BCB 3.886/2018; Portuguese: sub-credenciador). A company that acquires card transactions under an acquirer's licence, with its own merchant IDs, rather than under its own payment-institution authorisation. What we will be. Distinct from payment facilitator.
 - **Take rate** — Our revenue as a percentage of the volume processed. Proposed by Hansraj so we cover the company's costs and hold a reserve. Number Open.

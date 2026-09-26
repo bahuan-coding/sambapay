@@ -1,27 +1,52 @@
 import en from './en.json';
+import es from './es.json';
 import pt from './pt.json';
 
-export type Lang = 'en' | 'pt';
+export type Lang = 'en' | 'pt' | 'es';
 export type Messages = typeof en;
 
-const catalogs: Record<Lang, Messages> = { en, pt };
+const catalogs: Record<Lang, Messages> = { en, pt, es };
 
 export function t(lang: Lang): Messages {
   return catalogs[lang];
 }
 
-const pairs: [string, string][] = [
-  ['/', '/pt/'],
-  ['/product', '/pt/produto'],
-  ['/acquirers', '/pt/adquirentes'],
-  ['/what-we-do', '/pt/o-que-fazemos'],
-  ['/character', '/pt/carater'],
-  ['/login', '/pt/login'],
-  ['/signup', '/pt/signup'],
-  ['/account', '/pt/conta'],
-  ['/legal/privacy', '/pt/legal/privacy'],
-  ['/legal/terms', '/pt/legal/terms'],
-  ['/404', '/pt/404'],
+export function asLang(value: string | null | undefined): Lang {
+  if (value === 'pt' || value === 'es' || value === 'en') return value;
+  return 'en';
+}
+
+export function htmlLang(lang: Lang): string {
+  if (lang === 'pt') return 'pt-BR';
+  if (lang === 'es') return 'es';
+  return 'en';
+}
+
+export function ogLocale(lang: Lang): string {
+  if (lang === 'pt') return 'pt_BR';
+  if (lang === 'es') return 'es_ES';
+  return 'en_US';
+}
+
+/** Empty on English. `/pt` or `/es` on the other two. */
+export function langPrefix(lang: Lang): string {
+  return lang === 'en' ? '' : `/${lang}`;
+}
+
+type Route = Record<Lang, string>;
+
+const routes: Route[] = [
+  { en: '/', pt: '/pt', es: '/es' },
+  { en: '/product', pt: '/pt/produto', es: '/es/producto' },
+  { en: '/acquirers', pt: '/pt/adquirentes', es: '/es/adquirentes' },
+  { en: '/what-we-do', pt: '/pt/o-que-fazemos', es: '/es/que-hacemos' },
+  { en: '/character', pt: '/pt/carater', es: '/es/caracter' },
+  { en: '/login', pt: '/pt/login', es: '/es/login' },
+  { en: '/signup', pt: '/pt/signup', es: '/es/signup' },
+  { en: '/account', pt: '/pt/conta', es: '/es/cuenta' },
+  { en: '/legal/privacy', pt: '/pt/legal/privacy', es: '/es/legal/privacy' },
+  { en: '/legal/terms', pt: '/pt/legal/terms', es: '/es/legal/terms' },
+  { en: '/404', pt: '/pt/404', es: '/es/404' },
 ];
 
 export function normalizePath(path: string): string {
@@ -30,30 +55,37 @@ export function normalizePath(path: string): string {
   return trimmed || '/';
 }
 
-export function pathForLang(path: string, lang: Lang): string {
+function publish(path: string): string {
+  if (path === '/pt' || path === '/es') return `${path}/`;
+  return path;
+}
+
+function stripLang(path: string): string {
+  if (path === '/pt' || path === '/es') return '/';
+  if (path.startsWith('/pt/')) return path.slice(3) || '/';
+  if (path.startsWith('/es/')) return path.slice(3) || '/';
+  return path;
+}
+
+function findRoute(path: string): Route | undefined {
   const normalized = normalizePath(path);
-  const pair = pairs.find(([enPath]) => enPath === normalized);
-  if (pair) return lang === 'en' ? pair[0] : pair[1];
-  if (lang === 'en') return normalized;
-  return `/pt${normalized}`;
+  return routes.find((route) => route.en === normalized || route.pt === normalized || route.es === normalized);
+}
+
+export function pathForLang(path: string, lang: Lang): string {
+  const route = findRoute(path);
+  if (route) return publish(route[lang]);
+  const stripped = stripLang(normalizePath(path));
+  if (lang === 'en') return stripped;
+  return stripped === '/' ? `/${lang}/` : `/${lang}${stripped}`;
 }
 
 export function alternatePath(currentPath: string, lang: Lang): string {
-  const path = normalizePath(currentPath);
-  const pair = pairs.find(([enPath, ptPath]) => enPath === path || ptPath === path);
-  if (pair) return lang === 'en' ? pair[0] : pair[1];
-  if (lang === 'en') {
-    if (path === '/pt') return '/';
-    if (path.startsWith('/pt/')) return path.slice(3) || '/';
-    return path;
-  }
-  if (path === '/pt') return '/pt/';
-  if (path.startsWith('/pt/')) return path;
-  return path === '/' ? '/pt/' : `/pt${path}`;
+  return pathForLang(currentPath, lang);
 }
 
 export const navLinks = [
-  { key: 'product' as const, en: '/product', pt: '/pt/produto' },
-  { key: 'acquirers' as const, en: '/acquirers', pt: '/pt/adquirentes' },
-  { key: 'what' as const, en: '/what-we-do', pt: '/pt/o-que-fazemos' },
+  { key: 'product' as const, en: '/product', pt: '/pt/produto', es: '/es/producto' },
+  { key: 'acquirers' as const, en: '/acquirers', pt: '/pt/adquirentes', es: '/es/adquirentes' },
+  { key: 'what' as const, en: '/what-we-do', pt: '/pt/o-que-fazemos', es: '/es/que-hacemos' },
 ];
