@@ -51,6 +51,8 @@ export interface FeatureLine {
   title: string;
   body: string;
   icon?: MethodIcon | MethodIcon[];
+  /** Official logo from the method catalogue. Takes precedence over icon. */
+  methodLogo?: string;
   section?: string;
 }
 
@@ -110,21 +112,28 @@ const en = {
       title: 'PayIn',
       lede: 'The shopper pays with the methods of that market.',
       items: [
-        { icon: 'credit', title: 'Credit', body: 'Credit card charges, authorised and captured.' },
-        { icon: 'debit', title: 'Debit', body: 'Debit card charges.' },
+        { methodLogo: 'visa', title: 'Visa', body: 'Credit and debit, authorised and captured.' },
+        { methodLogo: 'mastercard', title: 'Mastercard', body: 'Credit and debit, authorised and captured.' },
+        { methodLogo: 'amex', title: 'American Express', body: 'Credit and debit, authorised and captured.' },
+        { methodLogo: 'elo', title: 'Elo', body: 'The Brazilian card brand.' },
+        { methodLogo: 'hipercard', title: 'Hipercard', body: 'The Brazilian card brand.' },
         {
           icon: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
           title: '3DS',
           body: "Reduce your chargebacks. The shopper's bank confirms it is the shopper. Without that challenge, the charge is 2D.",
         },
-        { icon: 'pix', title: 'Pix', body: 'In Brazil, the instant payment.' },
-        { icon: 'boleto', title: 'Boleto', body: 'In Brazil, the bank slip.' },
-        { icon: 'spei', title: 'SPEI', body: 'In Mexico, the instant bank transfer.' },
-        { icon: 'oxxo', title: 'OXXO Pay', body: 'In Mexico, the cash payment.' },
-        { icon: 'qra', title: 'QR Argentina', body: 'In Argentina, one code at the till.' },
-        { icon: 'pagofacil', title: 'Pago Fácil', body: 'In Argentina, the cash payment.' },
-        { icon: 'transfer', title: 'Bank transfer', body: 'In Chile, the bank transfer.' },
-        { icon: 'brought', title: 'Brought methods', body: 'A client can bring its own payment methods to connect locally.' },
+        { methodLogo: 'pix', title: 'Pix', body: 'In Brazil, the instant payment.' },
+        { methodLogo: 'boleto', title: 'Boleto', body: 'In Brazil, the bank slip.' },
+        { methodLogo: 'spei', title: 'SPEI', body: 'In Mexico, the instant bank transfer.' },
+        { methodLogo: 'oxxo', title: 'OXXO', body: 'In Mexico, the cash payment.' },
+        { methodLogo: 'pagofacil', title: 'Pago Fácil', body: 'In Argentina, the cash payment.' },
+        { methodLogo: 'mercadopago', title: 'Mercado Pago', body: 'In Argentina and Chile, the wallet.' },
+        { methodLogo: 'pse', title: 'PSE', body: 'In Colombia, the bank transfer.' },
+        { methodLogo: 'redcompra', title: 'Redcompra', body: 'In Chile, the debit rail.' },
+        { methodLogo: 'webpay', title: 'Webpay', body: 'In Chile, the card rail.' },
+        { methodLogo: 'yape', title: 'Yape', body: 'In Peru, the wallet.' },
+        { methodLogo: 'plin', title: 'Plin', body: 'In Peru, the wallet.' },
+        { methodLogo: 'pagoefectivo', title: 'PagoEfectivo', body: 'In Peru, the cash network.' },
       ],
     },
     {
@@ -220,21 +229,28 @@ const pt = {
       title: 'PayIn',
       lede: 'Quem compra paga com os meios daquele mercado.',
       items: [
-        { icon: 'credit', title: 'Crédito', body: 'Cobranças no cartão de crédito, autorizadas e capturadas.' },
-        { icon: 'debit', title: 'Débito', body: 'Cobranças no cartão de débito.' },
+        { methodLogo: 'visa', title: 'Visa', body: 'Crédito e débito, autorizados e capturados.' },
+        { methodLogo: 'mastercard', title: 'Mastercard', body: 'Crédito e débito, autorizados e capturados.' },
+        { methodLogo: 'amex', title: 'American Express', body: 'Crédito e débito, autorizados e capturados.' },
+        { methodLogo: 'elo', title: 'Elo', body: 'A bandeira brasileira.' },
+        { methodLogo: 'hipercard', title: 'Hipercard', body: 'A bandeira brasileira.' },
         {
           icon: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
           title: '3DS',
           body: 'Reduza o chargeback. O banco do comprador confirma que é ele. Sem esse desafio, a cobrança é 2D.',
         },
-        { icon: 'pix', title: 'Pix', body: 'No Brasil, o pagamento instantâneo.' },
-        { icon: 'boleto', title: 'Boleto', body: 'No Brasil, o boleto bancário.' },
-        { icon: 'spei', title: 'SPEI', body: 'No México, a transferência bancária instantânea.' },
-        { icon: 'oxxo', title: 'OXXO Pay', body: 'No México, o pagamento em dinheiro.' },
-        { icon: 'qra', title: 'QR Argentina', body: 'Na Argentina, um código no caixa.' },
-        { icon: 'pagofacil', title: 'Pago Fácil', body: 'Na Argentina, o pagamento em dinheiro.' },
-        { icon: 'transfer', title: 'Transferência bancária', body: 'No Chile, a transferência bancária.' },
-        { icon: 'brought', title: 'Meios trazidos', body: 'O cliente pode trazer os próprios meios de pagamento para conectar localmente.' },
+        { methodLogo: 'pix', title: 'Pix', body: 'No Brasil, o pagamento instantâneo.' },
+        { methodLogo: 'boleto', title: 'Boleto', body: 'No Brasil, o boleto bancário.' },
+        { methodLogo: 'spei', title: 'SPEI', body: 'No México, a transferência bancária instantânea.' },
+        { methodLogo: 'oxxo', title: 'OXXO', body: 'No México, o pagamento em dinheiro.' },
+        { methodLogo: 'pagofacil', title: 'Pago Fácil', body: 'Na Argentina, o pagamento em dinheiro.' },
+        { methodLogo: 'mercadopago', title: 'Mercado Pago', body: 'Na Argentina e no Chile, a carteira.' },
+        { methodLogo: 'pse', title: 'PSE', body: 'Na Colômbia, a transferência bancária.' },
+        { methodLogo: 'redcompra', title: 'Redcompra', body: 'No Chile, o trilho de débito.' },
+        { methodLogo: 'webpay', title: 'Webpay', body: 'No Chile, o trilho de cartão.' },
+        { methodLogo: 'yape', title: 'Yape', body: 'No Peru, a carteira.' },
+        { methodLogo: 'plin', title: 'Plin', body: 'No Peru, a carteira.' },
+        { methodLogo: 'pagoefectivo', title: 'PagoEfectivo', body: 'No Peru, a rede de dinheiro.' },
       ],
     },
     {

@@ -1,8 +1,10 @@
 ---
 import MethodIcon from './MethodIcon.astro';
+import PaymentMethodIcon from './PaymentMethodIcon.astro';
 import ProcessPlate from './ProcessPlate.astro';
 import type { Lang } from '../i18n';
 import { productCopy, type MethodIcon as MethodKind } from '../data/features';
+import type { MethodKey } from '../data/payment-methods';
 
 function iconsOf(icon?: MethodKind | MethodKind[]) {
   if (!icon) return [];
@@ -32,12 +34,13 @@ const groups = productCopy(lang).groups;
         <ul>
           {group.items.map((item) => {
             const icons = iconsOf(item.icon);
+            const logo = item.methodLogo as MethodKey | undefined;
             const lockup = icons.length === 1 && (icons[0] === 'spei' || icons[0] === 'pix');
             return (
-              <li class:list={[icons.length > 0 && 'has-icon', icons.length > 1 && 'schemes', lockup && 'lockup']}>
-                {icons.length > 0 && (
+              <li class:list={[(icons.length > 0 || logo) && 'has-icon', logo && 'has-logo', icons.length > 1 && 'schemes', lockup && 'lockup']}>
+                {(logo || icons.length > 0) && (
                   <span class:list={['method-icons', icons.length > 1 && 'method-icons--schemes', lockup && 'method-icons--lockup']}>
-                    {icons.map((kind) => <MethodIcon kind={kind} />)}
+                    {logo ? <PaymentMethodIcon method={logo} /> : icons.map((kind) => <MethodIcon kind={kind} />)}
                   </span>
                 )}
                 <div>
@@ -183,6 +186,30 @@ const groups = productCopy(lang).groups;
     max-width: 28rem;
     font-size: 0.8125rem;
     line-height: 1.35;
+  }
+
+  li.has-logo .method-icons {
+    width: 3.5rem;
+    justify-content: center;
+  }
+
+  li.has-logo :global(.pm) {
+    width: 3rem;
+    height: 2.25rem;
+  }
+
+  li.has-logo :global(.pm img) {
+    max-width: 3rem;
+    max-height: 2.25rem;
+  }
+
+  li.has-logo h3 {
+    font-size: 0.98rem;
+  }
+
+  li.has-logo p {
+    font-size: 0.875rem;
+    line-height: 1.4;
   }
 
   .method-icons--lockup :global(img) {
