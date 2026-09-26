@@ -32,7 +32,7 @@ const groups = productCopy(lang).groups;
         <ul>
           {group.items.map((item) => {
             const icons = iconsOf(item.icon);
-            const lockup = icons.length === 1 && icons[0] === 'spei';
+            const lockup = icons.length === 1 && (icons[0] === 'spei' || icons[0] === 'pix');
             return (
               <li class:list={[icons.length > 0 && 'has-icon', icons.length > 1 && 'schemes', lockup && 'lockup']}>
                 {icons.length > 0 && (
@@ -185,7 +185,7 @@ const groups = productCopy(lang).groups;
   }
 
   .method-icons--lockup :global(img) {
-    height: 4.75rem;
+    height: 4rem;
     width: auto;
   }
 

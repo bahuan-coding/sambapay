@@ -54,7 +54,7 @@ export const esCopy = {
           title: '',
           body: 'Reduzca el chargeback. Use 3DS. El banco de quien compra confirma que es quien compra. Sin ese desafío, el cobro es 2D.',
         },
-        { icon: 'pix', title: 'PIX', body: 'En Brasil, el pago instantáneo.' },
+        { icon: 'pix', title: '', body: 'En Brasil, el pago instantáneo.' },
         { icon: 'boleto', title: 'Boleto', body: 'En Brasil, el boleto bancario.' },
         { icon: 'spei', title: 'SPEI', body: 'En México, la transferencia bancaria instantánea.' },
         { icon: 'oxxo', title: 'OXXO Pay', body: 'En México, el pago en efectivo.' },
