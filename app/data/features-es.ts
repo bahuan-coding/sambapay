@@ -5,13 +5,13 @@ export const esCopy = {
   lede: 'Precios locales, local signup y direct connection. Varios adquirentes lado a lado. La tienda digitalizada incluye la terminal. El dinero recaudado localmente vuelve en el menor número de pasos.',
   refusalTitle: 'Lo que no hacemos',
   refusal: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. No hacemos fulfilment ni envío. Dos nichos, sin conflicto de interés.',
-  close: 'De punta a punta. Autorizado y capturado en el mercado de adquirencia. Liquidado en la ventana del adquirente. Comisión, reserva, devoluciones y chargebacks se descuentan en el neto. El payout sigue cuando el libro cierra.',
+  close: 'Un camino, de punta a punta. El pago se autoriza y se captura en el mercado donde paga el comprador, liquida en la ventana del adquirente y llega al payout cuando comisiones, reserva, devoluciones y chargebacks cierran contra el libro.',
   cta: 'Crear cuenta',
   ctaHref: '/es/signup',
   columns: [
     {
       title: 'Cobrar',
-      pay: ['credit', 'debit', '3ds', 'pix', 'boleto', 'spei', 'oxxo', 'qr', 'pagofacil', 'transfer'],
+      pay: ['credit', 'debit', 'threeds', 'pix', 'boleto', 'spei', 'oxxo', 'qra', 'pagofacil', 'transfer'],
       items: [
         { mark: 'prices', title: 'Precios locales', body: 'Su volumen paga el MDR que paga un merchant local. Nuestra tecnología hace viable esa tarifa.' },
         { mark: 'methods', title: 'Tarjeta y medios locales', body: 'Crédito y débito, 3DS y 2D, más los medios locales de ese mercado.' },

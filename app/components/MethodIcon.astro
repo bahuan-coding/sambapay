@@ -6,64 +6,156 @@ interface Props {
 }
 
 const { kind } = Astro.props;
+
+const labels: Partial<Record<Kind, string>> = {
+  pix: 'Pix',
+  spei: 'SPEI',
+  oxxo: 'OXXO',
+  qra: 'QR',
+  pagofacil: 'Pago Fácil',
+  boleto: 'Boleto',
+  transfer: 'Transfer',
+  credit: 'Credit',
+  debit: 'Debit',
+};
+
+const tones: Partial<Record<Kind, string>> = {
+  credit: 'blue',
+  debit: 'blue',
+  threeds: 'blue',
+  visa_secure: 'blue',
+  mastercard_id_check: 'blue',
+  amex_safekey: 'blue',
+  pix: 'green',
+  spei: 'green',
+  transfer: 'green',
+  boleto: 'ipe',
+  qra: 'ipe',
+  oxxo: 'urucum',
+  pagofacil: 'urucum',
+};
+
+const tone = tones[kind] ?? 'ink';
 ---
 
-<span class="method-icon" aria-hidden={kind === 'spei' || kind === 'pix' ? undefined : 'true'}>
-  {kind === 'pix' && <img src="/methods/pix.png" alt="Pix" />}
-  {kind === 'boleto' && (
-    <svg viewBox="0 0 24 24">
-      <path fill="#1C3D4A" d="M3 4h2v16H3zm3 0h1v16H6zm2 0h2v16H8zm3 0h1v16h-1zm2 0h3v16h-3zm4 0h1v16h-1zm2 0h2v16h-2z"/>
+<span class="method-icon" data-tone={tone} role="img" aria-label={labels[kind] ?? undefined} aria-hidden={labels[kind] ? undefined : 'true'}>
+  {kind === 'credit' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <rect x="1.2" y="1.2" width="29.6" height="19.6" rx="2.4" stroke="currentColor" stroke-width="1.7" />
+      <path d="M1.2 7.4h29.6" stroke="currentColor" stroke-width="2.6" />
+      <rect class="tone" x="5" y="12.8" width="6.5" height="4.2" rx="1" />
     </svg>
   )}
-  {kind === 'oxxo' && <img src="/methods/oxxo.svg" alt="" />}
-  {kind === 'spei' && <img src="/methods/spei.png" alt="SPEI" />}
-  {kind === 'pagofacil' && <img src="/methods/pago-facil.svg" alt="" />}
-  {kind === 'visa_secure' && <img src="/methods/visa-secure.png" alt="" />}
+  {kind === 'debit' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <rect x="1.2" y="1.2" width="29.6" height="19.6" rx="2.4" stroke="currentColor" stroke-width="1.7" />
+      <circle class="tone" cx="23" cy="6.8" r="2.6" />
+      <path d="M5 13h9M5 16.4h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+    </svg>
+  )}
+  {kind === 'threeds' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <path d="M10 3.5h11l4 4v11H10z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+      <path d="M10 3.5v4h4" stroke="currentColor" stroke-width="1.7" />
+      <path class="tone" d="m12.5 12.5 2.6 2.6 5.4-6" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  )}
+  {kind === 'visa_secure' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <circle cx="16" cy="11" r="8.4" stroke="currentColor" stroke-width="1.7" />
+      <path class="tone" d="m12.4 11 2.5 2.5 5.2-5.8" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  )}
   {kind === 'mastercard_id_check' && (
-    <span class="id-check">
-      <img src="/methods/mastercard-id-check.png" alt="" />
-      <span>ID Check</span>
-    </span>
-  )}
-  {kind === 'amex_safekey' && <img src="/methods/amex-safekey.png" alt="" />}
-  {kind === 'qra' && <img class="qra" src="/methods/qr-argentina.svg" alt="" />}
-  {kind === 'transfer' && (
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M4 8h12M13 5l3 3-3 3M20 16H8M11 13l-3 3 3 3" stroke="#1351B4" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <svg viewBox="0 0 32 22" fill="none">
+      <rect x="8" y="3.5" width="13" height="15" rx="2" stroke="currentColor" stroke-width="1.7" />
+      <circle class="tone" cx="14.5" cy="9.5" r="2.4" />
+      <path class="tone" d="M10.8 15.6c.7-1.6 2-2.4 3.7-2.4s3 .8 3.7 2.4" stroke-width="1.7" stroke-linecap="round" />
+      <path d="m22.5 12 7 0 M26 8.5l3.5 3.5-3.5 3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   )}
-  {(kind === 'credit' || kind === 'debit') && (
-    <svg viewBox="0 0 24 24">
-      <rect x="2" y="5" width="20" height="14" rx="2" fill="none" stroke="#1C3D4A" stroke-width="1.6"/>
-      <path d="M2 9h20" stroke="#1351B4" stroke-width="2"/>
-      <rect x="4.5" y="13" width="4" height="3" rx="0.5" fill="#C4890A"/>
+  {kind === 'amex_safekey' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <rect x="9" y="4" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.7" />
+      <path d="M13 8h6M13 11h6M13 14h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      <circle class="tone" cx="23" cy="16" r="3.4" />
+      <path d="M21.6 16v-1.2a1.4 1.4 0 0 1 2.8 0V16" stroke="#fff" stroke-width="1.2" />
+    </svg>
+  )}
+  {kind === 'pix' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <path d="M16 3.2 21.3 8.5 16 13.8 10.7 8.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+      <path d="M16 13.8 21.3 19.1 16 24.4 10.7 19.1z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+      <path class="tone" d="M7.4 8.3 10.7 11.6 7.4 14.9 4.1 11.6z" stroke-width="1.6" stroke-linejoin="round" />
+      <path class="tone" d="M24.6 8.3 27.9 11.6 24.6 14.9 21.3 11.6z" stroke-width="1.6" stroke-linejoin="round" />
+    </svg>
+  )}
+  {kind === 'boleto' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <path d="M4 3v16M7.5 3v16M11 3v16M15 3v16M19 3v16M23 3v16M27 3v16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      <path class="tone" d="M13 3v16" stroke-width="3.4" stroke-linecap="round" />
+    </svg>
+  )}
+  {kind === 'spei' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <rect x="2.6" y="3" width="26.8" height="16" rx="2" stroke="currentColor" stroke-width="1.7" />
+      <path d="M2.6 8.2h26.8" stroke="currentColor" stroke-width="1.7" />
+      <path class="tone" d="M7.5 14.2h6M17 14.2h5.5" stroke-width="1.9" stroke-linecap="round" />
+    </svg>
+  )}
+  {kind === 'oxxo' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <path d="M6 4.5 24 4.5 8 17.5 26 17.5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />
+      <path class="tone" d="M24 4.5 26 4.5" stroke-width="2.4" stroke-linecap="round" />
+    </svg>
+  )}
+  {kind === 'qra' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <rect x="2.6" y="2.6" width="8" height="8" stroke="currentColor" stroke-width="1.7" />
+      <rect x="21.4" y="2.6" width="8" height="8" stroke="currentColor" stroke-width="1.7" />
+      <rect x="2.6" y="11.4" width="8" height="8" stroke="currentColor" stroke-width="1.7" />
+      <rect class="tone" x="5" y="5" width="3.2" height="3.2" />
+      <rect class="tone" x="23.8" y="5" width="3.2" height="3.2" />
+      <rect class="tone" x="5" y="13.8" width="3.2" height="3.2" />
+      <path class="tone" d="M21.4 11.4h3.4v3.4h-3.4z M26.6 18.6h2.8M21.4 19.4h3" stroke-width="1.7" />
+    </svg>
+  )}
+  {kind === 'pagofacil' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <rect x="3" y="3" width="26" height="16" rx="2" stroke="currentColor" stroke-width="1.7" />
+      <path class="tone" d="M16 6.5v9M13.2 9.2c0-1 1.3-1.8 2.8-1.8s2.8.7 2.8 1.7-1.3 1.6-2.8 1.9-2.8.8-2.8 1.8 1.3 1.8 2.8 1.8 2.8-.7 2.8-1.7" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+  )}
+  {kind === 'transfer' && (
+    <svg viewBox="0 0 32 22" fill="none">
+      <path d="M4 8h18M18 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      <path class="tone" d="M28 15H10M14 11l-4 4 4 4" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   )}
   {kind === 'local' && (
-    <svg viewBox="0 0 24 24">
-      <rect x="3" y="6" width="4" height="12" rx="1" fill="#1C3D4A"/>
-      <rect x="10" y="6" width="4" height="12" rx="1" fill="#1351B4"/>
-      <rect x="17" y="6" width="4" height="12" rx="1" fill="#C4890A"/>
+    <svg viewBox="0 0 32 22" fill="none">
+      <path d="M6 5v12M13 5v12M20 5v12M27 5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      <path class="tone" d="M13 5v12" stroke-width="2.6" stroke-linecap="round" />
     </svg>
   )}
   {kind === 'brought' && (
-    <svg viewBox="0 0 24 24" fill="none">
-      <circle cx="6" cy="16" r="2.2" stroke="#1C3D4A" stroke-width="1.6"/>
-      <circle cx="18" cy="7" r="2.2" fill="#1351B4"/>
-      <path d="M8 14.5c2.2-.2 3.2-4 6.2-4.6" stroke="#C4890A" stroke-width="1.6" stroke-linecap="round"/>
+    <svg viewBox="0 0 32 22" fill="none">
+      <circle cx="8" cy="16" r="3" stroke="currentColor" stroke-width="1.7" />
+      <circle class="tone" cx="24" cy="6" r="3" />
+      <path class="tone" d="M10.5 14C14 13.6 15 8 20 7" stroke-width="1.7" stroke-linecap="round" />
     </svg>
   )}
   {kind === 'prices' && (
-    <svg viewBox="0 0 24 24" fill="none">
-      <path d="M5 9h8l5 5-8 8-5-5z" stroke="#1C3D4A" stroke-width="1.6" stroke-linejoin="round"/>
-      <circle cx="9" cy="13" r="1" fill="#C4890A"/>
+    <svg viewBox="0 0 32 22" fill="none">
+      <path d="M7 4h9l5 5-9 9-5-5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+      <circle class="tone" cx="12" cy="9" r="1.3" />
     </svg>
   )}
   {kind === 'capture' && (
-    <svg viewBox="0 0 24 24" fill="none">
-      <rect x="8" y="2.5" width="8" height="19" rx="2" stroke="#1C3D4A" stroke-width="1.6"/>
-      <rect x="10" y="5" width="4" height="4" rx="0.5" fill="#FFCD07"/>
-      <circle cx="12" cy="17" r="1.2" fill="#168821"/>
+    <svg viewBox="0 0 32 22" fill="none">
+      <rect x="11" y="2.6" width="10" height="17" rx="2" stroke="currentColor" stroke-width="1.7" />
+      <rect class="tone" x="13.5" y="5" width="5" height="4.5" rx="1" />
+      <circle class="tone" cx="16" cy="16" r="1.4" />
     </svg>
   )}
 </span>
@@ -72,63 +164,25 @@ const { kind } = Astro.props;
   .method-icon {
     display: grid;
     place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-  }
-
-  .method-icon:has(img) {
-    width: auto;
-    height: auto;
-  }
-
-  svg {
-    width: 1.85rem;
-    height: 1.85rem;
-  }
-
-  img {
-    display: block;
+    width: 2.75rem;
     height: 2rem;
-    width: auto;
-  }
-
-  img.qra {
-    height: 3.25rem;
-  }
-
-  .id-check {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.15rem;
-  }
-
-  .id-check img {
-    height: 2.6rem;
-  }
-
-  .id-check span {
-    font-family: var(--display);
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1;
     color: var(--ink);
   }
 
-  b {
-    display: grid;
-    place-items: center;
-    min-width: 1.85rem;
-    height: 1.85rem;
-    padding: 0 0.28rem;
-    border: 1.5px solid var(--blue);
-    border-radius: 4px;
-    font-family: var(--display);
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    color: var(--blue);
+  svg {
+    width: 2.75rem;
+    height: 2rem;
+    overflow: visible;
   }
 
+  .method-icon[data-tone='blue'] { --accent: var(--blue); }
+  .method-icon[data-tone='green'] { --accent: var(--green); }
+  .method-icon[data-tone='ipe'] { --accent: var(--ipe); }
+  .method-icon[data-tone='urucum'] { --accent: var(--urucum); }
+  .method-icon[data-tone='ink'] { --accent: var(--anil); }
+
+  .tone {
+    color: var(--accent);
+    stroke: var(--accent);
+  }
 </style>

@@ -4,39 +4,35 @@ import type { MethodIcon as Kind } from '../data/features';
 
 interface Props {
   items: Kind[];
+  label: string;
 }
 
-const { items } = Astro.props;
+const { items, label } = Astro.props;
 ---
 
-<div class="strip" role="list" aria-label="Payment methods">
+<ul class="strip" aria-label={label}>
   {items.map((kind) => (
-    <span class="strip__item" role="listitem">
+    <li class="strip__item">
       <MethodIcon kind={kind} />
-    </span>
+    </li>
   ))}
-</div>
+</ul>
 
 <style>
   .strip {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
-    gap: 0.9rem 0.75rem;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 1.15rem;
     margin: 1.5rem 0 0;
-    padding-top: 1.35rem;
+    padding: 1.35rem 0 0;
     border-top: 1px solid var(--ink);
   }
 
   .strip__item {
     display: grid;
     place-items: center;
-    min-height: 2.5rem;
+    height: 2rem;
   }
-
-  .strip :global(.method-icon) {
-    opacity: 0.92;
-    transition: opacity 150ms ease;
-  }
-
-  .strip :global(.method-icon):hover { opacity: 1; }
 </style>

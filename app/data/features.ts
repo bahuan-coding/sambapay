@@ -66,13 +66,13 @@ const en = {
   lede: 'Local prices, a local signup and a direct connection. Several acquirers sit side by side. The digitised store includes the terminal. Money collected locally comes back in as few steps as possible.',
   refusalTitle: 'What we do not do',
   refusal: "We do not take our clients' merchants. We do not dispute their accounts. We do not do fulfilment or shipping. Two niches, no conflict of interest.",
-  close: 'End to end. Authorised and captured in the acquiring market. Settled on the acquirer\u2019s window. Fees, reserve, refunds and chargebacks net out. Paid out once the book ties.',
+  close: 'One path, end to end. The payment is authorised and captured in the market where the shopper pays, settles on the acquirer\u2019s window, and reaches the payout once fees, reserve, refunds and chargebacks settle against the book.',
   cta: 'Create account',
   ctaHref: '/signup',
   columns: [
     {
       title: 'Accept',
-      pay: ['credit', 'debit', '3ds', 'pix', 'boleto', 'spei', 'oxxo', 'qr', 'pagofacil', 'transfer'],
+      pay: ['credit', 'debit', 'threeds', 'pix', 'boleto', 'spei', 'oxxo', 'qra', 'pagofacil', 'transfer'],
       items: [
         { mark: 'prices', title: 'Local prices', body: 'Your volume is charged the MDR a local merchant is charged. Our technology makes that rate possible.' },
         { mark: 'methods', title: 'Cards and local methods', body: 'Credit and debit, 3DS and 2D, plus the local methods of that market.' },
@@ -176,13 +176,13 @@ const pt = {
   lede: 'Preços locais, local signup e direct connection. Vários adquirentes lado a lado. A loja digitalizada inclui a maquininha. O dinheiro arrecadado localmente volta no menor número de passos.',
   refusalTitle: 'O que não fazemos',
   refusal: 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Não fazemos fulfilment nem envio. Dois nichos, sem conflito de interesse.',
-  close: 'Ponta a ponta. Autorizada e capturada no mercado de adquirência. Liquidada na janela do adquirente. Taxa, reserva, estorno e chargeback saem no líquido. O payout segue quando o livro fecha.',
+  close: 'Um caminho, ponta a ponta. O pagamento é autorizado e capturado no mercado onde o cliente paga, liquida na janela do adquirente e chega ao payout quando taxas, reserva, estornos e chargebacks fecham contra o livro.',
   cta: 'Criar conta',
   ctaHref: '/pt/signup',
   columns: [
     {
       title: 'Receber',
-      pay: ['credit', 'debit', '3ds', 'pix', 'boleto', 'spei', 'oxxo', 'qr', 'pagofacil', 'transfer'],
+      pay: ['credit', 'debit', 'threeds', 'pix', 'boleto', 'spei', 'oxxo', 'qra', 'pagofacil', 'transfer'],
       items: [
         { mark: 'prices', title: 'Preços locais', body: 'O seu volume paga o MDR que um merchant local paga. Nossa tecnologia viabiliza essa taxa.' },
         { mark: 'methods', title: 'Cartão e meios locais', body: 'Crédito e débito, 3DS e 2D, mais os meios locais daquele mercado.' },
