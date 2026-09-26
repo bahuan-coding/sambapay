@@ -1,0 +1,25 @@
+---
+interface Props {
+  kind: 'rails' | 'enable' | 'settle';
+}
+
+const { kind } = Astro.props;
+const plate = {
+  rails: { src: '/process/rails.png?v=7', w: 900, h: 1200 },
+  enable: { src: '/process/enable.png', w: 1200, h: 900 },
+  settle: { src: '/process/settle.png', w: 1200, h: 900 },
+}[kind];
+---
+
+<img class="plate" src={plate.src} alt="" width={plate.w} height={plate.h} />
+
+<style>
+  .plate {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border-top: 6px solid var(--tone, #1351b4);
+    background: #f4efe4;
+  }
+</style>

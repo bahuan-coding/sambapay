@@ -24,9 +24,10 @@ interface Props {
   credit?: string;
   creditHref?: string;
   frames?: Frame[];
+  display?: boolean;
 }
 
-const { lang, currentPath, title, image, place, country, flag, credit, creditHref, frames: passed } = Astro.props;
+const { lang, currentPath, title, image, place, country, flag, credit, creditHref, frames: passed, display = false } = Astro.props;
 const frames: Frame[] = passed ?? [{
   image: image ?? '',
   place: place ?? '',
@@ -42,7 +43,7 @@ const next = lang === 'pt' ? 'Próximo país' : 'Next country';
 ---
 
 <BaseLayout lang={lang} currentPath={currentPath} title={title}>
-  <section class="place" data-shore={many ? '' : undefined}>
+  <section class:list={['place', display && 'place--display']} data-shore={many ? '' : undefined}>
     <div class="place__window">
       <div class="place__reel">
         {frames.map((frame) => (
@@ -73,11 +74,18 @@ const next = lang === 'pt' ? 'Próximo país' : 'Next country';
           </div>
         ))}
       </div>
-      <div class="place__sheet">
-        <slot name="sheet" />
-      </div>
+      {!display && (
+        <div class="place__sheet">
+          <slot name="sheet" />
+        </div>
+      )}
     </div>
   </section>
+  {display && (
+    <div class="place__bill">
+      <slot name="sheet" />
+    </div>
+  )}
   {Astro.slots.has('default') && (
     <div class="reading">
       <slot />
@@ -292,5 +300,67 @@ const next = lang === 'pt' ? 'Próximo país' : 'Next country';
     font-family: var(--display);
     font-size: 1.5rem;
     font-weight: 700;
+  }
+
+  .place--display {
+    display: block;
+    min-height: 0;
+  }
+
+  .place--display .place__window {
+    position: relative;
+    inset: auto;
+    height: 78vh;
+    min-height: 26rem;
+  }
+
+  .place--display .place__nav {
+    top: 0;
+    height: 78vh;
+    align-items: center;
+  }
+
+  .place--display .place__stack {
+    position: absolute;
+    left: 1.25rem;
+    bottom: 1.25rem;
+    margin: 0;
+    max-width: none;
+  }
+
+  .place__bill {
+    width: min(76rem, calc(100% - 4rem));
+    margin: 0 auto;
+    padding: 2.75rem 0 0;
+  }
+
+  .place__bill::before {
+    content: '';
+    display: block;
+    height: 8px;
+    margin-bottom: 1.6rem;
+    background: linear-gradient(90deg, var(--green) 0 32%, var(--yellow) 32% 64%, var(--blue) 64% 100%);
+  }
+
+  .place__bill :global(h1) {
+    margin: 0 0 1rem;
+    max-width: 12em;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(2.7rem, 5.6vw, 4.75rem);
+    letter-spacing: -0.038em;
+    line-height: 0.94;
+  }
+
+  .place__bill :global(h1 em) {
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .place__bill :global(p) {
+    margin: 0 0 1.25rem;
+    max-width: 38rem;
+    font-size: 1.0625rem;
+    line-height: 1.45;
   }
 </style>

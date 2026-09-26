@@ -12,6 +12,7 @@ export function t(lang: Lang): Messages {
 
 const pairs: [string, string][] = [
   ['/', '/pt/'],
+  ['/product', '/pt/produto'],
   ['/acquirers', '/pt/adquirentes'],
   ['/what-we-do', '/pt/o-que-fazemos'],
   ['/character', '/pt/carater'],
@@ -52,6 +53,7 @@ export function alternatePath(currentPath: string, lang: Lang): string {
 }
 
 export const navLinks = [
+  { key: 'product' as const, en: '/product', pt: '/pt/produto' },
   { key: 'acquirers' as const, en: '/acquirers', pt: '/pt/adquirentes' },
   { key: 'what' as const, en: '/what-we-do', pt: '/pt/o-que-fazemos' },
 ];

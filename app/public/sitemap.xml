@@ -7,6 +7,11 @@
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/"/>
   </url>
   <url>
+    <loc>https://sambapay.tech/product</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/product"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/produto"/>
+  </url>
+  <url>
     <loc>https://sambapay.tech/acquirers</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/acquirers"/>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/adquirentes"/>
@@ -25,6 +30,11 @@
     <loc>https://sambapay.tech/pt/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/"/>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/"/>
+  </url>
+  <url>
+    <loc>https://sambapay.tech/pt/produto</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sambapay.tech/product"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech/pt/produto"/>
   </url>
   <url>
     <loc>https://sambapay.tech/pt/adquirentes</loc>

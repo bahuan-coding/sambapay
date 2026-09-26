@@ -1,0 +1,21 @@
+---
+import FeatureCatalog from '../components/FeatureCatalog.astro';
+import PlacePage from '../components/PlacePage.astro';
+import PrimaryButton from '../components/PrimaryButton.astro';
+import { productCopy, productFrames } from '../data/features';
+
+const copy = productCopy('en');
+---
+
+<PlacePage
+  lang="en"
+  currentPath="/product"
+  title={copy.seoTitle}
+  display
+  frames={productFrames('en')}
+>
+  <h1 slot="sheet">A local presence, <em>feature by feature.</em></h1>
+  <p slot="sheet">{copy.lede}</p>
+  <PrimaryButton slot="sheet" href={copy.ctaHref}>{copy.cta}</PrimaryButton>
+  <FeatureCatalog slot="fold" lang="en" />
+</PlacePage>
