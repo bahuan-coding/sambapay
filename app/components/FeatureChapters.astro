@@ -13,8 +13,7 @@ const chapters = productChapters(lang);
 <div class="chapters">
   {chapters.map((chapter, index) => (
     <section class="chapter" aria-labelledby={`chapter-${index}`}>
-      <ProcessPlate kind={chapter.plate} />
-      <div>
+      <div class="chapter__copy">
         <p class="chapter__index">{String(index + 1).padStart(2, '0')}</p>
         <h2 id={`chapter-${index}`}>{chapter.title}</h2>
         <p class="chapter__lede">{chapter.lede}</p>
@@ -30,6 +29,7 @@ const chapters = productChapters(lang);
           ))}
         </ol>
       </div>
+      <ProcessPlate kind={chapter.plate} />
     </section>
   ))}
 </div>
@@ -45,9 +45,10 @@ const chapters = productChapters(lang);
 
   @media (min-width: 800px) {
     .chapter {
-      grid-template-columns: minmax(22rem, 30rem) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr) minmax(22rem, 30rem);
       gap: 2.5rem 3.5rem;
       margin-top: 4.5rem;
+      align-items: center;
     }
   }
 

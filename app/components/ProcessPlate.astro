@@ -5,13 +5,13 @@ interface Props {
 
 const { kind } = Astro.props;
 const plate = {
-  rails: { src: '/process/rails.png?v=7', w: 900, h: 1200 },
-  enable: { src: '/process/enable.png', w: 1200, h: 900 },
-  settle: { src: '/process/settle.png', w: 1200, h: 900 },
+  rails: { src: '/process/rails.png?v=9', w: 1280, h: 720 },
+  enable: { src: '/process/enable.png?v=9', w: 1280, h: 720 },
+  settle: { src: '/process/settle.png?v=9', w: 1280, h: 720 },
 }[kind];
 ---
 
-<img class="plate" src={plate.src} alt="" width={plate.w} height={plate.h} />
+<img class="plate" src={plate.src} alt="" width={plate.w} height={plate.h} loading="lazy" decoding="async" />
 
 <style>
   .plate {

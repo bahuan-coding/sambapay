@@ -25,9 +25,11 @@ interface Props {
   creditHref?: string;
   frames?: Frame[];
   display?: boolean;
+  /** Product page: no place photograph; title and catalog lead the page. */
+  lead?: boolean;
 }
 
-const { lang, currentPath, title, image, place, country, flag, credit, creditHref, frames: passed, display = false } = Astro.props;
+const { lang, currentPath, title, image, place, country, flag, credit, creditHref, frames: passed, display = false, lead = false } = Astro.props;
 const frames: Frame[] = passed ?? [{
   image: image ?? '',
   place: place ?? '',
@@ -43,6 +45,15 @@ const next = lang === 'pt' ? 'Próximo país' : 'Next country';
 ---
 
 <BaseLayout lang={lang} currentPath={currentPath} title={title}>
+  {lead ? (
+    <div class="product-page">
+      <header class="product-page__hero">
+        <slot name="sheet" />
+      </header>
+      <slot name="fold" />
+    </div>
+  ) : (
+  <>
   <section class:list={['place', display && 'place--display']} data-shore={many ? '' : undefined}>
     <div class="place__window">
       <div class="place__reel">
@@ -92,6 +103,8 @@ const next = lang === 'pt' ? 'Próximo país' : 'Next country';
     </div>
   )}
   <slot name="fold" />
+  </>
+  )}
 </BaseLayout>
 
 <script>
@@ -362,5 +375,51 @@ const next = lang === 'pt' ? 'Próximo país' : 'Next country';
     max-width: 38rem;
     font-size: 1.0625rem;
     line-height: 1.45;
+  }
+
+  .product-page__hero {
+    width: min(76rem, calc(100% - 4rem));
+    margin: 0 auto;
+    padding: 1.75rem 0 0;
+  }
+
+  .product-page__hero::before {
+    content: '';
+    display: block;
+    height: 8px;
+    margin-bottom: 1.35rem;
+    background: linear-gradient(90deg, var(--green) 0 32%, var(--yellow) 32% 64%, var(--blue) 64% 100%);
+  }
+
+  .product-page__hero :global(h1) {
+    margin: 0 0 0.75rem;
+    max-width: 14em;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 3.8vw, 3.35rem);
+    letter-spacing: -0.038em;
+    line-height: 0.98;
+  }
+
+  .product-page__hero :global(h1 em) {
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .product-page__hero :global(p) {
+    margin: 0 0 1rem;
+    max-width: 38rem;
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .product-page :global(.catalog) {
+    padding-top: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .product-page__hero {
+      width: min(76rem, calc(100% - 2rem));
+    }
   }
 </style>
