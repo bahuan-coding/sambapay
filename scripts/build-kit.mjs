@@ -41,7 +41,7 @@ const JARGON = [
   ["infrastructure", /\binfrastructure\b/i], ["ICC++", /ICC\+\+/], ["interchange", /\binterchange\b/i],
   ["Jumio", /\bJumio\b/], ["Key Vault", /\bKey Vault\b/], ["KYB", /\bKYB\b/], ["KYC", /\bKYC\b/],
   ["LGPD", /\bLGPD\b/], ["local commercial policy", /\blocal commercial policy\b/i],
-  ["local entity", /\blocal entit(y|ies)\b/i], ["local merchant", /\blocal merchants?\b/i], ["market enabler", /\bmarket enabler\b/i],
+  ["local entity", /\blocal entit(y|ies)\b/i], ["local merchant", /\blocal merchants?\b/i], ["market enabler", /\bmarket enabler\b/i], ["online enabler", /\bonline enablers?\b/i],
   ["MCC", /\bMCC\b|merchant category code/i], ["MDR", /\bMDR\b/], ["merchant", /\bmerchants?\b/i],
   ["Merchant of Record", /\bMerchant of Record\b/], ["MID", /\bMIDs?\b/], ["on-ramp", /\bon-ramp\b/i],
   ["OTC", /\bOTC\b/], ["orchestration", /\borchestration\b/i], ["orchestration swarm", /\borchestration swarm\b/i], ["PayFac", /\bPayFac\b/], ["payment facilitator", /\bpayment facilitator\b/i],

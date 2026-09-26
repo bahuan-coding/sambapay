@@ -294,7 +294,7 @@ function wrapPage({ lang, title, innerHtml, canonical, altUrl }) {
   <link rel="canonical" href="https://sambapay.tech${canonical}">
   <link rel="alternate" hreflang="en" href="https://sambapay.tech${enHref}">
   <link rel="alternate" hreflang="pt-BR" href="https://sambapay.tech${ptHref}">
-  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/site.css?v=20260925">
 </head>
 <body>
   <header class="site">

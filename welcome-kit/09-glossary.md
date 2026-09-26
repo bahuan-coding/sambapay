@@ -71,6 +71,7 @@ Every term used in this kit, one sentence each. If you meet a word that is not h
 - **Merchant of Record** — The company that legally sells to the shopper and carries the merchant risk and the reserve; today an operating partner.
 - **MID** — Merchant ID, the merchant's account at an acquirer; one per acquirer.
 - **On-ramp** — The path money takes from our local bank into PaySecure; today either the partner's tokenized-PIX rail or an OTC desk that turns our reais into USDC.
+- **Online enabler** — Our role for a local merchant who brings its stock, as a niche marketplace or as stock shared by physical shops: the digitised online store includes the card terminal for online sales, the local client in each market has this included, and we do not charge a marketplace fee. Distinct from market enabler.
 - **Orchestration** — Putting a client's volume on local rails and PaySecure's white label as one system, including across nationalities. Distinct from the Website Factory orchestration swarm.
 - **Orchestration swarm** — How the Website Factory works: AI and product managers specialised in each business, producing each digitisation case specifically.
 - **OTC** — Over the counter; a desk that takes our reais by same-day PIX and sells us USDC into our own wallet, the first hop of the remittance to PaySecure; we use two: MIPPO/GFS/OrbiFi and Transfero.

@@ -1,5 +1,6 @@
 ---
 import PlacePage from '../../components/PlacePage.astro';
+import ProcessCarousel from '../../components/ProcessCarousel.astro';
 ---
 
 <PlacePage
@@ -14,24 +15,9 @@ import PlacePage from '../../components/PlacePage.astro';
   creditHref="https://commons.wikimedia.org/wiki/File:Palacio_de_Bellas_Artes,_M%C3%A9xico_D.F.,_M%C3%A9xico,_2013-10-13,_DD_40.jpg"
 >
   <h1 slot="sheet">Três partes. Uma presença local.</h1>
-  <p>Adquirentes ligam o seu volume a adquirentes locais na América Latina, a preços locais. Onde temos estrutura, merchants locais são digitalizados do registro da empresa até o payout, passando pelas entidades locais. A liquidação manda o dinheiro arrecadado localmente até você, no menor número de passos.</p>
+  <p>Adquirentes ligam o seu volume a adquirentes locais na América Latina, a preços locais. Somos online enablers onde temos estrutura: o negócio traz o estoque, e a loja digitalizada inclui a maquininha para a venda online. A liquidação manda o dinheiro arrecadado localmente até você, no menor número de passos.</p>
   <h2>O que não fazemos</h2>
   <p>Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Não fazemos fulfilment nem envio. Dois nichos, sem conflito de interesse.</p>
-  <div class="cards">
-    <article class="card">
-      <span class="card__bar" style="background:#1C3D4A"></span>
-      <h2><a href="/pt/adquirentes">Adquirentes</a></h2>
-      <p>O seu volume em adquirentes locais, a preços locais.</p>
-    </article>
-    <article class="card">
-      <span class="card__bar" style="background:#C2412D"></span>
-      <h2>Merchants locais</h2>
-      <p>Digitalização onde temos estrutura, até o payout.</p>
-    </article>
-    <article class="card">
-      <span class="card__bar" style="background:#C4890A"></span>
-      <h2>Liquidação</h2>
-      <p>O dinheiro arrecadado localmente volta até você. Nada se move antes de os valores fecharem.</p>
-    </article>
-  </div>
+  <h2>Online enablers</h2>
+  <ProcessCarousel lang="pt" />
 </PlacePage>

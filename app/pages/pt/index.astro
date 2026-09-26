@@ -1,42 +1,23 @@
 ---
 import PlacePage from '../../components/PlacePage.astro';
 import PrimaryButton from '../../components/PrimaryButton.astro';
+import ProcessCarousel from '../../components/ProcessCarousel.astro';
+import { shore } from '../../data/shore';
 ---
 
 <PlacePage
   lang="pt"
   currentPath="/pt/"
   title="SambaPay"
-  image="/places/ouro-preto.jpg"
-  place="Ouro Preto"
-  country="Brasil"
-  flag="br"
-  credit="Alvesgaspar, CC BY-SA 3.0"
-  creditHref="https://commons.wikimedia.org/wiki/File:Ouro_Preto_November_2009-13.jpg"
+  frames={shore('pt')}
 >
-  <h1 slot="sheet">Entre na América Latina como uma empresa local.</h1>
+  <h1 slot="sheet">Entre na América Latina como um local.</h1>
   <p slot="sheet">Preços locais, aprovação local e regras locais.</p>
   <PrimaryButton slot="sheet" href="/pt/signup">Criar conta</PrimaryButton>
   <p>Um negócio que quer vender na América Latina precisa de preços locais, aprovação local e regras locais: as mesmas condições de uma empresa local.</p>
   <p>Isso exige entidade local regulada, conformidade PCI, e contratos com adquirentes e bancos locais.</p>
   <h2>O que não fazemos</h2>
   <p>Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Dois nichos, sem conflito de interesse.</p>
-  <h2>Três partes</h2>
-  <div class="cards">
-    <article class="card">
-      <span class="card__bar" style="background:#1C3D4A"></span>
-      <h2><a href="/pt/adquirentes">Adquirentes</a></h2>
-      <p>O seu volume em adquirentes locais, a preços locais.</p>
-    </article>
-    <article class="card">
-      <span class="card__bar" style="background:#C2412D"></span>
-      <h2>Merchants locais</h2>
-      <p>Digitalização onde temos estrutura, até o payout.</p>
-    </article>
-    <article class="card">
-      <span class="card__bar" style="background:#C4890A"></span>
-      <h2>Liquidação</h2>
-      <p>O dinheiro arrecadado localmente volta até você. Nada se move antes de os valores fecharem.</p>
-    </article>
-  </div>
+  <h2>Online enablers</h2>
+  <ProcessCarousel lang="pt" />
 </PlacePage>

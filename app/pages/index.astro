@@ -1,42 +1,23 @@
 ---
 import PlacePage from '../components/PlacePage.astro';
 import PrimaryButton from '../components/PrimaryButton.astro';
+import ProcessCarousel from '../components/ProcessCarousel.astro';
+import { shore } from '../data/shore';
 ---
 
 <PlacePage
   lang="en"
   currentPath="/"
   title="SambaPay"
-  image="/places/ouro-preto.jpg"
-  place="Ouro Preto"
-  country="Brazil"
-  flag="br"
-  credit="Alvesgaspar, CC BY-SA 3.0"
-  creditHref="https://commons.wikimedia.org/wiki/File:Ouro_Preto_November_2009-13.jpg"
+  frames={shore('en')}
 >
-  <h1 slot="sheet">Enter Latin America like a local company.</h1>
+  <h1 slot="sheet">Enter Latin America like a local.</h1>
   <p slot="sheet">Local prices, local approval and local rules.</p>
   <PrimaryButton slot="sheet" href="/signup">Create account</PrimaryButton>
   <p>A business that wants to sell in Latin America needs local prices, local approval and local rules: the same conditions a local company gets.</p>
   <p>That takes a regulated local entity, PCI compliance, and contracts with local acquirers and banks.</p>
   <h2>What we do not do</h2>
   <p>We do not take our clients' merchants. We do not dispute their accounts. Two niches, no conflict of interest.</p>
-  <h2>Three parts</h2>
-  <div class="cards">
-    <article class="card">
-      <span class="card__bar" style="background:#1C3D4A"></span>
-      <h2><a href="/acquirers">Acquiring</a></h2>
-      <p>Your volume on local acquirers, at local prices.</p>
-    </article>
-    <article class="card">
-      <span class="card__bar" style="background:#C2412D"></span>
-      <h2>Local merchants</h2>
-      <p>Digitisation where we have structure, until payout.</p>
-    </article>
-    <article class="card">
-      <span class="card__bar" style="background:#C4890A"></span>
-      <h2>Settlement</h2>
-      <p>Money collected locally comes back to you. Nothing moves before the amounts match.</p>
-    </article>
-  </div>
+  <h2>Online enablers</h2>
+  <ProcessCarousel lang="en" />
 </PlacePage>

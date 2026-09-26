@@ -1,5 +1,6 @@
 ---
 import PlacePage from '../components/PlacePage.astro';
+import ProcessCarousel from '../components/ProcessCarousel.astro';
 ---
 
 <PlacePage
@@ -14,24 +15,9 @@ import PlacePage from '../components/PlacePage.astro';
   creditHref="https://commons.wikimedia.org/wiki/File:Palacio_de_Bellas_Artes,_M%C3%A9xico_D.F.,_M%C3%A9xico,_2013-10-13,_DD_40.jpg"
 >
   <h1 slot="sheet">Three parts. One local presence.</h1>
-  <p>Acquiring connects your volume to local acquirers in Latin America, at local prices. Where we have structure, local merchants are digitised from the company registration through the local entities, until payout. Settlement sends money collected locally to you in as few steps as possible.</p>
+  <p>Acquiring connects your volume to local acquirers in Latin America, at local prices. We are online enablers where we have structure: the business brings its stock, and the digitised store includes the card terminal for online sales. Settlement sends money collected locally to you in as few steps as possible.</p>
   <h2>What we do not do</h2>
   <p>We do not take our clients' merchants. We do not dispute their accounts. We do not do fulfilment or shipping. Two niches, no conflict of interest.</p>
-  <div class="cards">
-    <article class="card">
-      <span class="card__bar" style="background:#1C3D4A"></span>
-      <h2><a href="/acquirers">Acquiring</a></h2>
-      <p>Your volume on local acquirers, at local prices.</p>
-    </article>
-    <article class="card">
-      <span class="card__bar" style="background:#C2412D"></span>
-      <h2>Local merchants</h2>
-      <p>Digitisation where we have structure, until payout.</p>
-    </article>
-    <article class="card">
-      <span class="card__bar" style="background:#C4890A"></span>
-      <h2>Settlement</h2>
-      <p>Money collected locally comes back to you. Nothing moves before the amounts match.</p>
-    </article>
-  </div>
+  <h2>Online enablers</h2>
+  <ProcessCarousel lang="en" />
 </PlacePage>
