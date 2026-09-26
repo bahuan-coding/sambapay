@@ -41,7 +41,10 @@ const signupHref = pathForLang('/signup', lang);
             <div class="card__veil"></div>
             <div class="card__top">
               <CountryFlag code={market.code} />
-              <p class="card__ccy">{market.currency}</p>
+              <p class="card__money" aria-label={`${market.currencyName} (${market.currency})`}>
+                <span class="card__sym">{market.currencySymbol}</span>
+                <span class="card__iso">{market.currency}</span>
+              </p>
             </div>
             <div class="card__base">
               <h3>{market.name}</h3>
@@ -70,7 +73,10 @@ const signupHref = pathForLang('/signup', lang);
             <div class="card__veil"></div>
             <div class="card__top">
               <CountryFlag code={market.code} />
-              <p class="card__ccy">{market.currency}</p>
+              <p class="card__money" aria-label={`${market.currencyName} (${market.currency})`}>
+                <span class="card__sym">{market.currencySymbol}</span>
+                <span class="card__iso">{market.currency}</span>
+              </p>
             </div>
             <div class="card__base">
               <h3>{market.name}</h3>
@@ -268,13 +274,31 @@ const signupHref = pathForLang('/signup', lang);
     box-shadow: 0 0 0 1px rgba(244, 239, 228, 0.35);
   }
 
-  .card__ccy {
+  .card__money {
     margin: 0;
-    font-family: var(--display);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    min-width: 0;
     color: #f4efe4;
+    white-space: nowrap;
+  }
+
+  .card__sym {
+    font-family: var(--serif);
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-shadow: 0 1px 6px rgba(12, 20, 18, 0.5);
+  }
+
+  .card__iso {
+    font-family: var(--display);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    opacity: 0.72;
   }
 
   .card__base {
@@ -451,9 +475,13 @@ const signupHref = pathForLang('/signup', lang);
     .mk { padding: 3rem 0 4rem; }
     .mk__inner { width: min(80rem, calc(100% - 2rem)); }
     .mk__grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
-    .card { min-height: 14rem; }
-    .card__base h3 { font-size: 1.15rem; }
+    .card { min-height: 13rem; }
+    .card__base h3 { font-size: 1.1rem; }
     .card__note { display: none; }
+    .card__sym { font-size: 1.1rem; }
+    .card__iso { font-size: 0.5rem; letter-spacing: 0.1em; }
+    .card__top { padding: 0.6rem 0.65rem; }
+    .card__base { padding: 0.75rem 0.7rem 0.65rem; }
     .mk__steps { grid-template-columns: 1fr; }
   }
 </style>

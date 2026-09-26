@@ -5,6 +5,8 @@ export interface Market {
   code: string;
   name: string;
   currency: string;
+  currencySymbol: string;
+  currencyName: string;
   methods: MethodIcon[];
   note: string;
   image: string;
@@ -151,8 +153,6 @@ interface Copy {
   mapLede: string;
   accessTitle: string;
   accessLede: string;
-  methodLabel: string;
-  currencyLabel: string;
   southTitle: string;
   centralTitle: string;
   corridorTitle: string;
@@ -223,6 +223,32 @@ export function markets(lang: Lang): Market[] {
     DO: 'DOP', EC: 'USD', SV: 'USD', GT: 'GTQ', HT: 'HTG', HN: 'HNL', MX: 'MXN',
     NI: 'NIO', PA: 'PAB', PY: 'PYG', PE: 'PEN', UY: 'UYU', VE: 'VES',
   };
+  const symbols: Record<string, string> = {
+    ARS: '$', BOB: 'Bs', BRL: 'R$', CLP: '$', COP: '$', CRC: '₡', CUP: '$',
+    DOP: 'RD$', USD: '$', GTQ: 'Q', HTG: 'G', HNL: 'L', MXN: '$', NIO: 'C$',
+    PAB: 'B/.', PYG: '₲', PEN: 'S/', UYU: '$U', VES: 'Bs',
+  };
+  const currencyNames: Record<string, [string, string, string]> = {
+    ARS: ['Argentine peso', 'peso argentino', 'peso argentino'],
+    BOB: ['Boliviano', 'boliviano', 'boliviano'],
+    BRL: ['Real', 'real', 'real'],
+    CLP: ['Chilean peso', 'peso chileno', 'peso chileno'],
+    COP: ['Colombian peso', 'peso colombiano', 'peso colombiano'],
+    CRC: ['Colón', 'colón', 'colón'],
+    CUP: ['Cuban peso', 'peso cubano', 'peso cubano'],
+    DOP: ['Dominican peso', 'peso dominicano', 'peso dominicano'],
+    USD: ['US dollar', 'dólar', 'dólar'],
+    GTQ: ['Quetzal', 'quetzal', 'quetzal'],
+    HTG: ['Gourde', 'gourde', 'gourde'],
+    HNL: ['Lempira', 'lempira', 'lempira'],
+    MXN: ['Mexican peso', 'peso mexicano', 'peso mexicano'],
+    NIO: ['Córdoba', 'córdoba', 'córdoba'],
+    PAB: ['Balboa', 'balboa', 'balboa'],
+    PYG: ['Guaraní', 'guarani', 'guaraní'],
+    PEN: ['Sol', 'sol', 'sol'],
+    UYU: ['Uruguayan peso', 'peso uruguaio', 'peso uruguayo'],
+    VES: ['Bolívar', 'bolívar', 'bolívar'],
+  };
   const noteByTier: Record<string, [string, string, string]> = {
     deep: [
       'Cards, local instant payments and local settlement.',
@@ -278,10 +304,13 @@ export function markets(lang: Lang): Market[] {
   return [...southCodes, ...centralCodes].map((code) => {
     const i = lang === 'pt' ? 1 : lang === 'es' ? 2 : 0;
     const photo = photos[code];
+    const iso = currencies[code];
     return {
       code: code.toLowerCase(),
       name: names[code][i],
-      currency: currencies[code],
+      currency: iso,
+      currencySymbol: symbols[iso],
+      currencyName: currencyNames[iso][i],
       methods: methodsFor(code),
       note: noteByTierResolved(code, i),
       image: photo.file,
@@ -309,8 +338,6 @@ const copy: Record<Lang, Copy> = {
     mapLede: 'Ten markets in South America. Ten in Mexico, Central America and the Caribbean. Each one pays the way it always has, and we meet it there.',
     accessTitle: 'Coverage is access, not a catalogue.',
     accessLede: 'We know a partner in every one of these markets. That is what lets your volume land on local rails, at local prices, wherever the customer pays.',
-    methodLabel: 'Local methods',
-    currencyLabel: 'Currency',
     southTitle: 'South America',
     centralTitle: 'Mexico, Central America and the Caribbean',
     corridorTitle: 'One corridor, many rails.',
@@ -335,14 +362,12 @@ const copy: Record<Lang, Copy> = {
     mapLede: 'Dez mercados na América do Sul. Dez no México, na América Central e no Caribe. Cada um paga do jeito que sempre pagou, e nós encontramos esse jeito.',
     accessTitle: 'Cobertura é acesso, não catálogo.',
     accessLede: 'Conhecemos um parceiro em cada um destes mercados. É isso que faz o seu volume chegar a trilhos locais, a preços locais, onde o cliente pagar.',
-    methodLabel: 'Meios locais',
-    currencyLabel: 'Moeda',
     southTitle: 'América do Sul',
     centralTitle: 'México, América Central e Caribe',
     corridorTitle: 'Um corredor, muitos trilhos.',
     corridorLede: 'Todo mercado é alcançado pelo mesmo caminho: o trilho local captura, o dinheiro liquida, e a conciliação fecha antes de o dinheiro sair.',
     corridor: [
-      { title: 'Acesso por parceiro', body: 'Um parceiro conhecido coloca o trilho local em produção.' },
+      { title: 'Acesso por parceiro', body: 'Um parceiro conhecido ativa o trilho local.' },
       { title: 'Política local', body: 'O seu volume é precificado como o de um merchant local.' },
       { title: 'Uma conexão', body: 'Você não cumpre cada exigência de cada mercado sozinho.' },
       { title: 'Um livro', body: 'Todos os mercados conciliam contra o mesmo livro.' },
@@ -356,19 +381,17 @@ const copy: Record<Lang, Copy> = {
   es: {
     eyebrow: 'Mercados',
     title: 'Acceso en todos los mercados de las Américas.',
-    lede: 'Abrimos rieles locales con socios en América Latina y América Central. Veinte mercados, una sola política comercial local: precios locales, local signup y direct connection.',
-    mapTitle: 'Donde el dinero se mueve.',
+    lede: 'Abrimos rieles locales con socios en América Latina y América Central. Veinte mercados, una única política comercial local: precios locales, local signup y direct connection.',
+    mapTitle: 'Donde se mueve el dinero.',
     mapLede: 'Diez mercados en América del Sur. Diez en México, América Central y el Caribe. Cada uno paga como siempre pagó, y lo encontramos ahí.',
     accessTitle: 'Cobertura es acceso, no catálogo.',
     accessLede: 'Conocemos un socio en cada uno de estos mercados. Eso es lo que hace que su volumen llegue a rieles locales, a precios locales, donde pague el comprador.',
-    methodLabel: 'Medios locales',
-    currencyLabel: 'Moneda',
     southTitle: 'América del Sur',
     centralTitle: 'México, América Central y el Caribe',
     corridorTitle: 'Un corredor, muchos rieles.',
-    corridorLede: 'Todo mercado se alcanza por el mismo camino: el riel local captura, el dinero liquida, y la conciliación cierra antes de que el dinero salga.',
+    corridorLede: 'Todo mercado se alcanza por el mismo camino: el riel local cobra, el dinero liquida, y la conciliación cierra antes de que el dinero salga.',
     corridor: [
-      { title: 'Acceso por socio', body: 'Un socio conocido pone cada riel local en producción.' },
+      { title: 'Acceso por socio', body: 'Un socio conocido activa cada riel local.' },
       { title: 'Política local', body: 'Su volumen se precifica como el de un merchant local.' },
       { title: 'Una conexión', body: 'Usted no cumple cada exigencia de cada mercado por su cuenta.' },
       { title: 'Un libro', body: 'Todos los mercados concilian contra el mismo libro.' },
