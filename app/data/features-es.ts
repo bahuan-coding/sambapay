@@ -11,6 +11,7 @@ export const esCopy = {
   columns: [
     {
       title: 'Cobrar',
+      pay: ['credit', 'debit', '3ds', 'pix', 'boleto', 'spei', 'oxxo', 'qr', 'pagofacil', 'transfer'],
       items: [
         { mark: 'prices', title: 'Precios locales', body: 'Su volumen paga el MDR que paga un merchant local. Nuestra tecnología hace viable esa tarifa.' },
         { mark: 'methods', title: 'Tarjeta y medios locales', body: 'Crédito y débito, 3DS y 2D, más los medios locales de ese mercado.' },
@@ -19,6 +20,7 @@ export const esCopy = {
     },
     {
       title: 'Conectar',
+      pay: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
       items: [
         { mark: 'signup', title: 'Local signup', body: 'Protocolamos los datos del cliente con los socios locales, incluidas las licencias que el adquirente exige.' },
         { mark: 'connection', title: 'Direct connection', body: 'El cliente usa nuestra política comercial local. No cumple cada exigencia del adquirente por su cuenta.' },
@@ -51,19 +53,17 @@ export const esCopy = {
         { icon: 'debit', title: 'Débito', body: 'Cobros con tarjeta de débito.' },
         {
           icon: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
-          title: '',
-          body: 'Reduzca el chargeback. Use 3DS. El banco del comprador confirma que es él. Sin ese desafío, el cobro es 2D.',
+          title: '3DS',
+          body: 'Reduzca el chargeback. El banco del comprador confirma que es él. Sin ese desafío, el cobro es 2D.',
         },
-        { icon: 'pix', title: '', body: 'En Brasil, el pago instantáneo.' },
+        { icon: 'pix', title: 'Pix', body: 'En Brasil, el pago instantáneo.' },
         { icon: 'boleto', title: 'Boleto', body: 'En Brasil, el boleto bancario.' },
         { icon: 'spei', title: 'SPEI', body: 'En México, la transferencia bancaria instantánea.' },
         { icon: 'oxxo', title: 'OXXO Pay', body: 'En México, el pago en efectivo.' },
-        { icon: 'qra', title: 'QR Argentina', body: 'En Argentina, un código en la caja. Quien compra paga desde la billetera que ya tiene en el teléfono.' },
+        { icon: 'qra', title: 'QR Argentina', body: 'En Argentina, un código en la caja.' },
         { icon: 'pagofacil', title: 'Pago Fácil', body: 'En Argentina, el pago en efectivo.' },
         { icon: 'transfer', title: 'Transferencia bancaria', body: 'En Chile, la transferencia bancaria.' },
         { icon: 'brought', title: 'Medios traídos', body: 'El cliente puede traer sus propios medios de pago para conectar localmente.' },
-        { icon: 'prices', title: 'Precios locales', body: 'Su volumen paga el MDR que paga un merchant local. Nuestra tecnología hace viable esa tarifa.' },
-        { icon: 'capture', title: 'Captura en tarjeta', body: 'La tienda digitalizada incluye la captura en tarjeta para la venta en línea.' },
       ],
     },
     {
