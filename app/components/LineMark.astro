@@ -1,0 +1,108 @@
+﻿---
+type LineMarkKind =
+  | 'prices'
+  | 'signup'
+  | 'connection'
+  | 'stock'
+  | 'store'
+  | 'terminal'
+  | 'included'
+  | 'book'
+  | 'rails'
+  | 'availability';
+
+interface Props {
+  kind: LineMarkKind;
+}
+
+const { kind } = Astro.props;
+---
+
+<svg class="line-mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  {kind === 'prices' && (
+    <g>
+      <path d="M12 10 H30 L38 17 L30 24 H12 Z" />
+      <circle class="lm-accent" cx="18" cy="17" r="2" />
+    </g>
+  )}
+  {kind === 'signup' && (
+    <g>
+      <rect x="14" y="8" width="20" height="32" rx="2" />
+      <path d="M19 15 h10" />
+      <path d="M19 21 h10" />
+      <path class="lm-accent" d="M19 30 h10" />
+    </g>
+  )}
+  {kind === 'connection' && (
+    <g>
+      <circle cx="13" cy="35" r="4" />
+      <path d="M17 31 L31 17" />
+      <circle class="lm-accent" cx="35" cy="13" r="4" />
+    </g>
+  )}
+  {kind === 'stock' && (
+    <g>
+      <path d="M11 27 h11 v10 h-11 z" />
+      <path d="M26 27 h11 v10 h-11 z" />
+      <path class="lm-accent" d="M19 12 h11 v10 h-11 z" />
+    </g>
+  )}
+  {kind === 'store' && (
+    <g>
+      <path d="M13 20 h22 v17 h-22 z" />
+      <path d="M11 20 l4 -8 h18 l4 8" />
+      <path class="lm-accent" d="M20 28 h8 v9 h-8 z" />
+    </g>
+  )}
+  {kind === 'terminal' && (
+    <g>
+      <rect x="17" y="9" width="14" height="30" rx="3" />
+      <rect x="21" y="14" width="6" height="5" rx="1" />
+      <circle class="lm-accent" cx="24" cy="31" r="2" />
+    </g>
+  )}
+  {kind === 'included' && (
+    <g>
+      <circle cx="24" cy="24" r="14" />
+      <path class="lm-accent" d="M17 24 l5 5" />
+      <path class="lm-accent" d="M22 29 l10 -12" />
+    </g>
+  )}
+  {kind === 'book' && (
+    <g>
+      <path d="M12 11 h11 v26 h-11 z" />
+      <path d="M25 11 h11 v26 h-11 z" />
+      <path d="M16 18 h3" />
+      <path d="M16 23 h3" />
+      <path d="M29 18 h3" />
+      <path d="M29 23 h3" />
+      <path class="lm-accent" d="M24 11 v26" />
+    </g>
+  )}
+  {kind === 'rails' && (
+    <g>
+      <path d="M14 14 v20" />
+      <path class="lm-accent" d="M24 10 v28" />
+      <path d="M34 16 v18" />
+    </g>
+  )}
+  {kind === 'availability' && (
+    <g>
+      <path d="M9 24 h7" />
+      <path class="lm-accent" d="M16 24 l7 -14" />
+      <path class="lm-accent" d="M23 10 l6 28" />
+      <path class="lm-accent" d="M29 38 l5 -14" />
+      <path d="M34 24 h5" />
+    </g>
+  )}
+</svg>
+
+<style>
+  .line-mark {
+    --accent: var(--blue);
+    display: block;
+    color: var(--ink);
+  }
+
+  .line-mark .lm-accent { stroke: var(--accent); }
+</style>

@@ -1,8 +1,8 @@
 ---
 import { pathForLang, type Lang } from '../i18n';
+import LineMark from './LineMark.astro';
 import PartMark from './PartMark.astro';
 import PrimaryButton from './PrimaryButton.astro';
-import ProductMark from './ProductMark.astro';
 import { enablerSteps } from '../data/enablers';
 
 interface Props {
@@ -192,12 +192,13 @@ const copy = {
       <h2 id="home-what">{copy.whatTitle}</h2>
       <p class="home__lede">{copy.whatLede}</p>
       <ul class="home__pillars">
-        {copy.pillars.map((pillar, index) => (
+        {copy.pillars.map((pillar) => (
           <li>
-            <span class="home__index">{String(index + 1).padStart(2, '0')}</span>
-            <ProductMark kind={pillar.mark} />
-            <h3>{pillar.title}</h3>
-            <p>{pillar.body}</p>
+            <LineMark kind={pillar.mark} />
+            <div>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.body}</p>
+            </div>
           </li>
         ))}
       </ul>
@@ -231,9 +232,11 @@ const copy = {
       <ul class="home__craft-list">
         {copy.craft.map((item) => (
           <li>
-            <ProductMark kind={item.mark} />
-            <h3>{item.title}</h3>
-            <p>{item.body}</p>
+            <LineMark kind={item.mark} />
+            <div>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </div>
           </li>
         ))}
       </ul>
@@ -283,9 +286,10 @@ const copy = {
   .home__eyebrow::before {
     content: '';
     width: 1.75rem;
-    height: 6px;
+    height: 1px;
     flex: none;
-    background: linear-gradient(90deg, var(--green) 0 32%, var(--yellow) 32% 64%, var(--blue) 64% 100%);
+    background: currentColor;
+    opacity: 0.55;
   }
 
   .home h2 {
@@ -317,43 +321,31 @@ const copy = {
   .home__pillars {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+    gap: 2rem;
   }
 
   .home__pillars li {
-    position: relative;
-    padding: 1.6rem 1.4rem 1.5rem;
-    border: 1px solid var(--border);
-    border-top: 6px solid var(--tone);
-    border-radius: var(--radius);
-    background: var(--wash);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.35rem;
+    align-items: start;
+    margin: 0;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--ink);
   }
 
-  .home__pillars li:nth-child(1) { --tone: var(--green); --wash: #f3faf4; }
-  .home__pillars li:nth-child(2) { --tone: var(--ipe); --wash: #fffbeb; }
-  .home__pillars li:nth-child(3) { --tone: var(--blue); --wash: #f3f7fd; }
-
-  .home__pillars :global(.product-mark) {
-    width: 2.75rem;
-    height: 2.75rem;
-    margin-bottom: 1.1rem;
+  .home__pillars :global(.line-mark) {
+    --accent: var(--blue);
+    width: 3rem;
+    height: 3rem;
   }
-
-  .home__pillars :global(.product-mark circle) { stroke: var(--tone); }
 
   .home__index {
     margin: 0 0 0.85rem;
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.16em;
-    color: var(--tone, var(--anil));
-  }
-
-  .home__pillars .home__index {
-    position: absolute;
-    top: 1.1rem;
-    right: 1.25rem;
-    margin: 0;
+    color: var(--anil);
   }
 
   .home h3 {
@@ -423,7 +415,7 @@ const copy = {
   .home__steps li {
     margin: 0;
     padding-top: 1.35rem;
-    border-top: 2px solid var(--ipe);
+    border-top: 1px solid var(--ink);
   }
 
   .home__steps :global(.part-mark) {
@@ -450,15 +442,19 @@ const copy = {
   }
 
   .home__craft-list li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: start;
     margin: 0;
     padding-top: 1.35rem;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid rgba(28, 61, 74, 0.28);
   }
 
-  .home__craft-list :global(.product-mark) {
+  .home__craft-list :global(.line-mark) {
+    --accent: var(--ipe);
     width: 2.5rem;
     height: 2.5rem;
-    margin-bottom: 1rem;
   }
 
   .home__close {
