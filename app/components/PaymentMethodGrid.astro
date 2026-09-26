@@ -1,0 +1,74 @@
+---
+import type { Lang } from '../i18n';
+import PaymentMethodIcon from './PaymentMethodIcon.astro';
+import { groupMethods, methodLabel, categoryLabel, type MethodKey } from '../data/payment-methods';
+
+interface Props {
+  keys: MethodKey[];
+  lang: Lang;
+}
+
+const { keys, lang } = Astro.props;
+const groups = groupMethods(keys);
+---
+
+<div class="pmg">
+  {groups.map((group) => (
+    <div class="pmg__row">
+      <p class="pmg__cat">{categoryLabel(group.category, lang)}</p>
+      <ul class="pmg__items">
+        {group.keys.map((key) => (
+          <li>
+            <PaymentMethodIcon method={key} label={methodLabel(key, lang)} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  .pmg {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .pmg__row {
+    display: grid;
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .pmg__cat {
+    margin: 0;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--anil);
+  }
+
+  .pmg__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.9rem;
+  }
+
+  .pmg__items li {
+    display: grid;
+    place-items: center;
+    min-height: 2rem;
+  }
+
+  @media (max-width: 640px) {
+    .pmg__row { grid-template-columns: 1fr; gap: 0.5rem; }
+  }
+</style>

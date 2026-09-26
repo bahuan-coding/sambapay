@@ -1,11 +1,5 @@
 import type { Lang } from '../i18n';
-import type { MethodIcon } from './features';
-
-export interface MethodChip {
-  icon: MethodIcon;
-  /** Index 0 EN, 1 PT, 2 ES. */
-  label: [string, string, string];
-}
+import type { MethodKey } from './payment-methods';
 
 export interface Market {
   code: string;
@@ -13,7 +7,7 @@ export interface Market {
   currency: string;
   currencySymbol: string;
   currencyName: string;
-  methods: MethodChip[];
+  methods: MethodKey[];
   note: string;
   image: string;
   focus: string;
@@ -174,31 +168,33 @@ interface Copy {
 const southCodes = ['AR', 'BO', 'BR', 'CL', 'CO', 'EC', 'PY', 'PE', 'UY', 'VE'];
 const centralCodes = ['CR', 'CU', 'DO', 'SV', 'GT', 'HT', 'HN', 'NI', 'PA', 'MX'];
 
-const CARDS: MethodChip = { icon: 'credit', label: ['Cards', 'Cartões', 'Tarjetas'] };
-const BANK: MethodChip = { icon: 'transfer', label: ['Bank transfer', 'Transferência', 'Transferencia'] };
-
-// Only the methods that distinguish a market. Cards once, never twice.
-const extras: Record<string, MethodChip[]> = {
-  BR: [
-    { icon: 'pix', label: ['Pix', 'Pix', 'Pix'] },
-    { icon: 'boleto', label: ['Boleto', 'Boleto', 'Boleto'] },
-    BANK,
-  ],
-  MX: [
-    { icon: 'spei', label: ['SPEI', 'SPEI', 'SPEI'] },
-    { icon: 'oxxo', label: ['OXXO', 'OXXO', 'OXXO'] },
-  ],
-  AR: [
-    { icon: 'qra', label: ['QR', 'QR', 'QR'] },
-    { icon: 'pagofacil', label: ['Pago Fácil', 'Pago Fácil', 'Pago Fácil'] },
-  ],
-  CL: [{ icon: 'transfer', label: ['Bank transfer', 'Transferência', 'Transferencia'] }],
-  CO: [{ icon: 'transfer', label: ['Bank transfer', 'Transferência', 'Transferencia'] }],
-  PE: [{ icon: 'transfer', label: ['Bank transfer', 'Transferência', 'Transferencia'] }],
+// Every market is reached through the partners we know. The card brands and the
+// local rails we carry, drawn from our own coverage and the two references.
+const coverage: Record<string, MethodKey[]> = {
+  BR: ['visa', 'mastercard', 'amex', 'elo', 'hipercard', 'pix', 'boleto'],
+  MX: ['visa', 'mastercard', 'amex', 'spei', 'oxxo', 'tambo'],
+  AR: ['visa', 'mastercard', 'amex', 'pagofacil', 'pago24', 'mercadopago', 'modo'],
+  CL: ['visa', 'mastercard', 'amex', 'diners', 'redcompra', 'webpay', 'magna', 'bancoestado', 'bci', 'mach', 'mercadopago'],
+  CO: ['visa', 'mastercard', 'amex', 'diners', 'pse'],
+  PE: ['visa', 'mastercard', 'amex', 'diners', 'bcp', 'bbva', 'interbank', 'scotiabank', 'pagoefectivo', 'tambo', 'kasnet', 'pagaya', 'yape', 'plin'],
+  EC: ['visa', 'mastercard', 'amex', 'guayaquil', 'westernunion'],
+  UY: ['visa', 'mastercard', 'diners'],
+  BO: ['visa', 'mastercard'],
+  PY: ['visa', 'mastercard'],
+  VE: ['visa', 'mastercard'],
+  CR: ['visa', 'mastercard'],
+  CU: ['visa', 'mastercard'],
+  DO: ['visa', 'mastercard'],
+  SV: ['visa', 'mastercard'],
+  GT: ['visa', 'mastercard'],
+  HT: ['visa', 'mastercard'],
+  HN: ['visa', 'mastercard'],
+  NI: ['visa', 'mastercard'],
+  PA: ['visa', 'mastercard'],
 };
 
-function methodsFor(code: string): MethodChip[] {
-  return [CARDS, ...(extras[code] ?? [])];
+function methodsFor(code: string): MethodKey[] {
+  return coverage[code] ?? ['visa', 'mastercard'];
 }
 
 export function markets(lang: Lang): Market[] {
@@ -325,6 +321,17 @@ export function markets(lang: Lang): Market[] {
       creditHref: photo.href,
     };
   });
+}
+
+/** Every method we carry across the whole map, in the order they appear. */
+export function allMethods(): MethodKey[] {
+  const seen: MethodKey[] = [];
+  for (const code of [...southCodes, ...centralCodes]) {
+    for (const key of methodsFor(code)) {
+      if (!seen.includes(key)) seen.push(key);
+    }
+  }
+  return seen;
 }
 
 export function marketGroups(lang: Lang) {

@@ -2,9 +2,11 @@
 import type { Lang } from '../i18n';
 import { pathForLang } from '../i18n';
 import CountryFlag from './CountryFlag.astro';
-import MethodIcon from './MethodIcon.astro';
+import PaymentMethodGrid from './PaymentMethodGrid.astro';
+import PaymentMethodIcon from './PaymentMethodIcon.astro';
 import PrimaryButton from './PrimaryButton.astro';
-import { marketGroups, marketsCopy } from '../data/markets';
+import { allMethods, marketGroups, marketsCopy } from '../data/markets';
+import { methodLabel } from '../data/payment-methods';
 
 interface Props {
   lang: Lang;
@@ -14,6 +16,22 @@ const { lang } = Astro.props;
 const groups = marketGroups(lang);
 const copy = marketsCopy(lang);
 const signupHref = pathForLang('/signup', lang);
+const allKeys = allMethods();
+
+const coverage = {
+  en: {
+    title: 'Every local method, one connection.',
+    lede: 'Cards, instant payments, cash vouchers, bank transfers and wallets, across the whole map. The catalogue grows as each rail goes live.',
+  },
+  pt: {
+    title: 'Todos os meios locais, uma conexão.',
+    lede: 'Cartões, pagamentos instantâneos, boletos, transferências e carteiras, por todo o mapa. O catálogo cresce conforme cada trilho entra no ar.',
+  },
+  es: {
+    title: 'Todos los medios locales, una conexión.',
+    lede: 'Tarjetas, pagos instantáneos, efectivo, transferencias y billeteras, por todo el mapa. El catálogo crece a medida que cada riel entra en producción.',
+  },
+}[lang];
 ---
 
 <section class="mk">
@@ -53,12 +71,14 @@ const signupHref = pathForLang('/signup', lang);
               </p>
               <p class="card__note">{market.note}</p>
               <ul class="card__methods">
-                {market.methods.map((chip) => (
+                {market.methods.slice(0, 6).map((key) => (
                   <li>
-                    <MethodIcon kind={chip.icon} />
-                    <span>{chip.label[lang === 'pt' ? 1 : lang === 'es' ? 2 : 0]}</span>
+                    <PaymentMethodIcon method={key} label={methodLabel(key, lang)} />
                   </li>
                 ))}
+                {market.methods.length > 6 && (
+                  <li class="card__more">+{market.methods.length - 6}</li>
+                )}
               </ul>
               <a class="card__credit" href={market.creditHref} rel="noopener">{market.credit}</a>
             </div>
@@ -91,12 +111,14 @@ const signupHref = pathForLang('/signup', lang);
               </p>
               <p class="card__note">{market.note}</p>
               <ul class="card__methods">
-                {market.methods.map((chip) => (
+                {market.methods.slice(0, 6).map((key) => (
                   <li>
-                    <MethodIcon kind={chip.icon} />
-                    <span>{chip.label[lang === 'pt' ? 1 : lang === 'es' ? 2 : 0]}</span>
+                    <PaymentMethodIcon method={key} label={methodLabel(key, lang)} />
                   </li>
                 ))}
+                {market.methods.length > 6 && (
+                  <li class="card__more">+{market.methods.length - 6}</li>
+                )}
               </ul>
               <a class="card__credit" href={market.creditHref} rel="noopener">{market.credit}</a>
             </div>
@@ -117,6 +139,12 @@ const signupHref = pathForLang('/signup', lang);
           </li>
         ))}
       </ol>
+    </div>
+
+    <div class="mk__coverage">
+      <h2>{coverage.title}</h2>
+      <p class="mk__lede">{coverage.lede}</p>
+      <PaymentMethodGrid keys={allKeys} lang={lang} />
     </div>
 
     <aside class="mk__refusal">
@@ -370,42 +398,32 @@ const signupHref = pathForLang('/signup', lang);
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem 0.55rem;
   }
 
   .card__methods li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.74rem;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .card__methods :global(.method-icon) {
-    width: 1.5rem;
-    height: 1.15rem;
-    flex: none;
-  }
-
-  .card__methods :global(.method-icon svg) {
-    width: 1.5rem;
-    height: 1.15rem;
-  }
-
-  .card__methods :global(.method-icon:has(img)) {
-    width: 1.5rem;
-    height: 1.15rem;
     display: grid;
     place-items: center;
   }
 
-  .card__methods :global(.method-icon img) {
-    height: 1.15rem;
+  .card__methods :global(.pm) {
     width: auto;
-    max-width: 1.5rem;
-    object-fit: contain;
+    height: 1.3rem;
+  }
+
+  .card__methods :global(.pm img) {
+    height: 1.3rem;
+    max-width: 1.9rem;
+    width: auto;
+  }
+
+  .card__more {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--anil);
   }
 
   .card__credit {
@@ -419,6 +437,10 @@ const signupHref = pathForLang('/signup', lang);
   }
 
   .card__credit:hover { opacity: 1; text-decoration: underline; }
+
+  .mk__coverage { margin-top: 5rem; }
+
+  .mk__coverage :global(.pmg) { margin-top: 2.5rem; }
 
   .mk__corridor { margin-top: 5rem; }
 

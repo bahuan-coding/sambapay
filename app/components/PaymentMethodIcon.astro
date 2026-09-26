@@ -1,0 +1,35 @@
+---
+import { methods, type MethodKey } from '../data/payment-methods';
+
+interface Props {
+  method: MethodKey;
+  label?: string;
+}
+
+const { method, label } = Astro.props;
+const meta = methods[method];
+const name = label ?? meta.label[0];
+const svgSet = new Set(['pago-facil', 'qr-argentina', 'oxxo']);
+const ext = meta.svg || svgSet.has(meta.logo) ? 'svg' : 'png';
+const src = `/methods/${meta.logo}.${ext}`;
+---
+
+<span class="pm" data-category={meta.category} title={name}>
+  <img src={src} alt={name} loading="lazy" decoding="async" />
+</span>
+
+<style>
+  .pm {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2rem;
+  }
+
+  .pm img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+</style>
