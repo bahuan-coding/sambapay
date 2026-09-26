@@ -12,7 +12,7 @@ export const esCopy = {
     {
       title: 'Cobrar',
       items: [
-        { mark: 'prices', title: 'Precios locales', body: 'Su volumen recibe el MDR que recibe un merchant local.' },
+        { mark: 'prices', title: 'Precios locales', body: 'Su volumen paga el MDR que paga un merchant local. Nuestra tecnología hace viable esa tarifa.' },
         { mark: 'methods', title: 'Tarjeta y medios locales', body: 'Crédito y débito, 3DS y 2D, más los medios locales de ese mercado.' },
         { mark: 'terminal', title: 'Captura en tarjeta', body: 'La tienda digitalizada incluye la captura en tarjeta para la venta en línea.' },
       ],
@@ -62,7 +62,7 @@ export const esCopy = {
         { icon: 'pagofacil', title: 'Pago Fácil', body: 'En Argentina, el pago en efectivo.' },
         { icon: 'transfer', title: 'Transferencia bancaria', body: 'En Chile, la transferencia bancaria.' },
         { icon: 'brought', title: 'Medios traídos', body: 'El cliente puede traer sus propios medios de pago para conectar localmente.' },
-        { icon: 'prices', title: 'Precios locales', body: 'Su volumen recibe el MDR que recibe un merchant local.' },
+        { icon: 'prices', title: 'Precios locales', body: 'Su volumen paga el MDR que paga un merchant local. Nuestra tecnología hace viable esa tarifa.' },
         { icon: 'capture', title: 'Captura en tarjeta', body: 'La tienda digitalizada incluye la captura en tarjeta para la venta en línea.' },
       ],
     },

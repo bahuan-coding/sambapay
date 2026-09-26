@@ -72,7 +72,7 @@ const en = {
     {
       title: 'Accept',
       items: [
-        { mark: 'prices', title: 'Local prices', body: 'Your volume is priced at the MDR a local merchant gets.' },
+        { mark: 'prices', title: 'Local prices', body: 'Your volume is charged the MDR a local merchant is charged. Our technology makes that rate possible.' },
         { mark: 'methods', title: 'Cards and local methods', body: 'Credit and debit, 3DS and 2D, plus the local methods of that market.' },
         { mark: 'terminal', title: 'Card capture', body: 'The digitised store includes card capture for online sales.' },
       ],
@@ -122,7 +122,7 @@ const en = {
         { icon: 'pagofacil', title: 'Pago Fácil', body: 'In Argentina, the cash payment.' },
         { icon: 'transfer', title: 'Bank transfer', body: 'In Chile, the bank transfer.' },
         { icon: 'brought', title: 'Brought methods', body: 'A client can bring its own payment methods to connect locally.' },
-        { icon: 'prices', title: 'Local prices', body: 'Your volume is priced at the MDR a local merchant gets.' },
+        { icon: 'prices', title: 'Local prices', body: 'Your volume is charged the MDR a local merchant is charged. Our technology makes that rate possible.' },
         { icon: 'capture', title: 'Card capture', body: 'The digitised store includes card capture for online sales.' },
       ],
     },
@@ -182,7 +182,7 @@ const pt = {
     {
       title: 'Receber',
       items: [
-        { mark: 'prices', title: 'Preços locais', body: 'O volume é precificado no MDR que um merchant local recebe.' },
+        { mark: 'prices', title: 'Preços locais', body: 'O seu volume paga o MDR que um merchant local paga. Nossa tecnologia viabiliza essa taxa.' },
         { mark: 'methods', title: 'Cartão e meios locais', body: 'Crédito e débito, 3DS e 2D, mais os meios locais daquele mercado.' },
         { mark: 'terminal', title: 'Captura no cartão', body: 'A loja digitalizada inclui a captura no cartão para a venda online.' },
       ],
@@ -232,7 +232,7 @@ const pt = {
         { icon: 'pagofacil', title: 'Pago Fácil', body: 'Na Argentina, o pagamento em dinheiro.' },
         { icon: 'transfer', title: 'Transferência bancária', body: 'No Chile, a transferência bancária.' },
         { icon: 'brought', title: 'Meios trazidos', body: 'O cliente pode trazer os próprios meios de pagamento para conectar localmente.' },
-        { icon: 'prices', title: 'Preços locais', body: 'O volume é precificado no MDR que um merchant local recebe.' },
+        { icon: 'prices', title: 'Preços locais', body: 'O seu volume paga o MDR que um merchant local paga. Nossa tecnologia viabiliza essa taxa.' },
         { icon: 'capture', title: 'Captura no cartão', body: 'A loja digitalizada inclui a captura no cartão para a venda online.' },
       ],
     },

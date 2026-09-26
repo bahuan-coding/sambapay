@@ -1,7 +1,7 @@
 ---
 import FeatureGroups from './FeatureGroups.astro';
+import LineMark from './LineMark.astro';
 import PrimaryButton from './PrimaryButton.astro';
-import ProductMark from './ProductMark.astro';
 import type { Lang } from '../i18n';
 import { productCopy } from '../data/features';
 
@@ -15,14 +15,19 @@ const copy = productCopy(lang);
 
 <section class="catalog" aria-label={copy.seoTitle}>
   <div class="catalog__inner">
+    <div class="catalog__bodymap" aria-hidden="true">
+      <span class="catalog__bodymap-dot"></span>
+      <span class="catalog__bodymap-line"></span>
+    </div>
     <div class="catalog__grid">
-      {copy.columns.map((column) => (
+      {copy.columns.map((column, index) => (
         <article>
+          <p class="catalog__step">{String(index + 1).padStart(2, '0')}</p>
           <h2>{column.title}</h2>
           <ul>
             {column.items.map((item) => (
               <li>
-                <ProductMark kind={item.mark} />
+                <LineMark kind={item.mark} />
                 <div>
                   <h3>{item.title}</h3>
                   <p>{item.body}</p>
@@ -39,7 +44,7 @@ const copy = productCopy(lang);
       <p>{copy.refusal}</p>
     </aside>
     <p class="catalog__close">{copy.close}</p>
-    <PrimaryButton href={copy.ctaHref}>{copy.cta}</PrimaryButton>
+    <PrimaryButton href={copy.ctaHref} arrow>{copy.cta}</PrimaryButton>
   </div>
 </section>
 
@@ -56,40 +61,56 @@ const copy = productCopy(lang);
     margin: 0 auto;
   }
 
+  .catalog__bodymap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 0 3.5rem;
+  }
+
+  .catalog__bodymap-dot {
+    width: 9px;
+    height: 9px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+
+  .catalog__bodymap-line {
+    flex: 1;
+    height: 1px;
+    margin-left: 0.85rem;
+    background: linear-gradient(90deg, var(--ink) 0%, rgba(28, 61, 74, 0.12) 100%);
+  }
+
   .catalog__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+    gap: 2rem;
   }
 
   article {
-    padding: 1.1rem 1rem 1.25rem;
-    border: 1px solid #d0d5dd;
-    border-top: 8px solid var(--tone);
-    border-radius: 8px;
-    background: var(--wash);
+    margin: 0;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--ink);
   }
 
-  article:nth-child(1) { --tone: var(--green); --wash: #f3faf4; }
-  article:nth-child(2) { --tone: var(--ipe); --wash: #fffbeb; }
-  article:nth-child(3) { --tone: var(--blue); --wash: #f3f7fd; }
-  article:nth-child(4) { --tone: var(--urucum); --wash: #fdf4f2; }
+  .catalog__step {
+    margin: 0 0 0.6rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--anil);
+  }
 
   article h2 {
-    margin: 0 0 1rem;
-    padding-bottom: 0.6rem;
-    border-bottom: 2px solid var(--tone);
-    font-family: var(--display);
-    font-size: 1.65rem;
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    margin: 0 0 1.5rem;
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
     line-height: 1;
-    color: var(--tone);
   }
-
-  article:nth-child(2) h2 { color: var(--anil); }
-
-  article :global(.product-mark circle) { stroke: var(--tone); }
 
   ul {
     list-style: none;
@@ -97,30 +118,43 @@ const copy = productCopy(lang);
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 1.15rem;
+    gap: 1.35rem;
   }
 
   li {
     display: grid;
-    grid-template-columns: 3.5rem minmax(0, 1fr);
+    grid-template-columns: 2.25rem minmax(0, 1fr);
     gap: 0.85rem;
     align-items: start;
     margin: 0;
+    padding-top: 1.15rem;
+    border-top: 1px solid var(--border);
+  }
+
+  article li:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  li :global(.line-mark) {
+    --accent: var(--ipe);
+    width: 2.25rem;
+    height: 2.25rem;
   }
 
   h3 {
-    margin: 0.15rem 0 0.35rem;
-    font-family: var(--serif);
-    font-size: 1.2rem;
-    font-weight: 600;
-    letter-spacing: -0.03em;
+    margin: 0.1rem 0 0.3rem;
+    font-family: var(--display);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     line-height: 1.15;
   }
 
   li p {
     margin: 0;
     color: var(--muted);
-    font-size: 0.9375rem;
+    font-size: 0.9rem;
     line-height: 1.45;
   }
 
