@@ -11,7 +11,6 @@ export const esCopy = {
   columns: [
     {
       title: 'Cobrar',
-      pay: ['credit', 'debit', 'threeds', 'pix', 'boleto', 'spei', 'oxxo', 'qra', 'pagofacil', 'transfer'],
       items: [
         { mark: 'prices', title: 'Precios locales', body: 'Su volumen paga el MDR que paga un merchant local. Nuestra tecnología hace viable esa tarifa.' },
         { mark: 'methods', title: 'Tarjeta y medios locales', body: 'Crédito y débito, 3DS y 2D, más los medios locales de ese mercado.' },
@@ -20,7 +19,6 @@ export const esCopy = {
     },
     {
       title: 'Conectar',
-      pay: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
       items: [
         { mark: 'signup', title: 'Local signup', body: 'Protocolamos los datos del cliente con los socios locales, incluidas las licencias que el adquirente exige.' },
         { mark: 'connection', title: 'Direct connection', body: 'El cliente usa nuestra política comercial local. No cumple cada exigencia del adquirente por su cuenta.' },

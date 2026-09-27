@@ -25,7 +25,6 @@ export interface FeatureItem {
 export interface FeatureColumn {
   title: string;
   items: FeatureItem[];
-  pay?: string[];
 }
 
 export type MethodIcon =
@@ -74,7 +73,6 @@ const en = {
   columns: [
     {
       title: 'Accept',
-      pay: ['credit', 'debit', 'threeds', 'pix', 'boleto', 'spei', 'oxxo', 'qra', 'pagofacil', 'transfer'],
       items: [
         { mark: 'prices', title: 'Local prices', body: 'Your volume is charged the MDR a local merchant is charged. Our technology makes that rate possible.' },
         { mark: 'methods', title: 'Cards and local methods', body: 'Credit and debit, 3DS and 2D, plus the local methods of that market.' },
@@ -83,7 +81,6 @@ const en = {
     },
     {
       title: 'Connect',
-      pay: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
       items: [
         { mark: 'signup', title: 'Local signup', body: 'We file the client data with the local partners, including the licences the acquirer requires.' },
         { mark: 'connection', title: 'Direct connection', body: 'The client uses our local commercial policy. It does not clear each acquirer requirement on its own.' },
@@ -191,7 +188,6 @@ const pt = {
   columns: [
     {
       title: 'Receber',
-      pay: ['credit', 'debit', 'threeds', 'pix', 'boleto', 'spei', 'oxxo', 'qra', 'pagofacil', 'transfer'],
       items: [
         { mark: 'prices', title: 'Preços locais', body: 'O seu volume paga o MDR que um merchant local paga. Nossa tecnologia viabiliza essa taxa.' },
         { mark: 'methods', title: 'Cartão e meios locais', body: 'Crédito e débito, 3DS e 2D, mais os meios locais daquele mercado.' },
@@ -200,7 +196,6 @@ const pt = {
     },
     {
       title: 'Conectar',
-      pay: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
       items: [
         { mark: 'signup', title: 'Local signup', body: 'Protocolamos os dados do cliente com os parceiros locais, inclusive as licenças que o adquirente exige.' },
         { mark: 'connection', title: 'Direct connection', body: 'O cliente usa a nossa política comercial local. Não cumpre cada exigência do adquirente sozinho.' },

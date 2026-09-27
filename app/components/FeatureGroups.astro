@@ -140,18 +140,16 @@ const groups = productCopy(lang).groups;
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 0.5rem 2rem;
   }
 
   li {
     margin: 0;
     padding: 1rem 0;
-    border-bottom: 1px solid var(--border);
+    border-top: 1px solid var(--border);
   }
-
-  li:first-child { padding-top: 0.25rem; }
 
   li.has-icon {
     display: grid;
@@ -189,18 +187,14 @@ const groups = productCopy(lang).groups;
   }
 
   li.has-logo .method-icons {
-    width: 3.5rem;
-    justify-content: center;
+    width: 3.25rem;
+    justify-content: flex-start;
   }
 
   li.has-logo :global(.pm) {
-    width: 3rem;
-    height: 2.25rem;
-  }
-
-  li.has-logo :global(.pm img) {
-    max-width: 3rem;
-    max-height: 2.25rem;
+    width: 3.25rem !important;
+    height: 3.25rem !important;
+    padding: 0.5rem !important;
   }
 
   li.has-logo h3 {

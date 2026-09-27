@@ -1,12 +1,15 @@
 ﻿---
 type LineMarkKind =
   | 'prices'
+  | 'methods'
   | 'signup'
   | 'connection'
   | 'stock'
   | 'store'
   | 'terminal'
   | 'included'
+  | 'collect'
+  | 'steps'
   | 'book'
   | 'rails'
   | 'availability';
@@ -26,6 +29,15 @@ const { kind } = Astro.props;
       <circle class="lm-accent" cx="24" cy="24" r="5.5" />
       <path class="lm-accent" d="M22 24 h4" />
       <path class="lm-accent" d="M24 21.5 v5" />
+    </g>
+  )}
+  {kind === 'methods' && (
+    <g>
+      <rect x="7" y="12" width="26" height="17" rx="2.5" />
+      <path d="M7 18 h26" />
+      <path class="lm-accent" d="M11 25 h5" />
+      <circle class="lm-accent" cx="37" cy="31" r="6" />
+      <path class="lm-accent" d="M34.5 31 l1.8 1.8 3.2 -3.6" />
     </g>
   )}
   {kind === 'signup' && (
@@ -70,6 +82,21 @@ const { kind } = Astro.props;
       <circle cx="24" cy="24" r="14" />
       <path class="lm-accent" d="M17 24 l5 5" />
       <path class="lm-accent" d="M22 29 l10 -12" />
+    </g>
+  )}
+  {kind === 'collect' && (
+    <g>
+      <path d="M24 8 v22" />
+      <path d="M16 22 l8 8 8 -8" />
+      <path class="lm-accent" d="M11 38 h26" />
+      <circle class="lm-accent" cx="24" cy="42" r="2.4" />
+    </g>
+  )}
+  {kind === 'steps' && (
+    <g>
+      <path d="M10 36 h10 v-8 h9 v-8 h9" />
+      <circle class="lm-accent" cx="10" cy="36" r="2.4" />
+      <circle class="lm-accent" cx="24" cy="20" r="2.4" />
     </g>
   )}
   {kind === 'book' && (

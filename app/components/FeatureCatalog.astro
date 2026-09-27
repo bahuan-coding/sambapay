@@ -1,10 +1,9 @@
 ---
 import FeatureGroups from './FeatureGroups.astro';
 import LineMark from './LineMark.astro';
-import PaymentStrip from './PaymentStrip.astro';
 import PrimaryButton from './PrimaryButton.astro';
 import type { Lang } from '../i18n';
-import { productCopy, type MethodIcon } from '../data/features';
+import { productCopy } from '../data/features';
 
 interface Props {
   lang: Lang;
@@ -36,7 +35,6 @@ const copy = productCopy(lang);
               </li>
             ))}
           </ul>
-          {column.pay && <PaymentStrip items={column.pay as MethodIcon[]} label={column.title} />}
         </article>
       ))}
     </div>
