@@ -1,0 +1,75 @@
+---
+import type { Lang } from '../i18n';
+import { legalCopy } from '../i18n/legal';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+  doc: 'privacy' | 'terms';
+}
+
+const { lang, currentPath, doc } = Astro.props;
+const copy = legalCopy(lang)[doc];
+---
+
+<BaseLayout lang={lang} currentPath={currentPath} title={copy.title} description={copy.intro}>
+  <article class="legal">
+    <h1>{copy.title}</h1>
+    <p class="legal__updated">{copy.updated}</p>
+    <p class="legal__intro">{copy.intro}</p>
+    {copy.sections.map((s) => (
+      <section class="legal__section">
+        <h2>{s.h}</h2>
+        <p>{s.p}</p>
+      </section>
+    ))}
+  </article>
+</BaseLayout>
+
+<style>
+  .legal {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: var(--space-8) var(--space-4) var(--space-8);
+  }
+
+  .legal h1 {
+    margin: 0 0 var(--space-2);
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .legal__updated {
+    margin: 0 0 var(--space-5);
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .legal__intro {
+    margin: 0 0 var(--space-6);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .legal__section {
+    margin-bottom: var(--space-6);
+  }
+
+  .legal__section h2 {
+    margin: 0 0 var(--space-2);
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .legal__section p {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+</style>
