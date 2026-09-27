@@ -627,6 +627,7 @@ const termsHref = pathForLang('/legal/terms', lang);
         const data = await res.json().catch(() => ({}));
         if (res.status === 409) { showError(t.errors.emailTaken); setBusy(false); return; }
         if (res.status === 400 && data.error === 'tax_id') { showError(t.errors.taxId); setBusy(false); return; }
+        if (res.status === 400 && data.error === 'owner_doc') { showError(t.errors.ownerDoc); setBusy(false); return; }
         if (!res.ok) { showError(t.errors.generic); setBusy(false); return; }
         if (data.emailSent === false) { showError(t.mailFailed); setBusy(false); return; }
         createdMerchantId = data.merchantId ?? null;

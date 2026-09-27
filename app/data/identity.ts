@@ -163,6 +163,132 @@ export function validRFC(value: string): boolean {
   return v.slice(-1) === expected;
 }
 
+/** Mexico CURP (18 chars, mod-10 check digit at the end). */
+export function validCURP(value: string): boolean {
+  const v = value.replace(/[^A-Z0-9Ñ]/gi, '').toUpperCase();
+  if (!/^[A-ZÑ]{4}\d{6}[HM][A-ZÑ]{5}[A-Z0-9]\d$/.test(v)) return false;
+  const dict = '0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+  let sum = 0;
+  for (let i = 0; i < 17; i++) sum += dict.indexOf(v[i]) * (18 - i);
+  const dv = 10 - (sum % 10);
+  return String(dv === 10 ? 0 : dv) === v[17];
+}
+
+/** Guatemala NIT (mod-11; the check digit may be the letter K). */
+export function validGTNIT(value: string): boolean {
+  const v = digits(value);
+  if (v.length < 8) return false;
+  const weights = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+  let sum = 0;
+  const body = v.slice(0, -1).split('').reverse();
+  for (let i = 0; i < body.length; i++) sum += Number(body[i]) * weights[i];
+  const r = 11 - (sum % 11);
+  const expected = r === 11 ? 0 : r === 10 ? 'K' : r;
+  return String(expected) === v.slice(-1).toUpperCase();
+}
+
+/** El Salvador NIT (14 digits, mod-11). */
+export function validSVNIT(value: string): boolean {
+  const v = digits(value);
+  if (v.length !== 14) return false;
+  const weights = [2, 7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+  let sum = 0;
+  for (let i = 0; i < 13; i++) sum += Number(v[i]) * weights[i];
+  const dv = (11 - (sum % 11)) % 11;
+  return (dv === 10 ? 0 : dv) === Number(v[13]);
+}
+
+/** Dominican Republic RNC (9 digits, mod-11). */
+export function validDORNC(value: string): boolean {
+  const v = digits(value);
+  if (v.length !== 9) return false;
+  const weights = [7, 9, 8, 6, 5, 4, 3, 2];
+  let sum = 0;
+  for (let i = 0; i < 8; i++) sum += Number(v[i]) * weights[i];
+  const r = 11 - (sum % 11);
+  const dv = r === 11 ? 2 : r === 10 ? 1 : r;
+  return dv === Number(v[8]);
+}
+
+/** Paraguay RUC (mod-11; the check digit may be the letter K). */
+export function validPYRUC(value: string): boolean {
+  const v = digits(value);
+  if (v.length < 6) return false;
+  const weights = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  let sum = 0;
+  const body = v.slice(0, -1).split('').reverse();
+  for (let i = 0; i < body.length; i++) sum += Number(body[i]) * weights[i];
+  const r = 11 - (sum % 11);
+  const expected = r === 11 ? 0 : r === 10 ? 'K' : r;
+  return String(expected) === v.slice(-1).toUpperCase();
+}
+
+/** Venezuela RIF (J/V/E/G + 9 digits, mod-11). */
+export function validVERIF(value: string): boolean {
+  const v = value.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+  if (!/^[JVEG]\d{9}$/.test(v)) return false;
+  const first: Record<string, number> = { V: 1, E: 2, J: 3, P: 4, G: 5 };
+  const weights = [3, 2, 7, 6, 5, 4, 3, 2];
+  const body = v.slice(1, 9);
+  let sum = (first[v[0]] ?? 0) * 4;
+  for (let i = 0; i < 8; i++) sum += Number(body[i]) * weights[i];
+  const r = sum % 11;
+  const dv = r === 0 ? 0 : r === 1 ? 0 : 11 - r;
+  return dv === Number(v[9]);
+}
+
+/** Nicaragua RUC (14 digits, mod-11 over the first 13, check digit last). */
+export function validNIRUC(value: string): boolean {
+  const v = digits(value);
+  if (v.length !== 14) return false;
+  const weights = [3, 2, 7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3];
+  let sum = 0;
+  for (let i = 0; i < 13; i++) sum += Number(v[i]) * weights[i];
+  const dv = (11 - (sum % 11)) % 11;
+  return dv === Number(v[13]);
+}
+
+/** Honduras RTN (14 digits, mod-11). */
+export function validHNRTN(value: string): boolean {
+  const v = digits(value);
+  if (v.length !== 14) return false;
+  const weights = [3, 2, 7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3];
+  let sum = 0;
+  for (let i = 0; i < 13; i++) sum += Number(v[i]) * weights[i];
+  const dv = (11 - (sum % 11)) % 11;
+  return dv === Number(v[13]);
+}
+
+/** Uruguay RUT (12 digits, mod-11). */
+export function validUYRUT(value: string): boolean {
+  const v = digits(value);
+  if (v.length !== 12) return false;
+  const weights = [4, 3, 6, 7, 8, 9, 2, 3, 4, 5, 6, 7, 8];
+  let sum = 0;
+  const body = v.slice(0, 11);
+  for (let i = 0; i < 11; i++) sum += Number(body[i]) * weights[i];
+  const r = 11 - (sum % 11);
+  const dv = r === 11 ? 0 : r === 10 ? 0 : r;
+  return dv === Number(v[11]);
+}
+
+/** Ecuador RUC (13 digits, mod-11; the rule depends on the third digit). */
+export function validECRUC(value: string): boolean {
+  const v = digits(value);
+  if (v.length !== 13 || v.slice(10) === '000') return false;
+  const third = Number(v[2]);
+  const weights = third <= 5 ? [2, 1, 2, 1, 2, 1, 2, 1, 2] : [3, 2, 7, 6, 5, 4, 3, 2, 7];
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    let p = Number(v[i]) * weights[i];
+    if (third <= 5 && p > 9) p -= 9;
+    sum += p;
+  }
+  const r = 11 - (sum % 11);
+  const dv = r === 11 ? 0 : r === 10 ? 0 : r;
+  return dv === Number(v[9]);
+}
+
 /* ---- Masks ---- */
 
 export function applyMask(value: string, mask: string): string {
@@ -217,7 +343,7 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
         ],
       },
     ],
-    owner: { name: 'CURP', mask: 'AAAA000000AAAAAA' },
+    owner: { name: 'CURP', mask: 'AAAA000000AAAAAA', validate: validCURP },
     ownersByShare: false,
   },
   CO: {
@@ -328,23 +454,23 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
 };
 
 /**
- * Tax identifiers for markets without a deep config. The local term, its mask
- * and its format only — no public check-digit algorithm exists, so no
+ * Tax identifiers for markets without a deep config. The local term, its mask,
+ * its format, and — where a public check-digit algorithm exists — its
  * validator. maxLength follows the mask, as in the six deep markets.
  */
 const taxIdOnly: Record<string, IdentityConfig['taxId']> = {
-  GT: { name: 'NIT', mask: '0000000-0', example: '1234567-8', placeholder: '1234567-8', maxLength: 9 },
+  GT: { name: 'NIT', mask: '0000000-0', example: '1234567-8', placeholder: '1234567-8', maxLength: 9, validate: validGTNIT },
   CR: { name: 'Cédula Jurídica', mask: '0-000-000000', example: '3-101-123456', placeholder: '3-101-123456', maxLength: 12 },
   PA: { name: 'RUC', mask: '000000000-0-0000', example: '155612345-2-2015', placeholder: '155612345-2-2015', maxLength: 16 },
-  DO: { name: 'RNC', mask: '0-00-00000-0', example: '1-23-45678-9', placeholder: '1-23-45678-9', maxLength: 11 },
-  UY: { name: 'RUT', mask: '00 000000 0000', example: '21 123456 0012', placeholder: '21 123456 0012', maxLength: 14 },
-  PY: { name: 'RUC', mask: '00000000-0', example: '80012345-6', placeholder: '80012345-6', maxLength: 10 },
-  EC: { name: 'RUC', mask: '0000000000000', example: '1790012345001', placeholder: '1790012345001', maxLength: 13 },
+  DO: { name: 'RNC', mask: '0-00-00000-0', example: '1-23-45678-9', placeholder: '1-23-45678-9', maxLength: 11, validate: validDORNC },
+  UY: { name: 'RUT', mask: '00 000000 0000', example: '21 123456 0012', placeholder: '21 123456 0012', maxLength: 14, validate: validUYRUT },
+  PY: { name: 'RUC', mask: '00000000-0', example: '80012345-6', placeholder: '80012345-6', maxLength: 10, validate: validPYRUC },
+  EC: { name: 'RUC', mask: '0000000000000', example: '1790012345001', placeholder: '1790012345001', maxLength: 13, validate: validECRUC },
   BO: { name: 'NIT', mask: '0000000000', example: '1234567012', placeholder: '1234567012', maxLength: 10 },
-  VE: { name: 'RIF', mask: 'A-00000000-0', example: 'J-12345678-9', placeholder: 'J-12345678-9', maxLength: 12 },
-  NI: { name: 'RUC', mask: 'A0000000000000', example: 'J0310000123456', placeholder: 'J0310000123456', maxLength: 14 },
-  HN: { name: 'RTN', mask: '0000-0000-00000', example: '0801-1990-12345', placeholder: '0801-1990-12345', maxLength: 15 },
-  SV: { name: 'NIT', mask: '0000-000000-000-0', example: '0614-010195-001-2', placeholder: '0614-010195-001-2', maxLength: 17 },
+  VE: { name: 'RIF', mask: 'A-00000000-0', example: 'J-12345678-9', placeholder: 'J-12345678-9', maxLength: 12, validate: validVERIF },
+  NI: { name: 'RUC', mask: 'A0000000000000', example: 'J0310000123456', placeholder: 'J0310000123456', maxLength: 14, validate: validNIRUC },
+  HN: { name: 'RTN', mask: '0000-0000-00000', example: '0801-1990-12345', placeholder: '0801-1990-12345', maxLength: 15, validate: validHNRTN },
+  SV: { name: 'NIT', mask: '0000-000000-000-0', example: '0614-010195-001-2', placeholder: '0614-010195-001-2', maxLength: 17, validate: validSVNIT },
   JM: { name: 'TRN', mask: '000000000', example: '123456789', placeholder: '123456789', maxLength: 9 },
   TT: { name: 'BIR', mask: '000000', example: '123456', placeholder: '123456', maxLength: 6 },
   SR: { name: 'RIN', mask: 'XXXXXXXX', example: '', placeholder: '', maxLength: 8 },

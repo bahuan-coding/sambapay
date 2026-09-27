@@ -103,6 +103,17 @@ export const POST: APIRoute = async ({ request }) => {
     return Response.json({ error: 'tax_id' }, { status: 400 });
   }
 
+  // The owner's document follows the same market rule as the company's, and
+  // the server never trusts the client's word for it. Markets without a
+  // check-digit algorithm pass, since the identity engine defines no validate.
+  if (identity.owner.validate) {
+    for (const owner of data.owners) {
+      if (!identity.owner.validate(owner.documentNumber)) {
+        return Response.json({ error: 'owner_doc' }, { status: 400 });
+      }
+    }
+  }
+
   const existing = await findMerchantByEmail(email);
   if (existing) {
     return Response.json({ error: 'email_taken' }, { status: 409 });
