@@ -152,6 +152,9 @@ const termsHref = pathForLang('/legal/terms', lang);
     lookupFound: copy.lookup.found,
     autofillHint: copy.fields.autofillHint,
     declaration: copy.declaration,
+    saving: copy.saving,
+    uploading: copy.uploading,
+    submitLabel: copy.submitLabel,
     errors: copy.errors,
   })} />
 </BaseLayout>
@@ -166,41 +169,80 @@ const termsHref = pathForLang('/legal/terms', lang);
   const progress = [...document.querySelectorAll<HTMLElement>('[data-progress]')];
   const taxBlock = form.querySelector<HTMLElement>('[data-tax-block]')!;
   const ownersWrap = form.querySelector<HTMLElement>('[data-owners]')!;
-  const errEl = form.querySelector<HTMLElement>('[data-error]')!;
   let step = 1;
   let ownerCount = 0;
 
   const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 
+  /** The error banner of the step we are on, never a hidden one. */
+  const activeError = () => form.querySelector<HTMLElement>(`[data-panel="${step}"] [data-error]`);
+
   function setStep(n: number | 'success') {
     panels.forEach((p) => (p.hidden = p.dataset.panel !== String(n)));
     progress.forEach((el) => {
       const v = Number(el.dataset.progress);
-      el.classList.toggle('is-active', v === n);
-      el.classList.toggle('is-done', typeof n === 'number' && v < n);
+      const done = n === 'success' || (typeof n === 'number' && v < n);
+      el.classList.toggle('is-active', typeof n === 'number' && v === n);
+      el.classList.toggle('is-done', done);
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  /* Selection order matters: the first country the user picks governs the
+     identity experience, not the first one in the DOM. */
+  let countryOrder: string[] = [];
   function selectedCountries(): string[] {
-    return [...form.querySelectorAll<HTMLInputElement>('[data-country-check]:checked')].map((el) => el.value);
+    const checked = new Set(
+      [...form.querySelectorAll<HTMLInputElement>('[data-country-check]:checked')].map((el) => el.value),
+    );
+    countryOrder = countryOrder.filter((c) => checked.has(c));
+    for (const c of checked) if (!countryOrder.includes(c)) countryOrder.push(c);
+    return countryOrder;
   }
 
   /* Tax block: the first selected country governs the experience. */
+  const langIndex = () => {
+    const l = document.documentElement.lang.slice(0, 2);
+    return l === 'pt' ? 1 : l === 'es' ? 2 : 0;
+  };
+  const i18nValue = (arr: [string, string, string]) => arr[langIndex()];
+
+  /* Values already typed are kept per country, so switching countries never
+     erases the user's work. */
+  const taxCache = new Map<string, Record<string, string>>();
+  let currentPrimary: string | null = null;
+
+  function stashTax() {
+    if (!currentPrimary) return;
+    const store: Record<string, string> = {};
+    taxBlock.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]').forEach((el) => {
+      store[el.name] = el.value;
+    });
+    taxCache.set(currentPrimary, store);
+  }
+
   function renderTax() {
     const codes = selectedCountries();
     const primary = codes[0];
-    if (!primary) { taxBlock.innerHTML = ''; return; }
+    stashTax();
+    if (!primary) { taxBlock.innerHTML = ''; currentPrimary = null; return; }
+    currentPrimary = primary;
     const cfg = identityFor(primary);
+    const saved = taxCache.get(primary) ?? {};
     const extras = cfg.extras.map((f: ExtraField) => renderExtra(f)).join('');
     taxBlock.innerHTML = `
       <div class="field">
         <label class="field__label" for="su-tax">${cfg.taxId.name} <span class="field__req">*</span></label>
-        <input class="field__input" id="su-tax" name="documentNumber" placeholder="${esc(cfg.taxId.placeholder)}" maxlength="${cfg.taxId.maxLength}" data-mask="${esc(cfg.taxId.mask)}" data-validate="tax" data-country="${primary}" data-lookup="${primary}" />
-        <p class="field__hint" data-tax-hint>${esc(cfg.taxId.placeholder)}</p>
-        <p class="field__status" data-tax-status hidden></p>
+        <input class="field__input" id="su-tax" name="documentNumber" required placeholder="${esc(cfg.taxId.placeholder)}" maxlength="${cfg.taxId.maxLength}" value="${esc(saved.documentNumber ?? '')}" data-mask="${esc(cfg.taxId.mask)}" data-validate="tax" data-country="${primary}" data-lookup="${primary}" aria-describedby="su-tax-hint su-tax-status" />
+        <p class="field__hint" id="su-tax-hint">${esc(cfg.taxId.placeholder)}</p>
+        <p class="field__status" id="su-tax-status" data-tax-status hidden></p>
+        <p class="field__error" data-field-error hidden role="alert"></p>
       </div>
       ${extras}`;
+    // restore extra values too
+    taxBlock.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]').forEach((el) => {
+      if (el.name !== 'documentNumber' && saved[el.name]) el.value = saved[el.name];
+    });
     bindMasks(taxBlock);
     bindLookup();
   }
@@ -264,12 +306,16 @@ const termsHref = pathForLang('/legal/terms', lang);
   }
 
   function renderExtra(f: ExtraField) {
-    const label = f.label[0];
+    const label = i18nValue(f.label);
+    const req = f.required ? ' <span class="field__req">*</span>' : '';
+    const hidden = 'autocomplete="off"';
     if (f.kind === 'select') {
-      const opts = (f.options ?? []).map((o) => `<option value="${o.value}">${esc(o.label[0])}</option>`).join('');
-      return `<div class="field"><label class="field__label" for="ex-${f.name}">${esc(label)}${f.required ? ' <span class="field__req">*</span>' : ''}</label><select class="field__input" id="ex-${f.name}" name="${f.name}"${f.required ? ' required' : ''}><option value=""></option>${opts}</select></div>`;
+      const opts = (f.options ?? [])
+        .map((o) => `<option value="${o.value}"${o.label ? '' : ''}>${esc(i18nValue(o.label))}</option>`)
+        .join('');
+      return `<div class="field"><label class="field__label" for="ex-${f.name}">${esc(label)}${req}</label><select class="field__input" id="ex-${f.name}" name="${f.name}"${f.required ? ' required' : ''}><option value=""></option>${opts}</select></div>`;
     }
-    return `<div class="field"><label class="field__label" for="ex-${f.name}">${esc(label)}${f.required ? ' <span class="field__req">*</span>' : ''}</label><input class="field__input" id="ex-${f.name}" name="${f.name}"${f.required ? ' required' : ''} /></div>`;
+    return `<div class="field"><label class="field__label" for="ex-${f.name}">${esc(label)}${req}</label><input class="field__input" id="ex-${f.name}" name="${f.name}" ${hidden}${f.required ? ' required' : ''} /></div>`;
   }
 
   /* Owners: one block per person. Document mask from the country. */
@@ -323,28 +369,92 @@ const termsHref = pathForLang('/legal/terms', lang);
     return !cfg.owner.validate || cfg.owner.validate(value);
   }
 
-  function validatePanel(panel: HTMLElement): boolean {
-    if (panel.dataset.panel === '2' && selectedCountries().length === 0) {
-      const err = form.querySelector<HTMLElement>('#su-countries-err');
-      if (err) { err.textContent = 'Select at least one country.'; err.hidden = false; }
-      return false;
-    }
-    for (const field of panel.querySelectorAll<HTMLInputElement | HTMLSelectElement>('input, select')) {
-      if (!field.checkValidity()) { field.reportValidity(); return false; }
-      if (field instanceof HTMLInputElement && field.dataset.validate && !validateDocument(field)) {
-        field.setCustomValidity('invalid');
-        field.reportValidity();
-        field.setCustomValidity('');
-        return false;
-      }
-    }
-    return true;
+  /* ---- Validation, with a summary at the top of the step and a message under
+     each field. No browser bubbles; the flow stays in our hands. ---- */
+  function clearErrors(panel: HTMLElement) {
+    panel.querySelectorAll('[data-field-error]').forEach((el) => {
+      (el as HTMLElement).hidden = true;
+      (el as HTMLElement).textContent = '';
+    });
+    panel.querySelectorAll('[aria-invalid="true"]').forEach((el) => el.removeAttribute('aria-invalid'));
+    const summary = panel.querySelector<HTMLElement>('[data-error]');
+    if (summary) summary.hidden = true;
   }
 
-  /* Country change re-renders the tax block and refreshes owner masks. */
+  function fieldMessage(field: HTMLElement): string {
+    const name = field.getAttribute('name') ?? '';
+    if (field instanceof HTMLInputElement && field.dataset.validate) {
+      if (!field.value.trim()) return t.errors.required;
+      if (name === 'documentNumber') return t.errors.taxId;
+      return t.errors.ownerDoc;
+    }
+    if (field instanceof HTMLInputElement && field.type === 'email') return t.errors.email;
+    if (field instanceof HTMLInputElement && field.type === 'url') return t.errors.url;
+    return t.errors.required;
+  }
+
+  function markInvalid(field: HTMLElement) {
+    field.setAttribute('aria-invalid', 'true');
+    const holder = field.closest('.field') ?? field.parentElement;
+    const err = holder?.querySelector<HTMLElement>('[data-field-error]');
+    if (err) { err.textContent = fieldMessage(field); err.hidden = false; }
+  }
+
+  function validatePanel(panel: HTMLElement): boolean {
+    clearErrors(panel);
+    const invalid: HTMLElement[] = [];
+
+    if (panel.dataset.panel === '2' && selectedCountries().length === 0) {
+      const err = form.querySelector<HTMLElement>('#su-countries-err');
+      if (err) { err.textContent = t.errors.countries; err.hidden = false; }
+      invalid.push(taxBlock.querySelector('[data-country-multi]') ?? taxBlock);
+    }
+
+    const fields = panel.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>('[required], [data-validate]');
+    for (const field of fields) {
+      if ((field as HTMLInputElement).disabled) continue;
+      const empty = !String((field as HTMLInputElement).value ?? '').trim();
+      const bad = empty
+        || !field.checkValidity()
+        || (field instanceof HTMLInputElement && !!field.dataset.validate && !validateDocument(field));
+      if (bad) { markInvalid(field); invalid.push(field); }
+    }
+
+    // merchantType: radios are not natively required across the group.
+    if (panel.dataset.panel === '2') {
+      const chosen = form.querySelector<HTMLInputElement>('[data-merchant-type]:checked');
+      if (!chosen) {
+        const err = form.querySelector<HTMLElement>('#su-type-err');
+        if (err) { err.textContent = t.errors.required; err.hidden = false; }
+        invalid.push(form.querySelector<HTMLElement>('[data-merchant-type]') ?? panel);
+      }
+    }
+
+    // Step 3 needs at least one owner.
+    if (panel.dataset.panel === '3' && ownersWrap.children.length === 0) {
+      const err = panel.querySelector<HTMLElement>('[data-error]');
+      if (err) { err.textContent = t.errors.ownerRequired; err.hidden = false; }
+      invalid.push(ownersWrap);
+    }
+
+    if (invalid.length === 0) return true;
+
+    const summary = panel.querySelector<HTMLElement>('[data-error]');
+    if (summary && summary.hidden && invalid.length > 1) {
+      summary.textContent = t.errors.summary;
+      summary.hidden = false;
+    }
+    const first = invalid[0];
+    first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    (first.querySelector('input, select') as HTMLElement | null)?.focus({ preventScroll: true });
+    first.focus?.({ preventScroll: true });
+    return false;
+  }
+
+  /* Country change re-renders the tax block (values preserved per country). */
   form.addEventListener('change', (e) => {
-    const t = e.target as HTMLElement;
-    if (t.matches('[data-country-check]')) renderTax();
+    const node = e.target as HTMLElement;
+    if (node.matches('[data-country-check]')) renderTax();
   });
 
   form.querySelectorAll('[data-next]').forEach((btn) =>
@@ -363,12 +473,10 @@ const termsHref = pathForLang('/legal/terms', lang);
 
   form.querySelector('[data-add-owner]')?.addEventListener('click', addOwner);
 
-  /* Submit: create the account, then upload documents. */
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const panel = form.querySelector<HTMLElement>('[data-panel="4"]');
-    if (panel && !validatePanel(panel)) return;
-    errEl.hidden = true;
+  const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+  let createdMerchantId: number | null = null;
+
+  function readForm() {
     const owners = [...ownersWrap.querySelectorAll<HTMLElement>('[data-owner]')].map((b) => {
       const i = b.dataset.owner;
       const f = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.value.trim() ?? '';
@@ -383,14 +491,14 @@ const termsHref = pathForLang('/legal/terms', lang);
     const value = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.value.trim() ?? '';
     const extras: Record<string, string> = {};
     taxBlock.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]').forEach((el) => {
-      if (el.name !== 'documentNumber') extras[el.name] = el.value.trim();
+      if (el.name !== 'documentNumber' && el.value.trim()) extras[el.name] = el.value.trim();
     });
-    const payload = {
+    return {
       name: value('name'),
       email: value('email'),
       phone: value('phone'),
       terms: (form.elements.namedItem('terms') as HTMLInputElement)?.checked === true,
-      merchantType: (form.querySelector<HTMLInputElement>('[data-merchant-type]:checked')?.value) ?? 'direct',
+      merchantType: form.querySelector<HTMLInputElement>('[data-merchant-type]:checked')?.value ?? 'direct',
       companyName: value('companyName'),
       countries: selectedCountries(),
       country: selectedCountries()[0],
@@ -408,33 +516,75 @@ const termsHref = pathForLang('/legal/terms', lang);
       },
       locale: document.documentElement.lang.slice(0, 2),
     };
+  }
+
+  async function uploadDocuments(merchantId: number) {
+    const inputs = [...form.querySelectorAll<HTMLInputElement>('[data-file-input]')].filter((i) => i.files?.[0]);
+    let done = 0;
+    for (const input of inputs) {
+      const file = input.files![0];
+      const fd = new FormData();
+      fd.append('merchantId', String(merchantId));
+      fd.append('docType', input.name);
+      fd.append('file', file);
+      try {
+        const res = await fetch('/api/upload', { method: 'POST', body: fd });
+        if (res.ok) done += 1;
+      } catch { /* counted below */ }
+    }
+    return { total: inputs.length, done };
+  }
+
+  function setBusy(busy: boolean, label?: string) {
+    submitBtn.disabled = busy;
+    submitBtn.textContent = busy ? (label ?? t.saving) : t.submitLabel;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const panel = form.querySelector<HTMLElement>('[data-panel="4"]');
+    if (panel && !validatePanel(panel)) return;
+
+    const banner = activeError();
+    if (banner) banner.hidden = true;
+    setBusy(true, t.saving);
+
     try {
-      const res = await fetch('/api/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.status === 409) { errEl.textContent = 'This email already has an account.'; errEl.hidden = false; return; }
-      if (!res.ok) { errEl.textContent = 'Something went wrong. Try again.'; errEl.hidden = false; return; }
-      // Upload the documents against the new merchant.
-      if (data.merchantId) {
-        for (const input of form.querySelectorAll<HTMLInputElement>('[data-file-input]')) {
-          const file = input.files?.[0];
-          if (!file) continue;
-          const fd = new FormData();
-          fd.append('merchantId', String(data.merchantId));
-          fd.append('docType', input.name);
-          fd.append('file', file);
-          await fetch('/api/upload', { method: 'POST', body: fd }).catch(() => {});
-        }
+      // Create the merchant only once; a retry reuses it and only re-uploads.
+      if (createdMerchantId === null) {
+        const res = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(readForm()),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.status === 409) { showError(t.errors.emailTaken); setBusy(false); return; }
+        if (res.status === 400 && data.error === 'tax_id') { showError(t.errors.taxId); setBusy(false); return; }
+        if (!res.ok) { showError(t.errors.generic); setBusy(false); return; }
+        if (data.emailSent === false) { showError(t.mailFailed); setBusy(false); return; }
+        createdMerchantId = data.merchantId ?? null;
       }
+
+      if (createdMerchantId !== null) {
+        setBusy(true, t.uploading);
+        const { total, done } = await uploadDocuments(createdMerchantId);
+        if (total > 0 && done < total) { showError(t.errors.upload); setBusy(false); return; }
+      }
+
       setStep('success');
     } catch {
-      errEl.textContent = 'Something went wrong. Try again.';
-      errEl.hidden = false;
+      showError(t.errors.generic);
+      setBusy(false);
     }
   });
+
+  function showError(message: string) {
+    const banner = activeError();
+    if (!banner) return;
+    banner.textContent = message;
+    banner.hidden = false;
+    banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 
   setStep(1);
 </script>

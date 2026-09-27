@@ -98,6 +98,10 @@ const en = {
 
   mailFailed: 'The account is open. The email did not go out. Use Log in in a moment.',
 
+  saving: 'Creating your account…',
+  uploading: 'Sending your documents…',
+  submitLabel: 'Create account',
+
   errors: {
     generic: 'Something went wrong. Try again.',
     emailTaken: 'This email already has an account. Use Log in.',
@@ -105,7 +109,12 @@ const en = {
     countries: 'Select at least one country.',
     taxId: 'Check the tax ID for the selected country.',
     ownerDoc: 'Check the document number.',
+    ownerRequired: 'Add at least one owner or legal representative.',
+    email: 'Enter a valid email.',
+    url: 'Enter a valid website address.',
     file: 'Attach a valid file.',
+    upload: 'Some documents did not upload. Keep them attached and try again.',
+    summary: 'A few fields need your attention.',
   },
 };
 

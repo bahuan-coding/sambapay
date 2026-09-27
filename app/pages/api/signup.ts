@@ -6,21 +6,20 @@ import { langPrefix, type Lang } from '../../i18n';
 import { sendMagicLinkEmail } from '../../lib/email';
 import { getAppUrl } from '../../lib/env';
 import { createMagicLink, findMerchantByEmail, normalizeEmail } from '../../lib/magic-link';
-import { identityFor } from '../../data/identity';
+import { identityFor, normalizeWebsite as canonicalWebsite } from '../../data/identity';
 
 export const prerender = false;
 
 function normalizeWebsite(value: unknown): string {
   const raw = typeof value === 'string' ? value.trim() : '';
   if (!raw) return '';
-  if (/^https?:\/\//i.test(raw)) return raw;
-  return `https://${raw}`;
+  return canonicalWebsite(raw) ?? '';
 }
 
 const ownerSchema = z.object({
   fullName: z.string().trim().min(2).max(200),
-  documentNumber: z.string().trim().max(60).optional().default(''),
-  role: z.enum(['director', 'ubo', 'shareholder']).optional().default('director'),
+  documentNumber: z.string().trim().min(2).max(60),
+  role: z.enum(['director', 'ubo']).optional().default('director'),
   ownershipPct: z.number().min(0).max(100).optional().default(0),
   isPep: z.boolean().optional().default(false),
 });
@@ -46,7 +45,7 @@ const bodySchema = z.object({
   website: z.preprocess(normalizeWebsite, z.union([z.literal(''), z.string().url()])),
   industry: z.string().trim().max(200).optional().default(''),
   extras: z.record(z.string(), z.string()).optional().default({}),
-  owners: z.array(ownerSchema).optional().default([]),
+  owners: z.array(ownerSchema).min(1).max(20),
   declaration: declarationSchema.optional(),
   locale: z.enum(['en', 'pt', 'es']).optional(),
 });
@@ -70,9 +69,13 @@ export const POST: APIRoute = async ({ request }) => {
   const country = data.country.toUpperCase();
   const countries = [...new Set(data.countries.map((c) => c.toUpperCase()))];
 
-  // Server-side check digit on the tax identifier when the country defines one.
+  // The tax identifier is required, and its check digit is verified when the
+  // country defines one.
   const identity = identityFor(country);
-  if (identity.taxId.validate && data.documentNumber && !identity.taxId.validate(data.documentNumber)) {
+  if (!data.documentNumber) {
+    return Response.json({ error: 'tax_id' }, { status: 400 });
+  }
+  if (identity.taxId.validate && !identity.taxId.validate(data.documentNumber)) {
     return Response.json({ error: 'tax_id' }, { status: 400 });
   }
 
@@ -100,27 +103,50 @@ export const POST: APIRoute = async ({ request }) => {
     })
     .returning();
 
+  const extras = data.extras ?? {};
+  const known: Record<string, string> = {};
+  const reserved: Record<string, string> = {};
+  const map: Record<string, 'taxRegime' | 'giro' | 'comuna' | 'ciuu' | 'condicionIva' | 'camaraComercio'> = {
+    regimenFiscal: 'taxRegime',
+    giro: 'giro',
+    comuna: 'comuna',
+    actividadCIIU: 'ciuu',
+    condicionIVA: 'condicionIva',
+    camaraComercio: 'camaraComercio',
+  };
+  for (const [key, value] of Object.entries(extras)) {
+    if (!value) continue;
+    const column = map[key];
+    if (column) known[column] = value;
+    else reserved[key] = value;
+  }
+
   await db.insert(merchantCompany).values({
     merchantId: merchant.id,
     legalName: data.companyName,
-    taxId: data.documentNumber || null,
+    taxId: data.documentNumber,
     taxIdType: identity.taxId.name,
     industry: data.industry || null,
     addressCountry: country,
+    taxRegime: known.taxRegime ?? null,
+    giro: known.giro ?? null,
+    comuna: known.comuna ?? null,
+    ciuu: known.ciuu ?? null,
+    condicionIva: known.condicionIva ?? null,
+    camaraComercio: known.camaraComercio ?? null,
+    countryDetails: Object.keys(reserved).length > 0 ? reserved : null,
   });
 
-  if (data.owners.length > 0) {
-    await db.insert(merchantOwners).values(
-      data.owners.map((o) => ({
-        merchantId: merchant.id,
-        fullName: o.fullName,
-        documentNumber: o.documentNumber || null,
-        ownershipPct: o.ownershipPct,
-        role: o.role,
-        isPep: o.isPep,
-      })),
-    );
-  }
+  await db.insert(merchantOwners).values(
+    data.owners.map((o) => ({
+      merchantId: merchant.id,
+      fullName: o.fullName,
+      documentNumber: o.documentNumber || null,
+      ownershipPct: o.ownershipPct,
+      role: o.role,
+      isPep: o.isPep,
+    })),
+  );
 
   await db.insert(onboardingEvents).values({
     merchantId: merchant.id,
@@ -131,7 +157,6 @@ export const POST: APIRoute = async ({ request }) => {
   await db.insert(merchantOperations).values({
     merchantId: merchant.id,
     countries,
-    businessDescription: data.extras.description ?? null,
   });
 
   await db.insert(onboardingEvents).values({
