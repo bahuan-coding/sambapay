@@ -1,0 +1,62 @@
+---
+interface Props {
+  steps: string[];
+}
+
+const { steps } = Astro.props;
+---
+
+<ol class="progress" data-progress-bar>
+  {steps.map((step, i) => (
+    <li class="progress__item" data-progress={i + 1} class:list={i === 0 && 'is-active'}>
+      <span class="progress__num">{String(i + 1).padStart(2, '0')}</span>
+      <span class="progress__label">{step}</span>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .progress {
+    display: flex;
+    gap: 0.4rem;
+    margin: 0 0 1.75rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .progress__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid var(--border);
+    transition: border-color 200ms ease;
+  }
+
+  .progress__item.is-active { border-top-color: var(--blue); }
+  .progress__item.is-done { border-top-color: var(--ink); }
+
+  .progress__num {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+
+  .progress__item.is-active .progress__num { color: var(--blue); }
+  .progress__item.is-done .progress__num { color: var(--ink); }
+
+  .progress__label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+  }
+
+  .progress__item.is-active .progress__label { color: var(--ink); }
+
+  @media (max-width: 560px) {
+    .progress__item:not(.is-active):not(.is-done) { display: none; }
+  }
+</style>

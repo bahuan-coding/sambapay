@@ -24,6 +24,76 @@ const { code } = Astro.props;
       <path d="M30 0 V30 M0 15 H60" stroke="#C8102E" stroke-width="6"/>
     </svg>
   )}
+  {code === 'us' && (
+    <svg viewBox="0 0 19 10" aria-hidden="true">
+      <rect width="19" height="10" fill="#B22234"/>
+      <g fill="#FFFFFF">
+        <rect y="0.77" width="19" height="0.77"/>
+        <rect y="2.31" width="19" height="0.77"/>
+        <rect y="3.85" width="19" height="0.77"/>
+        <rect y="5.38" width="19" height="0.77"/>
+        <rect y="6.92" width="19" height="0.77"/>
+        <rect y="8.46" width="19" height="0.77"/>
+      </g>
+      <rect width="7.6" height="5.38" fill="#3C3B6E"/>
+    </svg>
+  )}
+  {code === 'ca' && (
+    <svg viewBox="0 0 30 15" aria-hidden="true">
+      <rect width="30" height="15" fill="#FFFFFF"/>
+      <rect width="7.5" height="15" fill="#D80621"/>
+      <rect x="22.5" width="7.5" height="15" fill="#D80621"/>
+      <path d="M15 3.2 l1.4 2.6 -1 .3 1.6 1.8 -1 .4 .8 1.6 -1.8 -.3 .1 1.7 -1.1 -.9 -1.1 .9 .1 -1.7 -1.8 .3 .8 -1.6 -1 -.4 1.6 -1.8 -1 -.3z" fill="#D80621"/>
+    </svg>
+  )}
+  {code === 'bz' && (
+    <svg viewBox="0 0 30 20" aria-hidden="true">
+      <rect width="30" height="20" fill="#003F87"/>
+      <rect y="2.8" width="30" height="2.8" fill="#CE1126"/>
+      <rect y="14.4" width="30" height="2.8" fill="#CE1126"/>
+      <circle cx="15" cy="10" r="4.6" fill="#FFFFFF"/>
+      <circle cx="15" cy="10" r="3.2" fill="#289400"/>
+      <circle cx="15" cy="10" r="1.6" fill="#003F87"/>
+    </svg>
+  )}
+  {code === 'jm' && (
+    <svg viewBox="0 0 30 20" aria-hidden="true">
+      <rect width="30" height="20" fill="#009B3A"/>
+      <path d="M0 0 L30 20 M30 0 L0 20" stroke="#FED100" stroke-width="4"/>
+      <path d="M0 0 L30 20 M30 0 L0 20" stroke="#000000" stroke-width="1.2"/>
+    </svg>
+  )}
+  {code === 'tt' && (
+    <svg viewBox="0 0 30 18" aria-hidden="true">
+      <rect width="30" height="18" fill="#DA1A35"/>
+      <path d="M0 0 L11 0 L30 18 L19 18z" stroke="#FFFFFF" stroke-width="3.6" fill="none"/>
+      <path d="M0 0 L11 0 L30 18 L19 18z" stroke="#000000" stroke-width="1.4" fill="none"/>
+    </svg>
+  )}
+  {code === 'sr' && (
+    <svg viewBox="0 0 30 20" aria-hidden="true">
+      <rect width="30" height="20" fill="#377E3F"/>
+      <rect y="5" width="30" height="10" fill="#FFFFFF"/>
+      <rect y="8" width="30" height="4" fill="#B40A2D"/>
+      <circle cx="15" cy="10" r="2.6" fill="#ECC81D"/>
+    </svg>
+  )}
+  {code === 'gy' && (
+    <svg viewBox="0 0 30 20" aria-hidden="true">
+      <rect width="30" height="20" fill="#009E49"/>
+      <path d="M0 0 L0 20 L26 10z" fill="#FCD116"/>
+      <path d="M0 0 L0 20 L13 10z" fill="#FFFFFF"/>
+      <path d="M0 0 L0 20 L9 10z" fill="#CE1126"/>
+    </svg>
+  )}
+  {code === 'int' && (
+    <svg viewBox="0 0 30 20" aria-hidden="true">
+      <rect width="30" height="20" fill="#1C3D4A"/>
+      <ellipse cx="15" cy="10" rx="6.5" ry="8" fill="none" stroke="#F4EFE4" stroke-width="1.2"/>
+      <circle cx="15" cy="10" r="8" fill="none" stroke="#F4EFE4" stroke-width="1.2"/>
+      <path d="M7 10 H23 M15 2 V18" stroke="#F4EFE4" stroke-width="1.2"/>
+    </svg>
+  )}
   {code === 'co' && (
     <svg viewBox="0 0 30 20" aria-hidden="true">
       <rect width="30" height="10" fill="#FCD116"/>

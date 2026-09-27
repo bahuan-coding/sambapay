@@ -1,0 +1,134 @@
+---
+interface Option {
+  value: string;
+  label: string;
+  description: string;
+}
+
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  options: Option[];
+  required?: boolean;
+  errorId?: string;
+}
+
+const { id, name, label, options, required = false, errorId } = Astro.props;
+---
+
+<div class="mtc">
+  <span class="mtc__label" id={`${id}-label`}>
+    {label}{required && <span class="mtc__req" aria-hidden="true">*</span>}
+  </span>
+  <div class="mtc__grid" role="radiogroup" aria-labelledby={`${id}-label`}>
+    {options.map((opt) => (
+      <label class="mtc__card">
+        <input type="radio" name={name} value={opt.value} class="mtc__input" data-merchant-type />
+        <span class="mtc__title">{opt.label}</span>
+        <span class="mtc__desc">{opt.description}</span>
+        <span class="mtc__check" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>
+        </span>
+      </label>
+    ))}
+  </div>
+  {errorId && <p class="mtc__error" id={errorId} hidden role="alert" />}
+</div>
+
+<style>
+  .mtc { margin-bottom: 1rem; }
+
+  .mtc__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .mtc__req { margin-left: 2px; color: var(--muted); }
+
+  .mtc__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 560px) {
+    .mtc__grid { grid-template-columns: 1fr; }
+  }
+
+  .mtc__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.9rem 0.95rem;
+    background: var(--paper);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
+  }
+
+  .mtc__card:hover { border-color: #c9d1d5; }
+
+  .mtc__card:has(input:checked) {
+    border-color: var(--blue);
+    background: rgba(19, 81, 180, 0.04);
+    box-shadow: 0 0 0 1px var(--blue);
+  }
+
+  .mtc__card:has(input:focus-visible) {
+    outline: 2px solid var(--blue);
+    outline-offset: 1px;
+  }
+
+  .mtc__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .mtc__title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .mtc__desc {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--muted);
+    padding-right: 1.5rem;
+  }
+
+  .mtc__check {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    display: grid;
+    place-items: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    color: transparent;
+    transition: all 150ms ease;
+  }
+
+  .mtc__card:has(input:checked) .mtc__check {
+    border-color: var(--blue);
+    background: var(--blue);
+    color: var(--paper);
+  }
+
+  .mtc__error {
+    margin: 0.4rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--urucum);
+  }
+
+  .mtc__error:not([hidden]) { display: block; }
+</style>

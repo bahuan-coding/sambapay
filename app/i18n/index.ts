@@ -40,7 +40,6 @@ const routes: Route[] = [
   { en: '/markets', pt: '/pt/mercados', es: '/es/mercados' },
   { en: '/product', pt: '/pt/produto', es: '/es/producto' },
   { en: '/acquirers', pt: '/pt/adquirentes', es: '/es/adquirentes' },
-  { en: '/what-we-do', pt: '/pt/o-que-fazemos', es: '/es/que-hacemos' },
   { en: '/character', pt: '/pt/carater', es: '/es/caracter' },
   { en: '/login', pt: '/pt/login', es: '/es/login' },
   { en: '/signup', pt: '/pt/signup', es: '/es/signup' },
@@ -88,5 +87,4 @@ export function alternatePath(currentPath: string, lang: Lang): string {
 export const navLinks = [
   { key: 'markets' as const, en: '/markets', pt: '/pt/mercados', es: '/es/mercados' },
   { key: 'product' as const, en: '/product', pt: '/pt/produto', es: '/es/producto' },
-  { key: 'what' as const, en: '/what-we-do', pt: '/pt/o-que-fazemos', es: '/es/que-hacemos' },
 ];

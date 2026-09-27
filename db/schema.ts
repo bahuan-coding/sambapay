@@ -1,5 +1,6 @@
 import {
   boolean,
+  customType,
   integer,
   jsonb,
   pgTable,
@@ -11,6 +12,12 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 
+const bytea = customType<{ data: Buffer; driverData: Buffer }>({
+  dataType() {
+    return 'bytea';
+  },
+});
+
 export const merchants = pgTable('merchants', {
   id: serial('id').primaryKey(),
   uuid: uuid('uuid').defaultRandom().notNull().unique(),
@@ -20,7 +27,9 @@ export const merchants = pgTable('merchants', {
   phone: text('phone'),
   companyName: text('company_name').notNull(),
   country: varchar('country', { length: 2 }).notNull(),
+  countries: jsonb('countries'),
   documentNumber: text('document_number'),
+  taxIdType: text('tax_id_type'),
   website: text('website'),
   businessType: text('business_type'),
   operationType: text('operation_type'),
@@ -176,6 +185,8 @@ export const merchantDocuments = pgTable('merchant_documents', {
   blobKey: text('blob_key').notNull(),
   contentType: text('content_type'),
   fileSize: integer('file_size'),
+  data: bytea('data'),
+  status: text('status').notNull().default('received'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 });
 

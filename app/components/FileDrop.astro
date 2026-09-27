@@ -1,0 +1,184 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  hint?: string;
+  required?: boolean;
+  errorId?: string;
+  accept?: string;
+}
+
+const {
+  id, name, label, hint, required = false, errorId,
+  accept = 'application/pdf,image/jpeg,image/png',
+} = Astro.props;
+---
+
+<div class="fd" data-file-drop data-doc-type={name}>
+  <span class="fd__label">
+    <span class="fd__name">{label}</span>
+    {required ? <span class="fd__req" aria-hidden="true">*</span> : <span class="fd__opt">{hint ?? ''}</span>}
+  </span>
+  <label class="fd__zone" for={id}>
+    <input class="fd__input" id={id} name={name} type="file" accept={accept} data-file-input />
+    <span class="fd__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>
+    </span>
+    <span class="fd__text" data-file-text>Choose a file or drop it here</span>
+    <span class="fd__meta" data-file-meta></span>
+  </label>
+  {errorId && <p class="fd__error" id={errorId} hidden role="alert" />}
+</div>
+
+<style>
+  .fd { margin-bottom: 1rem; }
+
+  .fd__label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .fd__name {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .fd__req { color: var(--muted); }
+
+  .fd__opt {
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .fd__zone {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 62px;
+    padding: 0.85rem 0.95rem;
+    background: var(--paper);
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color 150ms ease, background 150ms ease;
+  }
+
+  .fd__zone:hover { border-color: #c9d1d5; background: var(--field); }
+
+  .fd.is-dragover .fd__zone {
+    border-color: var(--blue);
+    background: rgba(19, 81, 180, 0.05);
+  }
+
+  .fd.is-done .fd__zone {
+    border-style: solid;
+    border-color: var(--green);
+    background: rgba(22, 136, 33, 0.05);
+  }
+
+  .fd.has-error .fd__zone { border-color: var(--urucum); }
+
+  .fd__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .fd__icon {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: none;
+    background: var(--field);
+    border-radius: var(--radius);
+    color: var(--ink);
+  }
+
+  .fd.is-done .fd__icon { background: rgba(22, 136, 33, 0.12); color: var(--green); }
+
+  .fd__text {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--ink);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fd__meta {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .fd__error {
+    margin: 0.4rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--urucum);
+  }
+
+  .fd__error:not([hidden]) { display: block; }
+</style>
+
+<script>
+  const MAX = 10 * 1024 * 1024;
+  const OK = ['application/pdf', 'image/jpeg', 'image/png'];
+
+  document.querySelectorAll<HTMLElement>('[data-file-drop]').forEach((drop) => {
+    const input = drop.querySelector<HTMLInputElement>('[data-file-input]');
+    const text = drop.querySelector<HTMLElement>('[data-file-text]');
+    const meta = drop.querySelector<HTMLElement>('[data-file-meta]');
+    const err = drop.querySelector<HTMLElement>('.fd__error');
+    if (!input || !text || !meta) return;
+
+    const fail = (msg: string) => {
+      drop.classList.add('has-error');
+      drop.classList.remove('is-done');
+      if (err) { err.textContent = msg; err.hidden = false; }
+    };
+
+    const check = (file: File | undefined) => {
+      if (!file) return false;
+      if (!OK.includes(file.type)) { fail('Use a PDF, JPG or PNG.'); return false; }
+      if (file.size > MAX) { fail('The file is over 10 MB.'); return false; }
+      return true;
+    };
+
+    const show = (file: File) => {
+      if (!check(file)) return;
+      drop.classList.remove('has-error');
+      drop.classList.add('is-done');
+      if (err) err.hidden = true;
+      text.textContent = file.name;
+      meta.textContent = `${Math.round(file.size / 1024)} KB`;
+    };
+
+    input.addEventListener('change', () => show(input.files?.[0] as File));
+
+    ['dragenter', 'dragover'].forEach((ev) =>
+      drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('is-dragover'); }),
+    );
+    ['dragleave', 'drop'].forEach((ev) =>
+      drop.addEventListener(ev, () => drop.classList.remove('is-dragover')),
+    );
+    drop.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const file = (e as DragEvent).dataTransfer?.files?.[0];
+      if (file && input) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        input.files = dt.files;
+        show(file);
+      }
+    });
+  });
+</script>

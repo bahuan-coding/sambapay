@@ -2,7 +2,13 @@
 import type { Lang } from '../i18n';
 import { pathForLang } from '../i18n';
 import { signupCopy } from '../i18n/signup';
+import { americasOptions } from '../i18n/americas';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FormField from './FormField.astro';
+import CountryMultiSelect from './CountryMultiSelect.astro';
+import MerchantTypeCards from './MerchantTypeCards.astro';
+import FileDrop from './FileDrop.astro';
+import StepProgress from './StepProgress.astro';
 
 interface Props {
   lang: Lang;
@@ -11,175 +17,463 @@ interface Props {
 
 const { lang, currentPath } = Astro.props;
 const copy = signupCopy(lang);
+const countries = americasOptions(lang);
 const privacyHref = pathForLang('/legal/privacy', lang);
 const termsHref = pathForLang('/legal/terms', lang);
 ---
 
 <BaseLayout lang={lang} currentPath={currentPath} title={copy.title}>
-  <div class="account">
-    <div class="account__card">
+  <div class="signup">
+    <header class="signup__head">
       <h1>{copy.h1}</h1>
-      <p class="account__sub">{copy.sub}</p>
-      <p class="account__niches">{copy.niches}</p>
+      <p class="signup__sub">{copy.sub}</p>
+    </header>
 
-      <form data-signup-form novalidate>
-        <p class="account__steps">
-          <span data-progress="1" aria-current="step">{copy.step1}</span>
-          <span data-progress="2">{copy.step2}</span>
-        </p>
+    <StepProgress steps={copy.steps} />
 
-        <div data-step-panel="1">
-          <label for="su-name">{copy.name}</label>
-          <input id="su-name" name="name" autocomplete="name" required minlength="2" />
+    <form class="signup__form" data-signup-form novalidate>
+      <!-- Step 1 -->
+      <section data-panel="1">
+        <h2 class="signup__h2">{copy.step1Title}</h2>
+        <FormField id="su-name" name="name" label={copy.fields.name} required autocomplete="name" placeholder={copy.fields.namePlaceholder} />
+        <FormField id="su-email" name="email" label={copy.fields.email} type="email" required autocomplete="email" placeholder={copy.fields.emailPlaceholder} />
+        <FormField id="su-phone" name="phone" label={copy.fields.phone} type="tel" required autocomplete="tel" placeholder={copy.fields.phonePlaceholder} />
+        <label class="signup__check" for="su-terms">
+          <input id="su-terms" name="terms" type="checkbox" required />
+          <span>
+            {lang === 'pt' ? 'Concordo com os ' : lang === 'es' ? 'Acepto los ' : 'I agree to the '}
+            <a href={termsHref} target="_blank" rel="noopener">{lang === 'pt' ? 'Termos' : lang === 'es' ? 'Términos' : 'Terms'}</a>
+            {lang === 'pt' ? ' e a ' : lang === 'es' ? ' y la ' : ' and the '}
+            <a href={privacyHref} target="_blank" rel="noopener">{lang === 'pt' ? 'Privacidade' : lang === 'es' ? 'Privacidad' : 'Privacy'}</a>.
+          </span>
+        </label>
+        <button class="signup__btn" type="button" data-next>{copy.next}</button>
+      </section>
 
-          <label for="su-email">{copy.email}</label>
-          <input id="su-email" name="email" type="email" autocomplete="email" required />
-
-          <label for="su-phone">{copy.phone}</label>
-          <input id="su-phone" name="phone" type="tel" autocomplete="tel" required minlength="8" />
-
-          <label class="account__check" for="su-terms">
-            <input id="su-terms" name="terms" type="checkbox" required />
-            <span>
-              {copy.termsBefore}<a href={termsHref}>{copy.termsLink}</a>{copy.termsMid}<a href={privacyHref}>{copy.privacyLink}</a>{copy.termsAfter}
-            </span>
-          </label>
-
-          <button class="btn btn--primary btn--full" type="button" data-signup-next>{copy.next}</button>
+      <!-- Step 2 -->
+      <section data-panel="2" hidden>
+        <h2 class="signup__h2">{copy.step2Title}</h2>
+        <CountryMultiSelect
+          id="su-countries"
+          name="countries"
+          label={copy.fields.countryFirst}
+          options={countries}
+          required
+          errorId="su-countries-err"
+          hint={copy.fields.countriesHint}
+        />
+        <div class="signup__dyn" data-tax-block></div>
+        <MerchantTypeCards id="su-type" name="merchantType" label={copy.fields.merchantType} options={copy.merchantTypes} required errorId="su-type-err" />
+        <FormField id="su-company" name="companyName" label={copy.fields.companyName} required autocomplete="organization" placeholder={copy.fields.companyNamePlaceholder} />
+        <FormField id="su-site" name="website" label={copy.fields.website} placeholder={copy.fields.websitePlaceholder} />
+        <FormField id="su-industry" name="industry" label={copy.fields.industry} placeholder={copy.fields.industryPlaceholder} />
+        <p class="signup__error" data-error hidden role="alert"></p>
+        <div class="signup__actions">
+          <button class="signup__btn signup__btn--ghost" type="button" data-back>{copy.back}</button>
+          <button class="signup__btn" type="button" data-next>{copy.next}</button>
         </div>
+      </section>
 
-        <div data-step-panel="2" hidden>
-          <label for="su-company">{copy.company}</label>
-          <input id="su-company" name="companyName" autocomplete="organization" required minlength="2" />
-
-          <label for="su-country">{copy.country}</label>
-          <select id="su-country" name="country" required>
-            <option value="">{copy.countryPlaceholder}</option>
-            {copy.countries.map((c) => <option value={c.code}>{c.label}</option>)}
-          </select>
-
-          <label for="su-site">{copy.website}</label>
-          <input id="su-site" name="website" type="text" inputmode="url" autocomplete="url" />
-          <p class="account__hint">{copy.websiteOptional}</p>
-
-          <p class="account__error" data-signup-error hidden role="alert"></p>
-          <div class="account__actions">
-            <button class="btn btn--secondary" type="button" data-signup-back>{copy.back}</button>
-            <button class="btn btn--primary btn--full" type="submit">{copy.submit}</button>
-          </div>
+      <!-- Step 3 -->
+      <section data-panel="3" hidden>
+        <h2 class="signup__h2">{copy.step3Title}</h2>
+        <p class="signup__hint">{copy.owners.uboHint}</p>
+        <div data-owners></div>
+        <button class="signup__add" type="button" data-add-owner>+ {copy.addOwner}</button>
+        <p class="signup__error" data-error hidden role="alert"></p>
+        <div class="signup__actions">
+          <button class="signup__btn signup__btn--ghost" type="button" data-back>{copy.back}</button>
+          <button class="signup__btn" type="button" data-next>{copy.next}</button>
         </div>
+      </section>
 
-        <div data-step-panel="success" hidden>
-          <h2>{copy.successTitle}</h2>
-          <p class="account__sub">{copy.successBody}</p>
+      <!-- Step 4 -->
+      <section data-panel="4" hidden>
+        <h2 class="signup__h2">{copy.step4Title}</h2>
+        <FileDrop id="doc-company" name="companyDoc" label={copy.documents.company} hint={copy.documents.companyHint} required errorId="doc-company-err" />
+        <FileDrop id="doc-owner" name="ownerDoc" label={copy.documents.owner} hint={copy.documents.ownerHint} required errorId="doc-owner-err" />
+        <FileDrop id="doc-address" name="addressDoc" label={copy.documents.address} hint={copy.documents.addressOptional} errorId="doc-address-err" />
+        <FileDrop id="doc-contract" name="contractDoc" label={copy.documents.contract} hint={copy.documents.contractOptional} errorId="doc-contract-err" />
+        <p class="signup__error" data-error hidden role="alert"></p>
+        <div class="signup__actions">
+          <button class="signup__btn signup__btn--ghost" type="button" data-back>{copy.back}</button>
+          <button class="signup__btn" type="submit">{copy.submit}</button>
         </div>
-      </form>
-    </div>
+      </section>
+
+      <!-- Success -->
+      <section data-panel="success" hidden>
+        <div class="signup__done" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 24l7 7 13-15"/></svg>
+        </div>
+        <h2 class="signup__h2 signup__h2--center">{copy.successTitle}</h2>
+        <p class="signup__sub signup__sub--center">{copy.successBody}</p>
+      </section>
+    </form>
   </div>
 </BaseLayout>
 
-<script define:vars={{ lang, errors: copy.errors, mailFailed: copy.mailFailed }}>
-  const form = document.querySelector('[data-signup-form]');
-  const panel1 = document.querySelector('[data-step-panel="1"]');
-  const panel2 = document.querySelector('[data-step-panel="2"]');
-  const panelSuccess = document.querySelector('[data-step-panel="success"]');
-  const steps = document.querySelectorAll('[data-progress]');
-  const errEl = document.querySelector('[data-signup-error]');
+<script>
+  import { identityFor, applyMask } from '../data/identity';
+  import type { ExtraField } from '../data/identity';
 
-  function setDisabled(panel, disabled) {
-    panel?.querySelectorAll('input, select, textarea, button').forEach((el) => {
-      if (el.hasAttribute('data-signup-back') || el.type === 'submit') return;
-      el.disabled = disabled;
+  const form = document.querySelector<HTMLFormElement>('[data-signup-form]')!;
+  const panels = [...form.querySelectorAll<HTMLElement>('[data-panel]')];
+  const progress = [...document.querySelectorAll<HTMLElement>('[data-progress]')];
+  const taxBlock = form.querySelector<HTMLElement>('[data-tax-block]')!;
+  const ownersWrap = form.querySelector<HTMLElement>('[data-owners]')!;
+  const errEl = form.querySelector<HTMLElement>('[data-error]')!;
+  let step = 1;
+  let ownerCount = 0;
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+
+  function setStep(n: number | 'success') {
+    panels.forEach((p) => (p.hidden = p.dataset.panel !== String(n)));
+    progress.forEach((el) => {
+      const v = Number(el.dataset.progress);
+      el.classList.toggle('is-active', v === n);
+      el.classList.toggle('is-done', typeof n === 'number' && v < n);
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectedCountries(): string[] {
+    return [...form.querySelectorAll<HTMLInputElement>('[data-country-check]:checked')].map((el) => el.value);
+  }
+
+  /* Tax block: the first selected country governs the experience. */
+  function renderTax() {
+    const codes = selectedCountries();
+    const primary = codes[0];
+    if (!primary) { taxBlock.innerHTML = ''; return; }
+    const cfg = identityFor(primary);
+    const extras = cfg.extras.map((f: ExtraField) => renderExtra(f)).join('');
+    taxBlock.innerHTML = `
+      <div class="field">
+        <label class="field__label" for="su-tax">${cfg.taxId.name} <span class="field__req">*</span></label>
+        <input class="field__input" id="su-tax" name="documentNumber" placeholder="${esc(cfg.taxId.example)}" data-mask="${esc(cfg.taxId.mask)}" data-validate="tax" data-country="${primary}" />
+        <p class="field__hint" data-tax-hint>${esc(cfg.taxId.example)}</p>
+      </div>
+      ${extras}`;
+    bindMasks(taxBlock);
+  }
+
+  function renderExtra(f: ExtraField) {
+    const label = f.label[0];
+    if (f.kind === 'select') {
+      const opts = (f.options ?? []).map((o) => `<option value="${o.value}">${esc(o.label[0])}</option>`).join('');
+      return `<div class="field"><label class="field__label" for="ex-${f.name}">${esc(label)}${f.required ? ' <span class="field__req">*</span>' : ''}</label><select class="field__input" id="ex-${f.name}" name="${f.name}"${f.required ? ' required' : ''}><option value=""></option>${opts}</select></div>`;
+    }
+    return `<div class="field"><label class="field__label" for="ex-${f.name}">${esc(label)}${f.required ? ' <span class="field__req">*</span>' : ''}</label><input class="field__input" id="ex-${f.name}" name="${f.name}"${f.required ? ' required' : ''} /></div>`;
+  }
+
+  /* Owners: one block per person. Document mask from the country. */
+  function addOwner() {
+    const codes = selectedCountries();
+    const cfg = identityFor(codes[0] ?? 'GENERAL');
+    ownerCount += 1;
+    const idx = ownerCount;
+    const block = document.createElement('div');
+    block.className = 'signup__owner';
+    block.dataset.owner = String(idx);
+    block.innerHTML = `
+      <div class="signup__owner-head">
+        <span class="signup__owner-title">${esc(cfg.owner.name)} · ${idx}</span>
+        ${idx > 1 ? '<button type="button" class="signup__owner-remove" data-remove-owner>Remove</button>' : ''}
+      </div>
+      <div class="field"><label class="field__label">Full name <span class="field__req">*</span></label><input class="field__input" name="owner_name_${idx}" required /></div>
+      <div class="field"><label class="field__label">${esc(cfg.owner.name)} <span class="field__req">*</span></label><input class="field__input" name="owner_doc_${idx}" data-mask="${esc(cfg.owner.mask)}" data-validate="owner" data-country="${codes[0] ?? ''}" required /></div>
+      <div class="field"><label class="field__label">Ownership % <span class="field__req">*</span></label><input class="field__input" name="owner_share_${idx}" type="number" min="0" max="100" required /></div>
+      <label class="signup__check"><input type="checkbox" name="owner_pep_${idx}" /> <span>Politically exposed person</span></label>`;
+    ownersWrap.appendChild(block);
+    bindMasks(block);
+    block.querySelector('[data-remove-owner]')?.addEventListener('click', () => {
+      block.remove();
     });
   }
 
-  function validate(panel) {
-    const fields = panel?.querySelectorAll('input, select, textarea') ?? [];
-    for (const field of fields) {
-      if (field.disabled) continue;
-      if (!field.checkValidity()) {
+  /* Masks + validation */
+  function bindMasks(root: ParentNode) {
+    root.querySelectorAll<HTMLInputElement>('[data-mask]').forEach((input) => {
+      const mask = input.dataset.mask ?? '';
+      input.addEventListener('input', () => {
+        const at = input.selectionStart ?? input.value.length;
+        input.value = applyMask(input.value, mask);
+        if (at <= input.value.length) input.setSelectionRange(at, at);
+      });
+    });
+  }
+
+  function validateDocument(input: HTMLInputElement): boolean {
+    const cfg = identityFor(input.dataset.country ?? 'GENERAL');
+    const value = input.value.trim();
+    if (!value) return false;
+    if (input.dataset.validate === 'tax') return !cfg.taxId.validate || cfg.taxId.validate(value);
+    return !cfg.owner.validate || cfg.owner.validate(value);
+  }
+
+  function validatePanel(panel: HTMLElement): boolean {
+    if (panel.dataset.panel === '2' && selectedCountries().length === 0) {
+      const err = form.querySelector<HTMLElement>('#su-countries-err');
+      if (err) { err.textContent = 'Select at least one country.'; err.hidden = false; }
+      return false;
+    }
+    for (const field of panel.querySelectorAll<HTMLInputElement | HTMLSelectElement>('input, select')) {
+      if (!field.checkValidity()) { field.reportValidity(); return false; }
+      if (field instanceof HTMLInputElement && field.dataset.validate && !validateDocument(field)) {
+        field.setCustomValidity('invalid');
         field.reportValidity();
+        field.setCustomValidity('');
         return false;
       }
     }
     return true;
   }
 
-  function setStep(n) {
-    panel1.hidden = n !== 1;
-    panel2.hidden = n !== 2;
-    panelSuccess.hidden = n !== 'success';
-    setDisabled(panel2, n !== 2);
-    steps.forEach((el) => {
-      const step = Number(el.getAttribute('data-progress'));
-      if (step === n) el.setAttribute('aria-current', 'step');
-      else el.removeAttribute('aria-current');
-    });
-  }
-
-  function value(name) {
-    const el = form.elements.namedItem(name);
-    if (!el || el instanceof RadioNodeList) return '';
-    if (el instanceof HTMLInputElement && el.type === 'checkbox') return el.checked;
-    return el.value.trim();
-  }
-
-  setStep(1);
-
-  document.querySelector('[data-signup-next]')?.addEventListener('click', () => {
-    if (!validate(panel1)) return;
-    setStep(2);
+  /* Country change re-renders the tax block and refreshes owner masks. */
+  form.addEventListener('change', (e) => {
+    const t = e.target as HTMLElement;
+    if (t.matches('[data-country-check]')) renderTax();
   });
 
-  document.querySelector('[data-signup-back]')?.addEventListener('click', () => {
-    setStep(1);
-  });
+  form.querySelectorAll('[data-next]').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const panel = form.querySelector<HTMLElement>(`[data-panel="${step}"]`);
+      if (panel && !validatePanel(panel)) return;
+      if (step === 3 && ownersWrap.children.length === 0) addOwner();
+      step += 1;
+      setStep(step);
+    }),
+  );
 
-  form?.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    if (panel2.hidden) {
-      if (!validate(panel1)) return;
-      setStep(2);
-      return;
-    }
-    if (!validate(panel2)) return;
+  form.querySelectorAll('[data-back]').forEach((btn) =>
+    btn.addEventListener('click', () => { step -= 1; setStep(step); }),
+  );
+
+  form.querySelector('[data-add-owner]')?.addEventListener('click', addOwner);
+
+  /* Submit: create the account, then upload documents. */
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const panel = form.querySelector<HTMLElement>('[data-panel="4"]');
+    if (panel && !validatePanel(panel)) return;
     errEl.hidden = true;
-    const website = value('website');
+    const owners = [...ownersWrap.querySelectorAll<HTMLElement>('[data-owner]')].map((b) => {
+      const i = b.dataset.owner;
+      const f = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.value.trim() ?? '';
+      return {
+        fullName: f(`owner_name_${i}`),
+        documentNumber: f(`owner_doc_${i}`),
+        ownershipPct: Number(f(`owner_share_${i}`)) || 0,
+        isPep: (form.elements.namedItem(`owner_pep_${i}`) as HTMLInputElement)?.checked ?? false,
+      };
+    });
+    const value = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.value.trim() ?? '';
+    const extras: Record<string, string> = {};
+    taxBlock.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]').forEach((el) => {
+      if (el.name !== 'documentNumber') extras[el.name] = el.value.trim();
+    });
+    const payload = {
+      name: value('name'),
+      email: value('email'),
+      phone: value('phone'),
+      terms: (form.elements.namedItem('terms') as HTMLInputElement)?.checked === true,
+      merchantType: (form.querySelector<HTMLInputElement>('[data-merchant-type]:checked')?.value) ?? 'direct',
+      companyName: value('companyName'),
+      countries: selectedCountries(),
+      country: selectedCountries()[0],
+      documentNumber: value('documentNumber'),
+      website: value('website'),
+      industry: value('industry'),
+      extras,
+      owners,
+      locale: document.documentElement.lang.slice(0, 2),
+    };
     try {
       const res = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: value('name'),
-          email: value('email'),
-          phone: value('phone'),
-          terms: value('terms') === true,
-          companyName: value('companyName'),
-          country: value('country'),
-          website,
-          locale: lang,
-        }),
+        body: JSON.stringify(payload),
       });
       const data = await res.json().catch(() => ({}));
-      if (res.status === 409) {
-        errEl.textContent = errors.emailTaken;
-        errEl.hidden = false;
-        return;
-      }
-      if (!res.ok) {
-        errEl.textContent = data.error === 'validation' ? errors.validation : errors.generic;
-        errEl.hidden = false;
-        return;
-      }
-      if (data.emailSent === false) {
-        errEl.textContent = mailFailed;
-        errEl.hidden = false;
-        return;
+      if (res.status === 409) { errEl.textContent = 'This email already has an account.'; errEl.hidden = false; return; }
+      if (!res.ok) { errEl.textContent = 'Something went wrong. Try again.'; errEl.hidden = false; return; }
+      // Upload the documents against the new merchant.
+      if (data.merchantId) {
+        for (const input of form.querySelectorAll<HTMLInputElement>('[data-file-input]')) {
+          const file = input.files?.[0];
+          if (!file) continue;
+          const fd = new FormData();
+          fd.append('merchantId', String(data.merchantId));
+          fd.append('docType', input.name);
+          fd.append('file', file);
+          await fetch('/api/upload', { method: 'POST', body: fd }).catch(() => {});
+        }
       }
       setStep('success');
     } catch {
-      errEl.textContent = errors.generic;
+      errEl.textContent = 'Something went wrong. Try again.';
       errEl.hidden = false;
     }
   });
+
+  setStep(1);
 </script>
+
+<style>
+  .signup {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 2.5rem 1rem 4rem;
+  }
+
+  .signup__head { margin-bottom: 1.75rem; }
+
+  .signup h1 {
+    margin: 0 0 0.5rem;
+    font-family: var(--serif);
+    font-size: clamp(1.75rem, 3vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .signup__sub {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .signup__sub--center { text-align: center; max-width: 26rem; margin: 0 auto; }
+
+  .signup__h2 {
+    margin: 0 0 1.25rem;
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .signup__h2--center { text-align: center; margin-top: 1rem; }
+
+  section[hidden] { display: none; }
+
+  .signup__hint {
+    margin: -0.5rem 0 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+
+  .signup__check {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 1rem 0;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  .signup__check input { width: 1.1rem; height: 1.1rem; margin-top: 2px; flex: none; }
+  .signup__check a { color: var(--blue); }
+
+  .signup__actions {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  .signup__btn {
+    flex: 1;
+    min-height: 48px;
+    padding: 0 1.25rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background: var(--blue);
+    color: var(--paper);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .signup__btn:hover { background: var(--anil); }
+
+  .signup__btn--ghost {
+    flex: 0 0 auto;
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--border);
+  }
+
+  .signup__btn--ghost:hover { background: var(--field); }
+
+  .signup__add {
+    width: 100%;
+    min-height: 46px;
+    margin-top: 0.4rem;
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--blue);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .signup__add:hover { border-color: var(--blue); background: rgba(19, 81, 180, 0.03); }
+
+  .signup__error {
+    margin: 0.75rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--urucum);
+  }
+
+  .signup__error:not([hidden]) { display: block; }
+
+  .signup__owner {
+    padding: 1rem;
+    margin-bottom: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: rgba(244, 239, 228, 0.4);
+  }
+
+  .signup__owner-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+
+  .signup__owner-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--anil);
+  }
+
+  .signup__owner-remove {
+    border: 0;
+    background: transparent;
+    color: var(--urucum);
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .signup__done {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    margin: 0 auto 0.5rem;
+    border-radius: 50%;
+    background: rgba(22, 136, 33, 0.1);
+    color: var(--green);
+  }
+</style>
