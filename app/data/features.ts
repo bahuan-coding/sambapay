@@ -197,8 +197,8 @@ const pt = {
     {
       title: 'Conectar',
       items: [
-        { mark: 'signup', title: 'Local signup', body: 'Protocolamos os dados do cliente com os parceiros locais, inclusive as licenças que o adquirente exige.' },
-        { mark: 'connection', title: 'Direct connection', body: 'O cliente usa a nossa política comercial local. Não cumpre cada exigência do adquirente sozinho.' },
+        { mark: 'signup', title: 'Cadastro local', body: 'Protocolamos os dados do cliente com os parceiros locais, inclusive as licenças que o adquirente exige.' },
+        { mark: 'connection', title: 'Conexão direta', body: 'O cliente usa a nossa política comercial local. Não cumpre cada exigência do adquirente sozinho.' },
         { mark: 'rails', title: 'Adquirentes lado a lado', body: 'Vários adquirentes ficam em cada mercado. Nenhum sozinho limita o volume nem carrega o risco.' },
       ],
     },
@@ -253,9 +253,9 @@ const pt = {
       lede: 'O volume encontra o adquirente local nesta ordem.',
       plate: 'rails',
       items: [
-        { title: 'Local signup', body: 'Reunimos os seus dados e os entregamos aos parceiros locais.' },
+        { title: 'Cadastro local', body: 'Reunimos os seus dados e os entregamos aos parceiros locais.' },
         { title: 'As licenças', body: 'Ajudamos com as licenças, as regulações e as exigências de instituições reguladas, para a aprovação ter mais chance.' },
-        { title: 'Direct connection', body: 'Você não atende a cada exigência sozinho. Você usa o volume da nossa política comercial local.' },
+        { title: 'Conexão direta', body: 'Você não atende a cada exigência sozinho. Você usa o volume da nossa política comercial local.' },
         { title: 'Lado a lado', body: 'Vários adquirentes locais ficam em cada mercado. Nenhum sozinho limita o volume nem concentra o risco.' },
         { title: 'Um sistema', body: 'Um cliente com mais de uma nacionalidade tem um sistema, com entidades e times locais já naqueles mercados.' },
         { title: 'Triagem', body: 'A empresa e os sócios são verificados antes de ir ao ar.' },
@@ -339,10 +339,10 @@ const chapterMeta = {
       title: 'Como os trilhos funcionam',
       lede: 'O volume encontra o adquirente local nesta ordem.',
       steps: [
-        { title: 'Local signup', body: 'Reunimos os seus dados e os entregamos aos parceiros locais.' },
+        { title: 'Cadastro local', body: 'Reunimos os seus dados e os entregamos aos parceiros locais.' },
         { title: 'As licenças', body: 'Ajudamos com as licenças, as regulações e as exigências de instituições reguladas, para a aprovação ter mais chance.' },
         { title: 'Lado a lado', body: 'Vários adquirentes locais ficam em cada mercado. Nenhum sozinho limita o volume nem concentra o risco.' },
-        { title: 'Direct connection', body: 'Você não atende a cada exigência sozinho. Você usa o volume da nossa política comercial local e entra no mercado competitivo.' },
+        { title: 'Conexão direta', body: 'Você não atende a cada exigência sozinho. Você usa o volume da nossa política comercial local e entra no mercado competitivo.' },
       ],
     },
     {

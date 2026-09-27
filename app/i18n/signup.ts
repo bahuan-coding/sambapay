@@ -4,7 +4,7 @@ import { americasOptions } from './americas';
 const en = {
   title: 'Create account',
   h1: 'Create your account',
-  sub: 'A business account for payments across the Americas. Collection starts after approval.',
+  sub: 'A business account for payments across South and Central America. Collection starts after approval.',
   steps: ['Account', 'Business', 'Owners', 'Documents'],
 
   step1Title: 'Your details',
@@ -125,7 +125,7 @@ const pt: Copy = {
   ...en,
   title: 'Criar conta',
   h1: 'Crie a sua conta',
-  sub: 'Uma conta empresarial para pagamentos em todas as Américas. A cobrança começa depois da aprovação.',
+  sub: 'Uma conta empresarial para pagamentos na América do Sul e Central. A cobrança começa depois da aprovação.',
   steps: ['Conta', 'Empresa', 'Sócios', 'Documentos'],
   step1Title: 'Seus dados',
   step2Title: 'Sua empresa',
@@ -216,7 +216,7 @@ const es: Copy = {
   ...en,
   title: 'Crear cuenta',
   h1: 'Crea tu cuenta',
-  sub: 'Una cuenta empresarial para pagos en todas las Américas. La cobranza empieza después de la aprobación.',
+  sub: 'Una cuenta empresarial para pagos en América del Sur y Central. La cobranza empieza después de la aprobación.',
   steps: ['Cuenta', 'Empresa', 'Socios', 'Documentos'],
   step1Title: 'Tus datos',
   step2Title: 'Tu empresa',

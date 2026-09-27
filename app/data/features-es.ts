@@ -20,8 +20,8 @@ export const esCopy = {
     {
       title: 'Conectar',
       items: [
-        { mark: 'signup', title: 'Local signup', body: 'Protocolamos los datos del cliente con los socios locales, incluidas las licencias que el adquirente exige.' },
-        { mark: 'connection', title: 'Direct connection', body: 'El cliente usa nuestra política comercial local. No cumple cada exigencia del adquirente por su cuenta.' },
+        { mark: 'signup', title: 'Registro local', body: 'Protocolamos los datos del cliente con los socios locales, incluidas las licencias que el adquirente exige.' },
+        { mark: 'connection', title: 'Conexión directa', body: 'El cliente usa nuestra política comercial local. No cumple cada exigencia del adquirente por su cuenta.' },
         { mark: 'rails', title: 'Adquirentes lado a lado', body: 'Varios adquirentes conviven en cada mercado. Ninguno por sí solo limita el volumen ni carga el riesgo.' },
       ],
     },
@@ -76,9 +76,9 @@ export const esCopy = {
       lede: 'El volumen encuentra al adquirente local en este orden.',
       plate: 'rails',
       items: [
-        { title: 'Local signup', body: 'Reunimos sus datos y los entregamos a los socios locales.' },
+        { title: 'Registro local', body: 'Reunimos sus datos y los entregamos a los socios locales.' },
         { title: 'Las licencias', body: 'Ayudamos con las licencias, las regulaciones y las exigencias de instituciones reguladas, para que la aprobación tenga más probabilidades.' },
-        { title: 'Direct connection', body: 'Usted no cumple cada exigencia por su cuenta. Usa el volumen de nuestra política comercial local.' },
+        { title: 'Conexión directa', body: 'Usted no cumple cada exigencia por su cuenta. Usa el volumen de nuestra política comercial local.' },
         { title: 'Lado a lado', body: 'Varios adquirentes locales conviven en cada mercado. Ninguno por sí solo limita el volumen ni concentra el riesgo.' },
         { title: 'Un sistema', body: 'Un cliente con más de una nacionalidad tiene un sistema, con entidades y equipos locales ya en esos mercados.' },
         { title: 'Verificación', body: 'La empresa y sus dueños se verifican antes de activar la cuenta.' },
@@ -121,10 +121,10 @@ export const esChapters = [
     title: 'Cómo funcionan los rieles',
     lede: 'El volumen encuentra al adquirente local en este orden.',
     steps: [
-      { title: 'Local signup', body: 'Reunimos sus datos y los entregamos a los socios locales.' },
+      { title: 'Registro local', body: 'Reunimos sus datos y los entregamos a los socios locales.' },
       { title: 'Las licencias', body: 'Ayudamos con las licencias, las regulaciones y las exigencias de instituciones reguladas, para que la aprobación tenga más probabilidades.' },
       { title: 'Lado a lado', body: 'Varios adquirentes locales conviven en cada mercado. Ninguno por sí solo limita el volumen ni concentra el riesgo.' },
-      { title: 'Direct connection', body: 'Usted no cumple cada exigencia por su cuenta. Usa el volumen de nuestra política comercial local y entra en el mercado competitivo.' },
+      { title: 'Conexión directa', body: 'Usted no cumple cada exigencia por su cuenta. Usa el volumen de nuestra política comercial local y entra en el mercado competitivo.' },
     ],
   },
   {

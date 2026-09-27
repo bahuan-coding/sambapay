@@ -345,8 +345,8 @@ export function marketGroups(lang: Lang) {
 const copy: Record<Lang, Copy> = {
   en: {
     eyebrow: 'Markets',
-    title: 'Access in every market of the Americas.',
-    lede: 'We open local rails through partners in Latin America and Central America. Twenty markets, one local commercial policy: local prices, a local signup and a direct connection.',
+    title: 'Access in every market of South and Central America.',
+    lede: 'We open local rails through partners across South and Central America. Twenty markets, one local commercial policy: local prices, a local signup and a direct connection.',
     mapTitle: 'Where the money moves.',
     mapLede: 'Ten markets in South America. Ten in Mexico, Central America and the Caribbean. Each one pays the way it always has, and we meet it there.',
     accessTitle: 'Coverage is access, not a catalogue.',
@@ -369,8 +369,8 @@ const copy: Record<Lang, Copy> = {
   },
   pt: {
     eyebrow: 'Mercados',
-    title: 'Acesso em todas as Américas.',
-    lede: 'Abrimos trilhos locais com parceiros na América Latina e na América Central. Vinte mercados, uma só política comercial local: preços locais, local signup e direct connection.',
+    title: 'Acesso em cada mercado da América do Sul e Central.',
+    lede: 'Abrimos trilhos locais com parceiros na América do Sul e Central. Vinte mercados, uma só política comercial local: preços locais, cadastro local e conexão direta.',
     mapTitle: 'Onde o dinheiro se move.',
     mapLede: 'Dez mercados na América do Sul. Dez no México, na América Central e no Caribe. Cada um paga do jeito que sempre pagou, e nós encontramos esse jeito.',
     accessTitle: 'Cobertura é acesso, não catálogo.',
@@ -393,8 +393,8 @@ const copy: Record<Lang, Copy> = {
   },
   es: {
     eyebrow: 'Mercados',
-    title: 'Acceso en todos los mercados de las Américas.',
-    lede: 'Abrimos rieles locales con socios en América Latina y América Central. Veinte mercados, una única política comercial local: precios locales, local signup y direct connection.',
+    title: 'Acceso en cada mercado de América del Sur y Central.',
+    lede: 'Abrimos rieles locales con socios en América del Sur y Central. Veinte mercados, una única política comercial local: precios locales, registro local y conexión directa.',
     mapTitle: 'Donde se mueve el dinero.',
     mapLede: 'Diez mercados en América del Sur. Diez en México, América Central y el Caribe. Cada uno paga como siempre pagó, y lo encontramos ahí.',
     accessTitle: 'Cobertura es acceso, no catálogo.',
