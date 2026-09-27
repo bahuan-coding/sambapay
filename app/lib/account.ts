@@ -6,6 +6,7 @@ import {
   merchantOwners,
   type Merchant,
 } from '../../db/schema';
+import { documentsAreComplete, resolveKybStatus, type KybStatus } from './kyb-status';
 
 /** The document types a complete application carries, one per owner plus the
  *  company set. Kept in one place so the page and the count never drift. */
@@ -33,7 +34,7 @@ export interface AccountOverview {
   ownerCount: number;
   /** 0–4: account, business, owners, documents. */
   completedSteps: number;
-  status: string;
+  status: KybStatus;
 }
 
 /**
@@ -63,10 +64,11 @@ export async function getAccountOverview(merchant: Merchant): Promise<AccountOve
   const ownerDocsOnFile = documents.filter((d) => REQUIRED_OWNER_DOC.test(d.docType)).length;
   const hasOwnerDocs = owners.length > 0 && ownerDocsOnFile >= owners.length;
 
+  const docsComplete = documentsAreComplete(hasCompanyDocs, hasOwnerDocs);
   let completedSteps = 1; // the account exists
   if (company.length > 0) completedSteps = 2;
   if (owners.length > 0) completedSteps = 3;
-  if (hasCompanyDocs && hasOwnerDocs) completedSteps = 4;
+  if (docsComplete) completedSteps = 4;
 
   return {
     documents: documents.map((d) => ({ docType: d.docType, fileName: d.fileName, status: d.status })),
@@ -75,6 +77,6 @@ export async function getAccountOverview(merchant: Merchant): Promise<AccountOve
     ownersWithDoc,
     ownerCount: owners.length,
     completedSteps,
-    status: merchant.status,
+    status: resolveKybStatus(merchant.status, docsComplete),
   };
 }
