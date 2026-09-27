@@ -1,10 +1,14 @@
 import type { APIRoute } from 'astro';
 import { lookupCompany } from '../../lib/kyb';
+import { allowRequest, forbiddenOrigin, isSameOrigin, tooMany } from '../../lib/guard';
 import { identityFor } from '../../data/identity';
 
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
+  if (!isSameOrigin(request)) return forbiddenOrigin();
+  if (!allowRequest(request, 'lookup', { limit: 60, windowMs: 10 * 60 * 1000 })) return tooMany();
+
   let body: { country?: string; document?: string };
   try {
     body = await request.json();

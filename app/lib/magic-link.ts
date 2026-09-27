@@ -1,4 +1,4 @@
-import { and, eq, gt } from 'drizzle-orm';
+import { and, eq, gt, lt } from 'drizzle-orm';
 import { db } from '../../db/index';
 import { magicLinkTokens, merchants } from '../../db/schema';
 import { hashToken, randomToken } from './tokens';
@@ -24,6 +24,12 @@ export async function createMagicLink(merchantId: number): Promise<string> {
   const tokenHash = await hashToken(token);
   const expiresAt = new Date();
   expiresAt.setMinutes(expiresAt.getMinutes() + MAGIC_LINK_MINUTES);
+  const now = new Date();
+
+  // One live link per merchant: drop what expired anywhere, and any earlier
+  // link for this merchant, so an old inbox link can never sign in twice.
+  await db.delete(magicLinkTokens).where(lt(magicLinkTokens.expiresAt, now));
+  await db.delete(magicLinkTokens).where(eq(magicLinkTokens.merchantId, merchantId));
 
   await db.insert(magicLinkTokens).values({
     merchantId,

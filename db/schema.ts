@@ -22,7 +22,6 @@ export const merchants = pgTable('merchants', {
   id: serial('id').primaryKey(),
   uuid: uuid('uuid').defaultRandom().notNull().unique(),
   email: varchar('email', { length: 255 }).notNull().unique(),
-  passwordHash: text('password_hash'),
   name: text('name').notNull(),
   phone: text('phone'),
   companyName: text('company_name').notNull(),
@@ -32,8 +31,6 @@ export const merchants = pgTable('merchants', {
   taxIdType: text('tax_id_type'),
   website: text('website'),
   businessType: text('business_type'),
-  operationType: text('operation_type'),
-  monthlyVolume: text('monthly_volume'),
   merchantType: text('merchant_type').notNull().default('direct'),
   preferredLocale: varchar('preferred_locale', { length: 5 }).default('en'),
   status: text('status').notNull().default('commercial_fit'),
@@ -104,21 +101,6 @@ export const merchantCompany = pgTable('merchant_company', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 });
 
-export const merchantContacts = pgTable('merchant_contacts', {
-  id: serial('id').primaryKey(),
-  merchantId: integer('merchant_id')
-    .notNull()
-    .references(() => merchants.id, { onDelete: 'cascade' }),
-  contactType: text('contact_type').notNull(),
-  name: text('name').notNull(),
-  email: text('email').notNull(),
-  phone: text('phone'),
-  roleTitle: text('role_title'),
-  isPrimary: boolean('is_primary').default(false),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-});
-
 export const merchantOperations = pgTable('merchant_operations', {
   id: serial('id').primaryKey(),
   merchantId: integer('merchant_id')
@@ -161,28 +143,6 @@ export const merchantOwners = pgTable('merchant_owners', {
   city: text('city'),
   state: text('state'),
   country: text('country'),
-  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-});
-
-export const merchantCompliance = pgTable('merchant_compliance', {
-  id: serial('id').primaryKey(),
-  merchantId: integer('merchant_id')
-    .notNull()
-    .unique()
-    .references(() => merchants.id, { onDelete: 'cascade' }),
-  pciCompliant: boolean('pci_compliant').default(false),
-  pciLevel: text('pci_level'),
-  hasAntifraud: boolean('has_antifraud').default(false),
-  has3ds: boolean('has_3ds').default(false),
-  hasPrivacyPolicy: boolean('has_privacy_policy').default(false),
-  hasDpo: boolean('has_dpo').default(false),
-  dpoName: text('dpo_name'),
-  dpoEmail: text('dpo_email'),
-  hasAmlProgram: boolean('has_aml_program').default(false),
-  hasKycProcess: boolean('has_kyc_process').default(false),
-  riskCategory: text('risk_category'),
-  riskNotes: text('risk_notes'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 });

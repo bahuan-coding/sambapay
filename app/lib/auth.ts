@@ -7,6 +7,15 @@ export async function getSessionMerchant(cookies: APIContext['cookies']): Promis
   return getMerchantFromToken(token);
 }
 
+/**
+ * Whether the cookie should carry `Secure`. Behind the Netlify proxy the
+ * request URL can read as plain http, so trust the forwarded protocol and the
+ * host instead of the socket: only an explicit localhost http stays insecure.
+ */
 export function isSecureRequest(request: Request): boolean {
-  return new URL(request.url).protocol === 'https:';
+  if (new URL(request.url).protocol === 'https:') return true;
+  const forwarded = request.headers.get('x-forwarded-proto');
+  if (forwarded) return forwarded.split(',')[0]!.trim() === 'https';
+  const host = request.headers.get('host') ?? new URL(request.url).hostname;
+  return !/^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(host);
 }

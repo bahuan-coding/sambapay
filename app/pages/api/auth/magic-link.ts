@@ -4,6 +4,7 @@ import { asLang, langPrefix, type Lang } from '../../../i18n';
 import { sendMagicLinkEmail } from '../../../lib/email';
 import { getAppUrl } from '../../../lib/env';
 import { createMagicLink, findMerchantByEmail, normalizeEmail } from '../../../lib/magic-link';
+import { allowRequest, forbiddenOrigin, isSameOrigin, tooMany } from '../../../lib/guard';
 
 export const prerender = false;
 
@@ -13,6 +14,9 @@ const bodySchema = z.object({
 });
 
 export const POST: APIRoute = async ({ request }) => {
+  if (!isSameOrigin(request)) return forbiddenOrigin();
+  if (!allowRequest(request, 'magic-link', { limit: 5, windowMs: 15 * 60 * 1000 })) return tooMany();
+
   let json: unknown;
   try {
     json = await request.json();

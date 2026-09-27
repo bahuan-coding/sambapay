@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { z } from 'zod';
+import { sql } from 'drizzle-orm';
 import { db } from '../../../db/index';
 import { merchants, merchantOwners, merchantCompany, merchantOperations, onboardingEvents } from '../../../db/schema';
 import { langPrefix, type Lang } from '../../i18n';
@@ -7,6 +8,7 @@ import { sendMagicLinkEmail } from '../../lib/email';
 import { getAppUrl } from '../../lib/env';
 import { createMagicLink, findMerchantByEmail, normalizeEmail } from '../../lib/magic-link';
 import { createUploadToken } from '../../lib/session';
+import { allowRequest, forbiddenOrigin, isSameOrigin, tooMany } from '../../lib/guard';
 import { identityFor, normalizeWebsite as canonicalWebsite } from '../../data/identity';
 
 export const prerender = false;
@@ -70,6 +72,9 @@ const bodySchema = z.object({
 });
 
 export const POST: APIRoute = async ({ request }) => {
+  if (!isSameOrigin(request)) return forbiddenOrigin();
+  if (!allowRequest(request, 'signup', { limit: 10, windowMs: 60 * 60 * 1000 })) return tooMany();
+
   let json: unknown;
   try {
     json = await request.json();
@@ -103,25 +108,6 @@ export const POST: APIRoute = async ({ request }) => {
     return Response.json({ error: 'email_taken' }, { status: 409 });
   }
 
-  const [merchant] = await db
-    .insert(merchants)
-    .values({
-      email,
-      name: data.name,
-      phone: data.phone,
-      companyName: data.companyName,
-      country,
-      countries,
-      documentNumber: data.documentNumber || null,
-      taxIdType: identity.taxId.name,
-      website: data.website || null,
-      businessType: data.industry || null,
-      merchantType: data.merchantType,
-      preferredLocale: lang,
-      status: 'commercial_fit',
-    })
-    .returning();
-
   const extras = data.extras ?? {};
   const known: Record<string, string> = {};
   const reserved: Record<string, string> = {};
@@ -140,86 +126,115 @@ export const POST: APIRoute = async ({ request }) => {
     else reserved[key] = value;
   }
 
+  // neon-http runs no interactive transaction, so the whole application is
+  // written as one atomic batch. The merchant id is allocated up front, then
+  // every row — company, owners, declaration, operations, events — travels in
+  // a single round trip. A failure rolls all of it back, never half an account.
+  const allocated = await db.execute<{ id: number }>(sql`select nextval('merchants_id_seq') as id`);
+  const raw = (allocated as unknown as { rows?: { id: number }[] }).rows ?? (allocated as unknown as { id: number }[]);
+  const merchantId = Number(raw?.[0]?.id);
+  if (!Number.isFinite(merchantId) || merchantId <= 0) {
+    return Response.json({ error: 'server' }, { status: 500 });
+  }
   const lookup = data.lookup;
-  await db.insert(merchantCompany).values({
-    merchantId: merchant.id,
-    legalName: data.companyName,
-    tradeName: lookup?.tradeName ?? null,
-    taxId: data.documentNumber,
-    taxIdType: identity.taxId.name,
-    registrationNumber: lookup?.registrationNumber ?? null,
-    registrationDate: lookup?.registrationDate ?? null,
-    legalStructure: lookup?.legalStructure ?? null,
-    addressStreet: lookup?.addressStreet ?? null,
-    addressNumber: lookup?.addressNumber ?? null,
-    addressComplement: lookup?.addressComplement ?? null,
-    addressNeighborhood: lookup?.addressNeighborhood ?? null,
-    addressCity: lookup?.addressCity ?? null,
-    addressState: lookup?.addressState ?? null,
-    addressZip: lookup?.addressZip ?? null,
-    industry: data.industry || null,
-    addressCountry: country,
-    taxRegime: known.taxRegime ?? null,
-    giro: known.giro ?? null,
-    comuna: known.comuna ?? null,
-    ciuu: known.ciuu ?? null,
-    condicionIva: known.condicionIva ?? null,
-    camaraComercio: known.camaraComercio ?? null,
-    countryDetails: Object.keys(reserved).length > 0 ? reserved : null,
-  });
+
+  const statements = [
+    db.insert(merchants).values({
+      id: merchantId,
+      email,
+      name: data.name,
+      phone: data.phone,
+      companyName: data.companyName,
+      country,
+      countries,
+      documentNumber: data.documentNumber || null,
+      taxIdType: identity.taxId.name,
+      website: data.website || null,
+      businessType: data.industry || null,
+      merchantType: data.merchantType,
+      preferredLocale: lang,
+      status: 'commercial_fit',
+    }),
+    db.insert(merchantCompany).values({
+      merchantId,
+      legalName: data.companyName,
+      tradeName: lookup?.tradeName ?? null,
+      taxId: data.documentNumber,
+      taxIdType: identity.taxId.name,
+      registrationNumber: lookup?.registrationNumber ?? null,
+      registrationDate: lookup?.registrationDate ?? null,
+      legalStructure: lookup?.legalStructure ?? null,
+      addressStreet: lookup?.addressStreet ?? null,
+      addressNumber: lookup?.addressNumber ?? null,
+      addressComplement: lookup?.addressComplement ?? null,
+      addressNeighborhood: lookup?.addressNeighborhood ?? null,
+      addressCity: lookup?.addressCity ?? null,
+      addressState: lookup?.addressState ?? null,
+      addressZip: lookup?.addressZip ?? null,
+      industry: data.industry || null,
+      addressCountry: country,
+      taxRegime: known.taxRegime ?? null,
+      giro: known.giro ?? null,
+      comuna: known.comuna ?? null,
+      ciuu: known.ciuu ?? null,
+      condicionIva: known.condicionIva ?? null,
+      camaraComercio: known.camaraComercio ?? null,
+      countryDetails: Object.keys(reserved).length > 0 ? reserved : null,
+    }),
+    db.insert(merchantOwners).values(
+      data.owners.map((o) => ({
+        merchantId,
+        fullName: o.fullName,
+        documentNumber: o.documentNumber || null,
+        ownershipPct: o.ownershipPct,
+        role: o.role,
+        isPep: o.isPep,
+      })),
+    ),
+    db.insert(onboardingEvents).values({
+      merchantId,
+      eventType: 'kyb.declaration.signed',
+      payload: data.declaration ? { ...data.declaration } : {},
+    }),
+    db.insert(merchantOperations).values({
+      merchantId,
+      countries,
+    }),
+    db.insert(onboardingEvents).values({
+      merchantId,
+      eventType: 'signup.completed',
+      payload: { merchantType: data.merchantType, country, countries, owners: data.owners.length },
+    }),
+  ];
 
   if (lookup) {
     const { source, ...fields } = lookup;
-    await db.insert(onboardingEvents).values({
-      merchantId: merchant.id,
-      eventType: 'company.enriched',
-      payload: {
-        source: source || '',
-        fields: Object.entries(fields).filter(([, v]) => v).map(([k]) => k),
-      },
-    });
+    statements.push(
+      db.insert(onboardingEvents).values({
+        merchantId,
+        eventType: 'company.enriched',
+        payload: {
+          source: source || '',
+          fields: Object.entries(fields).filter(([, v]) => v).map(([k]) => k),
+        },
+      }),
+    );
   }
 
-  await db.insert(merchantOwners).values(
-    data.owners.map((o) => ({
-      merchantId: merchant.id,
-      fullName: o.fullName,
-      documentNumber: o.documentNumber || null,
-      ownershipPct: o.ownershipPct,
-      role: o.role,
-      isPep: o.isPep,
-    })),
-  );
-
-  await db.insert(onboardingEvents).values({
-    merchantId: merchant.id,
-    eventType: 'kyb.declaration.signed',
-    payload: data.declaration ? { ...data.declaration } : {},
-  });
-
-  await db.insert(merchantOperations).values({
-    merchantId: merchant.id,
-    countries,
-  });
-
-  await db.insert(onboardingEvents).values({
-    merchantId: merchant.id,
-    eventType: 'signup.completed',
-    payload: { merchantType: data.merchantType, country, countries, owners: data.owners.length },
-  });
+  await db.batch(statements as [typeof statements[0], ...typeof statements]);
 
   // The applicant finishes the documents before any session exists, so issue
   // a short-lived upload token bound to this merchant.
-  const uploadToken = await createUploadToken(merchant.id);
+  const uploadToken = await createUploadToken(merchantId);
 
   try {
-    const token = await createMagicLink(merchant.id);
+    const token = await createMagicLink(merchantId);
     const prefix = langPrefix(lang);
     const verifyUrl = `${getAppUrl()}${prefix}/auth/verify/${encodeURIComponent(token)}`;
     await sendMagicLinkEmail(email, verifyUrl, lang);
   } catch {
-    return Response.json({ ok: true, merchantId: merchant.id, uploadToken, emailSent: false });
+    return Response.json({ ok: true, merchantId, uploadToken, emailSent: false });
   }
 
-  return Response.json({ ok: true, merchantId: merchant.id, uploadToken, emailSent: true });
+  return Response.json({ ok: true, merchantId, uploadToken, emailSent: true });
 };

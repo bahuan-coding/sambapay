@@ -4,6 +4,7 @@ import { db } from '../../../db/index';
 import { merchantDocuments, merchants, onboardingEvents } from '../../../db/schema';
 import { getSessionMerchant } from '../../lib/auth';
 import { holdsUploadToken } from '../../lib/session';
+import { allowRequest, forbiddenOrigin, isSameOrigin, tooMany } from '../../lib/guard';
 
 export const prerender = false;
 
@@ -28,6 +29,9 @@ function sniff(bytes: Uint8Array): string | null {
 }
 
 export const POST: APIRoute = async ({ request, cookies }) => {
+  if (!isSameOrigin(request)) return forbiddenOrigin();
+  if (!allowRequest(request, 'upload', { limit: 40, windowMs: 10 * 60 * 1000 })) return tooMany();
+
   let form: FormData;
   try {
     form = await request.formData();
