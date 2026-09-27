@@ -329,9 +329,41 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
   },
 };
 
+/**
+ * Tax identifiers for markets without a deep config. The local term, its mask
+ * and its format only — no public check-digit algorithm exists, so no
+ * validator. maxLength follows the mask, as in the six deep markets.
+ */
+const taxIdOnly: Record<string, IdentityConfig['taxId']> = {
+  GT: { name: 'NIT', mask: '0000000-0', example: '1234567-8', placeholder: '1234567-8', maxLength: 9 },
+  CR: { name: 'Cédula Jurídica', mask: '0-000-000000', example: '3-101-123456', placeholder: '3-101-123456', maxLength: 12 },
+  PA: { name: 'RUC', mask: '000000000-0-0000', example: '155612345-2-2015', placeholder: '155612345-2-2015', maxLength: 16 },
+  DO: { name: 'RNC', mask: '0-00-00000-0', example: '1-23-45678-9', placeholder: '1-23-45678-9', maxLength: 11 },
+  UY: { name: 'RUT', mask: '00 000000 0000', example: '21 123456 0012', placeholder: '21 123456 0012', maxLength: 14 },
+  PY: { name: 'RUC', mask: '00000000-0', example: '80012345-6', placeholder: '80012345-6', maxLength: 10 },
+  EC: { name: 'RUC', mask: '0000000000000', example: '1790012345001', placeholder: '1790012345001', maxLength: 13 },
+  BO: { name: 'NIT', mask: '0000000000', example: '1234567012', placeholder: '1234567012', maxLength: 10 },
+  VE: { name: 'RIF', mask: 'A-00000000-0', example: 'J-12345678-9', placeholder: 'J-12345678-9', maxLength: 12 },
+  NI: { name: 'RUC', mask: 'A0000000000000', example: 'J0310000123456', placeholder: 'J0310000123456', maxLength: 14 },
+  HN: { name: 'RTN', mask: '0000-0000-00000', example: '0801-1990-12345', placeholder: '0801-1990-12345', maxLength: 15 },
+  SV: { name: 'NIT', mask: '0000-000000-000-0', example: '0614-010195-001-2', placeholder: '0614-010195-001-2', maxLength: 17 },
+  JM: { name: 'TRN', mask: '000000000', example: '123456789', placeholder: '123456789', maxLength: 9 },
+  TT: { name: 'BIR', mask: '000000', example: '123456', placeholder: '123456', maxLength: 6 },
+  SR: { name: 'RIN', mask: 'XXXXXXXX', example: '', placeholder: '', maxLength: 8 },
+  GY: { name: 'TIN', mask: 'XXXXXXXX', example: '', placeholder: '', maxLength: 8 },
+  US: { name: 'EIN', mask: '00-0000000', example: '12-3456789', placeholder: '12-3456789', maxLength: 10 },
+  CA: { name: 'BN', mask: '000000000AA0000', example: '123456789RC0001', placeholder: '123456789RC0001', maxLength: 15 },
+  BZ: { name: 'TIN', mask: '000000', example: '123456', placeholder: '123456', maxLength: 6 },
+  HT: { name: 'NIF', mask: '000-000-000-0', example: '000-123-456-7', placeholder: '000-123-456-7', maxLength: 13 },
+  CU: { name: 'NIT', mask: '00000000000', example: '12345678901', placeholder: '12345678901', maxLength: 11 },
+};
+
 export function identityFor(country: string): IdentityConfig {
-  const key = country.toUpperCase() as IdentityKind;
-  return identity[key] ?? identity.GENERAL;
+  const key = country.toUpperCase();
+  const deep = identity[key as IdentityKind];
+  if (deep) return deep;
+  const taxId = taxIdOnly[key];
+  return taxId ? { ...identity.GENERAL, taxId } : identity.GENERAL;
 }
 
 /** The six markets with a deep experience. */
