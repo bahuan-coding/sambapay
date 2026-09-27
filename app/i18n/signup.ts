@@ -50,6 +50,7 @@ const en = {
     ownerPep: 'Politically exposed person',
     ownerPepDetails: 'Details',
     ownerSignatory: 'Legal representative',
+    autofillHint: 'We fill what the registry already knows. Check and adjust.',
   },
 
   merchantTypes: [
@@ -70,8 +71,26 @@ const en = {
 
   owners: {
     sole: 'Owner or legal representative',
-    ubo: 'Beneficial owner holding 25% or more',
+    director: 'Director / legal representative',
+    ubo: 'Beneficial owner (25% or more)',
     uboHint: 'List every person who owns 25% or more, and the legal representative.',
+  },
+
+  lookup: {
+    loading: 'Looking up the company…',
+    none: 'No registry match. Fill the fields by hand.',
+    found: 'Found:',
+    autofillHint: 'We fill what the registry already knows. Check and adjust.',
+  },
+
+  declaration: {
+    title: 'Declaration',
+    accurate: 'The information above is true and complete.',
+    authorized: 'I am authorised to sign for this company.',
+    updates: 'I will report any material change.',
+    signer: 'Signer name',
+    signerTitle: 'Signer role',
+    date: 'Date',
   },
 
   successTitle: 'Check your email',
@@ -150,8 +169,24 @@ const pt: Copy = {
   },
   owners: {
     sole: 'Sócio ou representante legal',
-    ubo: 'Beneficiário final com 25% ou mais',
+    director: 'Diretor / representante legal',
+    ubo: 'Beneficiário final (25% ou mais)',
     uboHint: 'Liste cada pessoa que detém 25% ou mais, e o representante legal.',
+  },
+  lookup: {
+    loading: 'Buscando a empresa…',
+    none: 'Sem resultado no registro. Preencha os campos à mão.',
+    found: 'Encontrado:',
+    autofillHint: 'Preenchemos o que o registro já sabe. Confira e ajuste.',
+  },
+  declaration: {
+    title: 'Declaração',
+    accurate: 'As informações acima são verdadeiras e completas.',
+    authorized: 'Tenho autoridade para assinar por esta empresa.',
+    updates: 'Vou informar qualquer mudança relevante.',
+    signer: 'Nome de quem assina',
+    signerTitle: 'Cargo de quem assina',
+    date: 'Data',
   },
   successTitle: 'Confira o seu e-mail',
   successBody: 'Enviamos um link de acesso para a sua caixa de entrada. Ele expira em 15 minutos.',
@@ -225,8 +260,24 @@ const es: Copy = {
   },
   owners: {
     sole: 'Socio o representante legal',
-    ubo: 'Beneficiario final con 25% o más',
+    director: 'Director / representante legal',
+    ubo: 'Beneficiario final (25% o más)',
     uboHint: 'Lista a cada persona que posee 25% o más, y al representante legal.',
+  },
+  lookup: {
+    loading: 'Buscando la empresa…',
+    none: 'Sin resultado en el registro. Completa los campos a mano.',
+    found: 'Encontrado:',
+    autofillHint: 'Rellenamos lo que el registro ya sabe. Revisa y ajusta.',
+  },
+  declaration: {
+    title: 'Declaración',
+    accurate: 'La información anterior es veraz y completa.',
+    authorized: 'Tengo autoridad para firmar por esta empresa.',
+    updates: 'Informaré cualquier cambio relevante.',
+    signer: 'Nombre de quien firma',
+    signerTitle: 'Cargo de quien firma',
+    date: 'Fecha',
   },
   successTitle: 'Revisa tu correo',
   successBody: 'Enviamos un enlace de acceso a tu bandeja de entrada. Expira en 15 minutos.',

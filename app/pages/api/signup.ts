@@ -20,8 +20,17 @@ function normalizeWebsite(value: unknown): string {
 const ownerSchema = z.object({
   fullName: z.string().trim().min(2).max(200),
   documentNumber: z.string().trim().max(60).optional().default(''),
+  role: z.enum(['director', 'ubo', 'shareholder']).optional().default('director'),
   ownershipPct: z.number().min(0).max(100).optional().default(0),
   isPep: z.boolean().optional().default(false),
+});
+
+const declarationSchema = z.object({
+  accurate: z.boolean(),
+  authorized: z.boolean(),
+  updates: z.boolean(),
+  signer: z.string().trim().max(200).optional().default(''),
+  signerTitle: z.string().trim().max(200).optional().default(''),
 });
 
 const bodySchema = z.object({
@@ -38,6 +47,7 @@ const bodySchema = z.object({
   industry: z.string().trim().max(200).optional().default(''),
   extras: z.record(z.string(), z.string()).optional().default({}),
   owners: z.array(ownerSchema).optional().default([]),
+  declaration: declarationSchema.optional(),
   locale: z.enum(['en', 'pt', 'es']).optional(),
 });
 
@@ -101,16 +111,22 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (data.owners.length > 0) {
     await db.insert(merchantOwners).values(
-      data.owners.map((o, i) => ({
+      data.owners.map((o) => ({
         merchantId: merchant.id,
         fullName: o.fullName,
         documentNumber: o.documentNumber || null,
         ownershipPct: o.ownershipPct,
-        role: i === 0 ? 'representative' : 'owner',
+        role: o.role,
         isPep: o.isPep,
       })),
     );
   }
+
+  await db.insert(onboardingEvents).values({
+    merchantId: merchant.id,
+    eventType: 'kyb.declaration.signed',
+    payload: data.declaration ? { ...data.declaration } : {},
+  });
 
   await db.insert(merchantOperations).values({
     merchantId: merchant.id,

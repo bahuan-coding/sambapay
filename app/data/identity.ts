@@ -37,6 +37,9 @@ export interface IdentityConfig {
     name: string;
     mask: string;
     example: string;
+    placeholder: string;
+    maxLength: number;
+    pattern?: RegExp;
     validate?: (value: string) => boolean;
   };
   extras: ExtraField[];
@@ -44,6 +47,20 @@ export interface IdentityConfig {
   owner: OwnerDoc;
   /** Brazil alone lists owners by participation. */
   ownersByShare: boolean;
+}
+
+/** Robust URL normalisation, in the shape the house accepts. */
+export function normalizeWebsite(url: string | undefined | null): string | null {
+  if (!url || !url.trim()) return null;
+  let clean = url.trim().toLowerCase();
+  if (/^(localhost|127\.|192\.168\.|10\.|172\.(1[6-9]|2\d|3[01])\.|0\.)/.test(clean.replace(/^https?:\/\//, ''))) return null;
+  if (/\.(local|internal|test|example|invalid|localhost)$/.test(clean)) return null;
+  clean = clean.replace(/^https?:\/\//, '');
+  const domain = clean.split('/')[0]?.split('?')[0] || '';
+  if (!domain || !domain.includes('.')) return null;
+  const bare = domain.replace(/^www\./, '');
+  if (bare.length < 3) return null;
+  return `https://${bare}`;
 }
 
 /* ---- Check-digit algorithms, one per market ---- */
@@ -171,14 +188,22 @@ export function applyMask(value: string, mask: string): string {
 export const identity: Record<IdentityKind, IdentityConfig> = {
   BR: {
     kind: 'BR',
-    taxId: { name: 'CNPJ', mask: '00.000.000/0000-00', example: '12.345.678/0001-90', validate: validCNPJ },
+    taxId: {
+      name: 'CNPJ', mask: '00.000.000/0000-00', example: '12.345.678/0001-90',
+      placeholder: '12.345.678/0001-90', maxLength: 18,
+      pattern: /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/, validate: validCNPJ,
+    },
     extras: [],
     owner: { name: 'CPF', mask: '000.000.000-00', validate: validCPF },
     ownersByShare: true,
   },
   MX: {
     kind: 'MX',
-    taxId: { name: 'RFC', mask: 'XXX000000XXX', example: 'ABC010101XXX', validate: validRFC },
+    taxId: {
+      name: 'RFC', mask: 'XXX000000XXX', example: 'ABC010101XXX',
+      placeholder: 'ABC010101XXX', maxLength: 13,
+      pattern: /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/, validate: validRFC,
+    },
     extras: [
       {
         name: 'regimenFiscal',
@@ -199,7 +224,11 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
   },
   CO: {
     kind: 'CO',
-    taxId: { name: 'NIT', mask: '000.000.000-0', example: '901.123.456-7', validate: validNIT },
+    taxId: {
+      name: 'NIT', mask: '000.000.000-0', example: '901.123.456-7',
+      placeholder: '900.123.456-7', maxLength: 13,
+      pattern: /^\d{3}\.\d{3}\.\d{3}-\d$/, validate: validNIT,
+    },
     extras: [
       {
         name: 'tipoSociedad',
@@ -224,7 +253,11 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
   },
   CL: {
     kind: 'CL',
-    taxId: { name: 'RUT', mask: '00.000.000-0', example: '76.123.456-7', validate: validRUT },
+    taxId: {
+      name: 'RUT', mask: '00.000.000-K', example: '76.123.456-7',
+      placeholder: '76.123.456-K', maxLength: 12,
+      pattern: /^\d{2}\.\d{3}\.\d{3}-[\dkK]$/, validate: validRUT,
+    },
     extras: [
       {
         name: 'giro',
@@ -243,7 +276,11 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
   },
   PE: {
     kind: 'PE',
-    taxId: { name: 'RUC', mask: '00000000000', example: '20123456789', validate: validRUC },
+    taxId: {
+      name: 'RUC', mask: '00000000000', example: '20123456789',
+      placeholder: '20123456789', maxLength: 11,
+      pattern: /^\d{11}$/, validate: validRUC,
+    },
     extras: [
       {
         name: 'actividadCIIU',
@@ -257,7 +294,11 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
   },
   AR: {
     kind: 'AR',
-    taxId: { name: 'CUIT', mask: '00-00000000-0', example: '30-12345678-9', validate: validCUIT },
+    taxId: {
+      name: 'CUIT', mask: '00-00000000-0', example: '30-12345678-9',
+      placeholder: '30-12345678-9', maxLength: 13,
+      pattern: /^\d{2}-\d{8}-\d$/, validate: validCUIT,
+    },
     extras: [
       {
         name: 'condicionIVA',
@@ -281,7 +322,7 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
   },
   GENERAL: {
     kind: 'GENERAL',
-    taxId: { name: 'Tax ID', mask: 'XXXXXXXXXXXXXXXX', example: '' },
+    taxId: { name: 'Tax ID', mask: 'XXXXXXXXXXXXXXXX', example: '', placeholder: '', maxLength: 40 },
     extras: [],
     owner: { name: 'Document', mask: 'XXXXXXXXXXXXXXXX' },
     ownersByShare: false,

@@ -94,6 +94,33 @@ const termsHref = pathForLang('/legal/terms', lang);
         <FileDrop id="doc-owner" name="ownerDoc" label={copy.documents.owner} hint={copy.documents.ownerHint} required errorId="doc-owner-err" />
         <FileDrop id="doc-address" name="addressDoc" label={copy.documents.address} hint={copy.documents.addressOptional} errorId="doc-address-err" />
         <FileDrop id="doc-contract" name="contractDoc" label={copy.documents.contract} hint={copy.documents.contractOptional} errorId="doc-contract-err" />
+
+        <fieldset class="signup__declare">
+          <legend class="signup__declare-title">{copy.declaration.title}</legend>
+          <label class="signup__check">
+            <input type="checkbox" name="decl_accurate" required />
+            <span>{copy.declaration.accurate}</span>
+          </label>
+          <label class="signup__check">
+            <input type="checkbox" name="decl_authorized" required />
+            <span>{copy.declaration.authorized}</span>
+          </label>
+          <label class="signup__check">
+            <input type="checkbox" name="decl_updates" required />
+            <span>{copy.declaration.updates}</span>
+          </label>
+          <div class="signup__declare-row">
+            <div class="field">
+              <label class="field__label" for="decl-name">{copy.declaration.signer} <span class="field__req">*</span></label>
+              <input class="field__input" id="decl-name" name="decl_signer" required />
+            </div>
+            <div class="field">
+              <label class="field__label" for="decl-title">{copy.declaration.signerTitle} <span class="field__req">*</span></label>
+              <input class="field__input" id="decl-title" name="decl_signerTitle" required />
+            </div>
+          </div>
+        </fieldset>
+
         <p class="signup__error" data-error hidden role="alert"></p>
         <div class="signup__actions">
           <button class="signup__btn signup__btn--ghost" type="button" data-back>{copy.back}</button>
@@ -111,12 +138,29 @@ const termsHref = pathForLang('/legal/terms', lang);
       </section>
     </form>
   </div>
+  <script type="application/json" id="signup-copy" set:html={JSON.stringify({
+    ownerName: copy.fields.ownerName,
+    ownerDoc: copy.fields.ownerDoc,
+    ownerShare: copy.fields.ownerShare,
+    ownerPep: copy.fields.ownerPep,
+    ownerRole: copy.fields.ownerRole,
+    ownerDirector: copy.owners.director,
+    ownerUbo: copy.owners.ubo,
+    remove: copy.removeOwner,
+    lookingUp: copy.lookup.loading,
+    lookupNone: copy.lookup.none,
+    lookupFound: copy.lookup.found,
+    autofillHint: copy.fields.autofillHint,
+    declaration: copy.declaration,
+    errors: copy.errors,
+  })} />
 </BaseLayout>
 
 <script>
   import { identityFor, applyMask } from '../data/identity';
   import type { ExtraField } from '../data/identity';
 
+  const t = JSON.parse(document.getElementById('signup-copy')?.textContent ?? '{}');
   const form = document.querySelector<HTMLFormElement>('[data-signup-form]')!;
   const panels = [...form.querySelectorAll<HTMLElement>('[data-panel]')];
   const progress = [...document.querySelectorAll<HTMLElement>('[data-progress]')];
@@ -152,11 +196,71 @@ const termsHref = pathForLang('/legal/terms', lang);
     taxBlock.innerHTML = `
       <div class="field">
         <label class="field__label" for="su-tax">${cfg.taxId.name} <span class="field__req">*</span></label>
-        <input class="field__input" id="su-tax" name="documentNumber" placeholder="${esc(cfg.taxId.example)}" data-mask="${esc(cfg.taxId.mask)}" data-validate="tax" data-country="${primary}" />
-        <p class="field__hint" data-tax-hint>${esc(cfg.taxId.example)}</p>
+        <input class="field__input" id="su-tax" name="documentNumber" placeholder="${esc(cfg.taxId.placeholder)}" maxlength="${cfg.taxId.maxLength}" data-mask="${esc(cfg.taxId.mask)}" data-validate="tax" data-country="${primary}" data-lookup="${primary}" />
+        <p class="field__hint" data-tax-hint>${esc(cfg.taxId.placeholder)}</p>
+        <p class="field__status" data-tax-status hidden></p>
       </div>
       ${extras}`;
     bindMasks(taxBlock);
+    bindLookup();
+  }
+
+  /* When the tax ID is valid, ask the registry and fill what it returns. */
+  let lookupTimer = 0;
+  function bindLookup() {
+    const input = taxBlock.querySelector<HTMLInputElement>('[data-lookup]');
+    const status = taxBlock.querySelector<HTMLElement>('[data-tax-status]');
+    if (!input || !status) return;
+    input.addEventListener('input', () => {
+      window.clearTimeout(lookupTimer);
+      status.hidden = true;
+      input.removeAttribute('data-verified');
+      if (!validateDocument(input)) return;
+      lookupTimer = window.setTimeout(() => runLookup(input, status), 500);
+    });
+  }
+
+  async function runLookup(input: HTMLInputElement, status: HTMLElement) {
+    const country = input.dataset.lookup!;
+    status.hidden = false;
+    status.dataset.state = 'loading';
+    status.textContent = t.lookingUp;
+    try {
+      const res = await fetch('/api/lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ country, document: input.value }),
+      });
+      const data = await res.json();
+      if (!data.found || !data.profile) {
+        status.dataset.state = 'none';
+        status.textContent = t.lookupNone;
+        return;
+      }
+      fillFromProfile(data.profile);
+      status.dataset.state = 'ok';
+      status.textContent = `${t.lookupFound} ${data.profile.legalName ?? ''}`.trim();
+    } catch {
+      status.hidden = true;
+    }
+  }
+
+  function fillFromProfile(p: Record<string, any>) {
+    const set = (name: string, value?: string) => {
+      if (!value) return;
+      const el = form.elements.namedItem(name) as HTMLInputElement | null;
+      if (el && !el.value.trim()) {
+        el.value = value;
+        el.dataset.autofilled = 'true';
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    };
+    set('companyName', p.legalName);
+    set('industry', p.industry);
+    const extras = taxBlock.querySelectorAll<HTMLInputElement>('[name]');
+    extras.forEach((el) => {
+      if (p[el.name]) { el.value = String(p[el.name]); el.dataset.autofilled = 'true'; }
+    });
   }
 
   function renderExtra(f: ExtraField) {
@@ -179,13 +283,19 @@ const termsHref = pathForLang('/legal/terms', lang);
     block.dataset.owner = String(idx);
     block.innerHTML = `
       <div class="signup__owner-head">
-        <span class="signup__owner-title">${esc(cfg.owner.name)} · ${idx}</span>
-        ${idx > 1 ? '<button type="button" class="signup__owner-remove" data-remove-owner>Remove</button>' : ''}
+        <span class="signup__owner-title">${esc(t.ownerDoc)} · ${idx}</span>
+        ${idx > 1 ? `<button type="button" class="signup__owner-remove" data-remove-owner>${esc(t.remove)}</button>` : ''}
       </div>
-      <div class="field"><label class="field__label">Full name <span class="field__req">*</span></label><input class="field__input" name="owner_name_${idx}" required /></div>
+      <div class="field"><label class="field__label">${esc(t.ownerRole)} <span class="field__req">*</span></label>
+        <select class="field__input" name="owner_role_${idx}" required>
+          <option value="director">${esc(t.ownerDirector)}</option>
+          <option value="ubo">${esc(t.ownerUbo)}</option>
+        </select>
+      </div>
+      <div class="field"><label class="field__label">${esc(t.ownerName)} <span class="field__req">*</span></label><input class="field__input" name="owner_name_${idx}" required /></div>
       <div class="field"><label class="field__label">${esc(cfg.owner.name)} <span class="field__req">*</span></label><input class="field__input" name="owner_doc_${idx}" data-mask="${esc(cfg.owner.mask)}" data-validate="owner" data-country="${codes[0] ?? ''}" required /></div>
-      <div class="field"><label class="field__label">Ownership % <span class="field__req">*</span></label><input class="field__input" name="owner_share_${idx}" type="number" min="0" max="100" required /></div>
-      <label class="signup__check"><input type="checkbox" name="owner_pep_${idx}" /> <span>Politically exposed person</span></label>`;
+      <div class="field"><label class="field__label">${esc(t.ownerShare)} <span class="field__req">*</span></label><input class="field__input" name="owner_share_${idx}" type="number" min="0" max="100" required /></div>
+      <label class="signup__check"><input type="checkbox" name="owner_pep_${idx}" /> <span>${esc(t.ownerPep)}</span></label>`;
     ownersWrap.appendChild(block);
     bindMasks(block);
     block.querySelector('[data-remove-owner]')?.addEventListener('click', () => {
@@ -265,6 +375,7 @@ const termsHref = pathForLang('/legal/terms', lang);
       return {
         fullName: f(`owner_name_${i}`),
         documentNumber: f(`owner_doc_${i}`),
+        role: f(`owner_role_${i}`) || 'director',
         ownershipPct: Number(f(`owner_share_${i}`)) || 0,
         isPep: (form.elements.namedItem(`owner_pep_${i}`) as HTMLInputElement)?.checked ?? false,
       };
@@ -288,6 +399,13 @@ const termsHref = pathForLang('/legal/terms', lang);
       industry: value('industry'),
       extras,
       owners,
+      declaration: {
+        accurate: (form.elements.namedItem('decl_accurate') as HTMLInputElement)?.checked === true,
+        authorized: (form.elements.namedItem('decl_authorized') as HTMLInputElement)?.checked === true,
+        updates: (form.elements.namedItem('decl_updates') as HTMLInputElement)?.checked === true,
+        signer: value('decl_signer'),
+        signerTitle: value('decl_signerTitle'),
+      },
       locale: document.documentElement.lang.slice(0, 2),
     };
     try {
@@ -475,5 +593,51 @@ const termsHref = pathForLang('/legal/terms', lang);
     border-radius: 50%;
     background: rgba(22, 136, 33, 0.1);
     color: var(--green);
+  }
+
+  .field__status {
+    margin: 0.4rem 0 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .field__status[data-state='loading'] { color: var(--blue); }
+  .field__status[data-state='ok'] { color: var(--green); }
+  .field__status[data-state='none'] { color: var(--muted); }
+
+  input[data-autofilled='true'] {
+    border-color: rgba(22, 136, 33, 0.5);
+    background: rgba(22, 136, 33, 0.04);
+  }
+
+  .signup__declare {
+    margin: 1.5rem 0 0;
+    padding: 1.1rem 1.1rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: rgba(244, 239, 228, 0.4);
+  }
+
+  .signup__declare-title {
+    padding: 0 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--anil);
+  }
+
+  .signup__declare .signup__check { margin: 0.75rem 0; }
+
+  .signup__declare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+
+  @media (max-width: 560px) {
+    .signup__declare-row { grid-template-columns: 1fr; }
   }
 </style>
