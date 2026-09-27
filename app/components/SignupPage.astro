@@ -287,7 +287,13 @@ const termsHref = pathForLang('/legal/terms', lang);
     }
   }
 
+  /* The profile the registry returned, kept whole so the server can store it.
+     Fills every form field the profile maps to, never overwriting what the
+     user already typed. */
+  let lookupProfile: Record<string, any> | null = null;
+
   function fillFromProfile(p: Record<string, any>) {
+    lookupProfile = p;
     const set = (name: string, value?: string) => {
       if (!value) return;
       const el = form.elements.namedItem(name) as HTMLInputElement | null;
@@ -299,6 +305,7 @@ const termsHref = pathForLang('/legal/terms', lang);
     };
     set('companyName', p.legalName);
     set('industry', p.industry);
+    set('website', p.website);
     const extras = taxBlock.querySelectorAll<HTMLInputElement>('[name]');
     extras.forEach((el) => {
       if (p[el.name]) { el.value = String(p[el.name]); el.dataset.autofilled = 'true'; }
@@ -506,6 +513,7 @@ const termsHref = pathForLang('/legal/terms', lang);
       website: value('website'),
       industry: value('industry'),
       extras,
+      lookup: lookupProfile,
       owners,
       declaration: {
         accurate: (form.elements.namedItem('decl_accurate') as HTMLInputElement)?.checked === true,

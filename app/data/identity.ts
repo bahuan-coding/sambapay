@@ -11,8 +11,6 @@ import type { Lang } from '../i18n';
 export type IdentityKind =
   | 'BR' | 'MX' | 'CO' | 'CL' | 'PE' | 'AR' | 'GENERAL';
 
-export type MaskToken = '0' | 'A' | 'X'; // digit, letter, alphanumeric
-
 export interface ExtraField {
   name: string;
   kind: 'text' | 'select';
