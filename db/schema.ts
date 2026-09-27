@@ -37,6 +37,10 @@ export const merchants = pgTable('merchants', {
   merchantType: text('merchant_type').notNull().default('direct'),
   preferredLocale: varchar('preferred_locale', { length: 5 }).default('en'),
   status: text('status').notNull().default('commercial_fit'),
+  // A short-lived token issued at signup, so the applicant can upload the
+  // documents before any session exists. The raw token never touches the DB.
+  uploadTokenHash: text('upload_token_hash'),
+  uploadTokenExpiresAt: timestamp('upload_token_expires_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
 });

@@ -38,6 +38,46 @@ export async function getMerchantFromToken(token: string | undefined) {
   return row?.merchant ?? null;
 }
 
+const UPLOAD_TOKEN_MINUTES = 60;
+
+/**
+ * The applicant has no session yet while finishing the signup, so the server
+ * hands out a one-time upload token bound to the merchant. It lets the freshly
+ * created merchant attach its own documents and nothing else.
+ */
+export async function createUploadToken(merchantId: number): Promise<string> {
+  const token = randomToken();
+  const tokenHash = await hashToken(token);
+  const expiresAt = new Date();
+  expiresAt.setMinutes(expiresAt.getMinutes() + UPLOAD_TOKEN_MINUTES);
+
+  await db
+    .update(merchants)
+    .set({ uploadTokenHash: tokenHash, uploadTokenExpiresAt: expiresAt })
+    .where(eq(merchants.id, merchantId));
+
+  return token;
+}
+
+/** True when the token is the merchant's live upload credential. */
+export async function holdsUploadToken(merchantId: number, token: string | undefined): Promise<boolean> {
+  if (!token) return false;
+  const tokenHash = await hashToken(token);
+  const now = new Date();
+  const [row] = await db
+    .select({ id: merchants.id })
+    .from(merchants)
+    .where(
+      and(
+        eq(merchants.id, merchantId),
+        eq(merchants.uploadTokenHash, tokenHash),
+        gt(merchants.uploadTokenExpiresAt, now),
+      ),
+    )
+    .limit(1);
+  return !!row;
+}
+
 export async function destroySession(token: string | undefined) {
   if (!token) return;
   const tokenHash = await hashToken(token);

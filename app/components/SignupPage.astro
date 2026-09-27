@@ -91,7 +91,7 @@ const termsHref = pathForLang('/legal/terms', lang);
       <section data-panel="4" hidden>
         <h2 class="signup__h2">{copy.step4Title}</h2>
         <FileDrop id="doc-company" name="companyDoc" label={copy.documents.company} hint={copy.documents.companyHint} required errorId="doc-company-err" />
-        <FileDrop id="doc-owner" name="ownerDoc" label={copy.documents.owner} hint={copy.documents.ownerHint} required errorId="doc-owner-err" />
+        <div data-owner-docs></div>
         <FileDrop id="doc-address" name="addressDoc" label={copy.documents.address} hint={copy.documents.addressOptional} errorId="doc-address-err" />
         <FileDrop id="doc-contract" name="contractDoc" label={copy.documents.contract} hint={copy.documents.contractOptional} errorId="doc-contract-err" />
 
@@ -141,6 +141,8 @@ const termsHref = pathForLang('/legal/terms', lang);
   <script type="application/json" id="signup-copy" set:html={JSON.stringify({
     ownerName: copy.fields.ownerName,
     ownerDoc: copy.fields.ownerDoc,
+    ownerDocFile: copy.documents.owner,
+    ownerDocFileHint: copy.documents.ownerHint,
     ownerShare: copy.fields.ownerShare,
     ownerPep: copy.fields.ownerPep,
     ownerRole: copy.fields.ownerRole,
@@ -169,8 +171,11 @@ const termsHref = pathForLang('/legal/terms', lang);
   const progress = [...document.querySelectorAll<HTMLElement>('[data-progress]')];
   const taxBlock = form.querySelector<HTMLElement>('[data-tax-block]')!;
   const ownersWrap = form.querySelector<HTMLElement>('[data-owners]')!;
+  const ownerDocsWrap = form.querySelector<HTMLElement>('[data-owner-docs]')!;
+  const initFileDrop = (window as any).initFileDrop as ((el: HTMLElement) => void) | undefined;
   let step = 1;
   let ownerCount = 0;
+  let uploadToken = '';
 
   const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 
@@ -353,7 +358,44 @@ const termsHref = pathForLang('/legal/terms', lang);
     bindMasks(block);
     block.querySelector('[data-remove-owner]')?.addEventListener('click', () => {
       block.remove();
+      syncOwnerDocs();
     });
+    syncOwnerDocs();
+  }
+
+  /** One identification document per owner, mirroring the owners list. */
+  function ownerDocMarkup(idx: number): string {
+    return `
+      <div class="fd" data-file-drop data-doc-type="ownerDoc_${idx}">
+        <span class="fd__label">
+          <span class="fd__name">${esc(t.ownerDocFile)} · ${idx}</span>
+          <span class="fd__req" aria-hidden="true">*</span>
+        </span>
+        <label class="fd__zone">
+          <input class="fd__input" name="ownerDoc_${idx}" type="file" accept="application/pdf,image/jpeg,image/png" data-file-input />
+          <span class="fd__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>
+          </span>
+          <span class="fd__text" data-file-text>${esc(t.ownerDocFileHint)}</span>
+          <span class="fd__meta" data-file-meta></span>
+        </label>
+      </div>`;
+  }
+
+  function syncOwnerDocs() {
+    const ids = [...ownersWrap.querySelectorAll<HTMLElement>('[data-owner]')].map((b) => b.dataset.owner);
+    const existing = new Map(
+      [...ownerDocsWrap.querySelectorAll<HTMLElement>('[data-doc-type]')]
+        .map((el) => [el.dataset.docType!, el]),
+    );
+    ownerDocsWrap.innerHTML = '';
+    for (const idx of ids) {
+      const key = `ownerDoc_${idx}`;
+      const kept = existing.get(key);
+      if (kept) ownerDocsWrap.appendChild(kept);
+      else ownerDocsWrap.insertAdjacentHTML('beforeend', ownerDocMarkup(Number(idx)));
+    }
+    ownerDocsWrap.querySelectorAll<HTMLElement>('[data-file-drop]').forEach((el) => initFileDrop?.(el));
   }
 
   /* Masks + validation */
@@ -470,6 +512,7 @@ const termsHref = pathForLang('/legal/terms', lang);
       if (panel && !validatePanel(panel)) return;
       if (step === 3 && ownersWrap.children.length === 0) addOwner();
       step += 1;
+      if (step === 4) syncOwnerDocs();
       setStep(step);
     }),
   );
@@ -533,12 +576,26 @@ const termsHref = pathForLang('/legal/terms', lang);
       const file = input.files![0];
       const fd = new FormData();
       fd.append('merchantId', String(merchantId));
+      fd.append('uploadToken', uploadToken);
       fd.append('docType', input.name);
       fd.append('file', file);
       try {
         const res = await fetch('/api/upload', { method: 'POST', body: fd });
-        if (res.ok) done += 1;
-      } catch { /* counted below */ }
+        if (res.ok) {
+          done += 1;
+        } else {
+          // Never fail in silence: mark the field the server refused.
+          const drop = input.closest<HTMLElement>('[data-file-drop]');
+          const err = drop?.querySelector<HTMLElement>('.fd__error');
+          drop?.classList.add('has-error');
+          if (err && !err.textContent) { err.textContent = t.errors.file; err.hidden = false; }
+        }
+      } catch {
+        const drop = input.closest<HTMLElement>('[data-file-drop]');
+        const err = drop?.querySelector<HTMLElement>('.fd__error');
+        drop?.classList.add('has-error');
+        if (err && !err.textContent) { err.textContent = t.errors.file; err.hidden = false; }
+      }
     }
     return { total: inputs.length, done };
   }
@@ -571,6 +628,7 @@ const termsHref = pathForLang('/legal/terms', lang);
         if (!res.ok) { showError(t.errors.generic); setBusy(false); return; }
         if (data.emailSent === false) { showError(t.mailFailed); setBusy(false); return; }
         createdMerchantId = data.merchantId ?? null;
+        uploadToken = data.uploadToken ?? '';
       }
 
       if (createdMerchantId !== null) {

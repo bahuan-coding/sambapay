@@ -133,12 +133,15 @@ const {
   const MAX = 10 * 1024 * 1024;
   const OK = ['application/pdf', 'image/jpeg', 'image/png'];
 
-  document.querySelectorAll<HTMLElement>('[data-file-drop]').forEach((drop) => {
+  /** Bind one drop zone. Exported so the signup can add owner zones later. */
+  function initFileDrop(drop: HTMLElement) {
+    if (drop.dataset.fileBound === 'true') return;
     const input = drop.querySelector<HTMLInputElement>('[data-file-input]');
     const text = drop.querySelector<HTMLElement>('[data-file-text]');
     const meta = drop.querySelector<HTMLElement>('[data-file-meta]');
     const err = drop.querySelector<HTMLElement>('.fd__error');
     if (!input || !text || !meta) return;
+    drop.dataset.fileBound = 'true';
 
     const fail = (msg: string) => {
       drop.classList.add('has-error');
@@ -180,5 +183,8 @@ const {
         show(file);
       }
     });
-  });
+  }
+
+  (window as any).initFileDrop = initFileDrop;
+  document.querySelectorAll<HTMLElement>('[data-file-drop]').forEach(initFileDrop);
 </script>

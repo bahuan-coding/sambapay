@@ -6,6 +6,7 @@ import { langPrefix, type Lang } from '../../i18n';
 import { sendMagicLinkEmail } from '../../lib/email';
 import { getAppUrl } from '../../lib/env';
 import { createMagicLink, findMerchantByEmail, normalizeEmail } from '../../lib/magic-link';
+import { createUploadToken } from '../../lib/session';
 import { identityFor, normalizeWebsite as canonicalWebsite } from '../../data/identity';
 
 export const prerender = false;
@@ -207,14 +208,18 @@ export const POST: APIRoute = async ({ request }) => {
     payload: { merchantType: data.merchantType, country, countries, owners: data.owners.length },
   });
 
+  // The applicant finishes the documents before any session exists, so issue
+  // a short-lived upload token bound to this merchant.
+  const uploadToken = await createUploadToken(merchant.id);
+
   try {
     const token = await createMagicLink(merchant.id);
     const prefix = langPrefix(lang);
     const verifyUrl = `${getAppUrl()}${prefix}/auth/verify/${encodeURIComponent(token)}`;
     await sendMagicLinkEmail(email, verifyUrl, lang);
   } catch {
-    return Response.json({ ok: true, merchantId: merchant.id, emailSent: false });
+    return Response.json({ ok: true, merchantId: merchant.id, uploadToken, emailSent: false });
   }
 
-  return Response.json({ ok: true, merchantId: merchant.id, emailSent: true });
+  return Response.json({ ok: true, merchantId: merchant.id, uploadToken, emailSent: true });
 };
