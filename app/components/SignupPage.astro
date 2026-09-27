@@ -2,7 +2,8 @@
 import type { Lang } from '../i18n';
 import { pathForLang } from '../i18n';
 import { signupCopy } from '../i18n/signup';
-import { americasOptions } from '../i18n/americas';
+import { americas, americasOptions } from '../i18n/americas';
+import { docLabelsFor } from '../data/identity';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FormField from './FormField.astro';
 import CountryMultiSelect from './CountryMultiSelect.astro';
@@ -20,6 +21,20 @@ const copy = signupCopy(lang);
 const countries = americasOptions(lang);
 const privacyHref = pathForLang('/legal/privacy', lang);
 const termsHref = pathForLang('/legal/terms', lang);
+
+// The local company documents for every market, so the client relabels the
+// drop zones the moment the user's first country changes.
+const docLabels: Record<string, { company: string; companyHint: string; owner: string; address: string; contract: string }> = {};
+for (const c of americas) {
+  const d = docLabelsFor(c.code);
+  docLabels[c.code] = {
+    company: d.company[lang === 'pt' ? 1 : lang === 'es' ? 2 : 0],
+    companyHint: d.companyHint[lang === 'pt' ? 1 : lang === 'es' ? 2 : 0],
+    owner: d.owner[lang === 'pt' ? 1 : lang === 'es' ? 2 : 0],
+    address: d.address[lang === 'pt' ? 1 : lang === 'es' ? 2 : 0],
+    contract: d.contract[lang === 'pt' ? 1 : lang === 'es' ? 2 : 0],
+  };
+}
 ---
 
 <BaseLayout lang={lang} currentPath={currentPath} title={copy.title}>
@@ -90,10 +105,10 @@ const termsHref = pathForLang('/legal/terms', lang);
       <!-- Step 4 -->
       <section data-panel="4" hidden>
         <h2 class="signup__h2">{copy.step4Title}</h2>
-        <FileDrop id="doc-company" name="companyDoc" label={copy.documents.company} hint={copy.documents.companyHint} required errorId="doc-company-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
+        <FileDrop id="doc-company" name="companyDoc" role="company" label={copy.documents.company} hint={copy.documents.companyHint} required errorId="doc-company-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
         <div data-owner-docs></div>
-        <FileDrop id="doc-address" name="addressDoc" label={copy.documents.address} hint={copy.documents.addressOptional} errorId="doc-address-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
-        <FileDrop id="doc-contract" name="contractDoc" label={copy.documents.contract} hint={copy.documents.contractOptional} errorId="doc-contract-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
+        <FileDrop id="doc-address" name="addressDoc" role="address" label={copy.documents.address} hint={copy.documents.addressOptional} errorId="doc-address-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
+        <FileDrop id="doc-contract" name="contractDoc" role="contract" label={copy.documents.contract} hint={copy.documents.contractOptional} errorId="doc-contract-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
 
         <fieldset class="signup__declare">
           <legend class="signup__declare-title">{copy.declaration.title}</legend>
@@ -155,6 +170,7 @@ const termsHref = pathForLang('/legal/terms', lang);
     filePrompt: copy.fileDrop.prompt,
     fileTypeError: copy.fileDrop.typeError,
     fileSizeError: copy.fileDrop.sizeError,
+    docLabels,
     declaration: copy.declaration,
     saving: copy.saving,
     uploading: copy.uploading,
@@ -252,6 +268,29 @@ const termsHref = pathForLang('/legal/terms', lang);
     });
     bindMasks(taxBlock);
     bindLookup();
+    relabelDocs(primary);
+  }
+
+  /* The documents carry the local name of the user's first country: Contrato
+     Social in Brazil, Ficha RUC in Peru, and so on. */
+  function relabelDocs(primary: string | undefined) {
+    const labels = primary ? t.docLabels?.[primary] : null;
+    form.querySelectorAll<HTMLElement>('[data-doc-role]').forEach((drop) => {
+      const role = drop.dataset.docRole || '';
+      const nameEl = drop.querySelector<HTMLElement>('[data-doc-label]');
+      const hintEls = drop.querySelectorAll<HTMLElement>('[data-doc-hint]');
+      if (drop.dataset.docType?.startsWith('ownerDoc')) {
+        const idx = drop.dataset.docType.slice('ownerDoc_'.length);
+        if (nameEl) nameEl.textContent = `${labels?.owner ?? t.ownerDocFile} · ${idx}`;
+        return;
+      }
+      if (nameEl && labels?.[role as 'company' | 'address' | 'contract']) {
+        nameEl.textContent = labels[role as 'company' | 'address' | 'contract'];
+      }
+      if (role === 'company' && labels?.companyHint) {
+        hintEls.forEach((el) => (el.textContent = labels.companyHint));
+      }
+    });
   }
 
   /* When the tax ID is valid, ask the registry and fill what it returns. */
@@ -368,9 +407,9 @@ const termsHref = pathForLang('/legal/terms', lang);
   /** One identification document per owner, mirroring the owners list. */
   function ownerDocMarkup(idx: number): string {
     return `
-      <div class="fd" data-file-drop data-doc-type="ownerDoc_${idx}" data-msg-type="${esc(t.fileTypeError)}" data-msg-size="${esc(t.fileSizeError)}">
+      <div class="fd" data-file-drop data-doc-type="ownerDoc_${idx}" data-doc-role="owner" data-msg-type="${esc(t.fileTypeError)}" data-msg-size="${esc(t.fileSizeError)}">
         <span class="fd__label">
-          <span class="fd__name">${esc(t.ownerDocFile)} · ${idx}</span>
+          <span class="fd__name" data-doc-label>${esc(t.ownerDocFile)} · ${idx}</span>
           <span class="fd__req" aria-hidden="true">*</span>
         </span>
         <label class="fd__zone">
@@ -398,6 +437,7 @@ const termsHref = pathForLang('/legal/terms', lang);
       else ownerDocsWrap.insertAdjacentHTML('beforeend', ownerDocMarkup(Number(idx)));
     }
     ownerDocsWrap.querySelectorAll<HTMLElement>('[data-file-drop]').forEach((el) => initFileDrop?.(el));
+    relabelDocs(selectedCountries()[0]);
   }
 
   /* Masks + validation */

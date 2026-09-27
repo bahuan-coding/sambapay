@@ -11,6 +11,8 @@ interface Props {
   prompt?: string;
   typeError?: string;
   sizeError?: string;
+  /** Which document role this is, so the client can relabel it per country. */
+  role?: string;
 }
 
 const {
@@ -19,14 +21,16 @@ const {
   prompt = 'Choose a file or drop it here',
   typeError = 'Use a PDF, JPG or PNG.',
   sizeError = 'The file is over 10 MB.',
+  role,
 } = Astro.props;
 ---
 
-<div class="fd" data-file-drop data-doc-type={name} data-msg-type={typeError} data-msg-size={sizeError}>
+<div class="fd" data-file-drop data-doc-type={name} data-doc-role={role} data-msg-type={typeError} data-msg-size={sizeError}>
   <span class="fd__label">
-    <span class="fd__name">{label}</span>
-    {required ? <span class="fd__req" aria-hidden="true">*</span> : <span class="fd__opt">{hint ?? ''}</span>}
+    <span class="fd__name" data-doc-label>{label}</span>
+    {required ? <span class="fd__req" aria-hidden="true">*</span> : <span class="fd__opt" data-doc-hint>{hint ?? ''}</span>}
   </span>
+  {required && hint ? <p class="fd__hint" data-doc-hint>{hint}</p> : null}
   <label class="fd__zone" for={id}>
     <input class="fd__input" id={id} name={name} type="file" accept={accept} data-file-input />
     <span class="fd__icon" aria-hidden="true">
@@ -58,6 +62,13 @@ const {
 
   .fd__opt {
     font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  .fd__hint {
+    margin: 0 0 0.4rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
     color: var(--muted);
   }
 

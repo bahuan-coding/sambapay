@@ -27,6 +27,22 @@ export interface OwnerDoc {
   validate?: (value: string) => boolean;
 }
 
+/** A label written in EN, PT and ES, in that order. */
+export type LabelTriple = [string, string, string];
+
+/**
+ * The documents a market actually asks for, in the local term. A marketplace
+ * that says "Contrato Social" in Brazil and "Company registration document"
+ * in Brazil is wrong; this is where the local name lives.
+ */
+export interface DocLabels {
+  company: LabelTriple;
+  companyHint: LabelTriple;
+  owner: LabelTriple;
+  address: LabelTriple;
+  contract: LabelTriple;
+}
+
 export interface IdentityConfig {
   kind: IdentityKind;
   /** The company tax identifier. */
@@ -45,6 +61,8 @@ export interface IdentityConfig {
   owner: OwnerDoc;
   /** Brazil alone lists owners by participation. */
   ownersByShare: boolean;
+  /** The company documents in the local term, per market. */
+  docs?: DocLabels;
 }
 
 /** Robust URL normalisation, in the shape the house accepts. */
@@ -320,6 +338,13 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
     extras: [],
     owner: { name: 'CPF', mask: '000.000.000-00', validate: validCPF },
     ownersByShare: true,
+    docs: {
+      company: ['Contrato Social', 'Contrato Social', 'Contrato Social'],
+      companyHint: ['The articles of incorporation filed at the registry.', 'O contrato social registrado na junta comercial.', 'El contrato social registrado en la junta comercial.'],
+      owner: ['CPF holder, identification', 'Identificação do titular do CPF', 'Identificación del titular del CPF'],
+      address: ['Comprovante de residência', 'Comprovante de residência', 'Comprobante de domicilio'],
+      contract: ['Procuração', 'Procuração', 'Poder notarial'],
+    },
   },
   MX: {
     kind: 'MX',
@@ -345,6 +370,13 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
     ],
     owner: { name: 'CURP', mask: 'AAAA000000AAAAAA', validate: validCURP },
     ownersByShare: false,
+    docs: {
+      company: ['Acta Constitutiva', 'Acta Constitucional', 'Acta Constitutiva'],
+      companyHint: ['Filed with the Registro Público de Comercio.', 'Registrada no Registro Público de Comercio.', 'Registrada ante el Registro Público de Comercio.'],
+      owner: ['CURP holder, identification', 'Identificação do titular da CURP', 'Identificación del titular de la CURP'],
+      address: ['Comprobante de domicilio', 'Comprovante de endereço', 'Comprobante de domicilio'],
+      contract: ['Poder notarial', 'Procuração', 'Poder notarial'],
+    },
   },
   CO: {
     kind: 'CO',
@@ -374,6 +406,13 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
     ],
     owner: { name: 'Cédula', mask: '00000000' },
     ownersByShare: false,
+    docs: {
+      company: ['Certificate of incorporation', 'Certificado de existência e representação legal', 'Certificado de existencia y representación legal'],
+      companyHint: ['Issued by the Cámara de Comercio, no older than 30 days.', 'Emitido pela Câmara de Comércio, com no máximo 30 dias.', 'Emitido por la Cámara de Comercio, con máximo 30 días.'],
+      owner: ['Cédula holder, identification', 'Identificação do titular da cédula', 'Identificación del titular de la cédula'],
+      address: ['Comprobante de domicilio', 'Comprovante de endereço', 'Comprobante de domicilio'],
+      contract: ['Poder notarial', 'Procuração', 'Poder notarial'],
+    },
   },
   CL: {
     kind: 'CL',
@@ -397,6 +436,13 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
     ],
     owner: { name: 'RUT', mask: '00.000.000-0', validate: validRUT },
     ownersByShare: false,
+    docs: {
+      company: ['Escritura de constitución', 'Escritura de constituição', 'Escritura de constitución'],
+      companyHint: ['The deed filed at the Conservador de Bienes Raíces.', 'A escritura registrada no Conservador de Bienes Raíces.', 'La escritura inscrita en el Conservador de Bienes Raíces.'],
+      owner: ['RUT holder, identification', 'Identificação do titular do RUT', 'Identificación del titular del RUT'],
+      address: ['Comprobante de domicilio', 'Comprovante de endereço', 'Comprobante de domicilio'],
+      contract: ['Poder notarial', 'Procuração', 'Poder notarial'],
+    },
   },
   PE: {
     kind: 'PE',
@@ -415,6 +461,13 @@ export const identity: Record<IdentityKind, IdentityConfig> = {
     ],
     owner: { name: 'DNI', mask: '00000000' },
     ownersByShare: false,
+    docs: {
+      company: ['Ficha RUC', 'Ficha RUC', 'Ficha RUC'],
+      companyHint: ['The SUNAT registration sheet, from the RUC.', 'A ficha de registro da SUNAT, a partir do RUC.', 'La ficha de registro de la SUNAT, desde el RUC.'],
+      owner: ['DNI holder, identification', 'Identificação do titular do DNI', 'Identificación del titular del DNI'],
+      address: ['Comprobante de domicilio', 'Comprovante de endereço', 'Comprobante de domicilio'],
+      contract: ['Poder notarial', 'Procuração', 'Poder notarial'],
+    },
   },
   AR: {
     kind: 'AR',
@@ -488,6 +541,20 @@ export function identityFor(country: string): IdentityConfig {
   if (deep) return deep;
   const taxId = taxIdOnly[key];
   return taxId ? { ...identity.GENERAL, taxId } : identity.GENERAL;
+}
+
+/** The generic company documents, for markets with no local term on file. */
+const GENERIC_DOCS: DocLabels = {
+  company: ['Company registration document', 'Documento de registro da empresa', 'Documento de registro de la empresa'],
+  companyHint: ['Articles of incorporation or equivalent.', 'Contrato social ou equivalente.', 'Estatutos o equivalente.'],
+  owner: ['Owner identification', 'Identificação do sócio', 'Identificación del socio'],
+  address: ['Proof of address', 'Comprovante de endereço', 'Comprobante de domicilio'],
+  contract: ['Power of attorney', 'Procuração', 'Poder notarial'],
+};
+
+/** The company documents in the local term: specific where written, generic otherwise. */
+export function docLabelsFor(country: string): DocLabels {
+  return identityFor(country).docs ?? GENERIC_DOCS;
 }
 
 /** The six markets with a deep experience. */
