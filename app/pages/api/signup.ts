@@ -24,6 +24,23 @@ const ownerSchema = z.object({
   isPep: z.boolean().optional().default(false),
 });
 
+/** The registry profile the client fetched at lookup time, if any. Only the
+ *  fields that map to a column are kept; everything else is stripped. */
+const lookupSchema = z.object({
+  tradeName: z.string().trim().max(300).optional(),
+  registrationNumber: z.string().trim().max(60).optional(),
+  registrationDate: z.string().trim().max(40).optional(),
+  legalStructure: z.string().trim().max(200).optional(),
+  addressStreet: z.string().trim().max(300).optional(),
+  addressNumber: z.string().trim().max(40).optional(),
+  addressComplement: z.string().trim().max(200).optional(),
+  addressNeighborhood: z.string().trim().max(200).optional(),
+  addressCity: z.string().trim().max(200).optional(),
+  addressState: z.string().trim().max(200).optional(),
+  addressZip: z.string().trim().max(40).optional(),
+  source: z.string().trim().max(60).optional().default(''),
+});
+
 const declarationSchema = z.object({
   accurate: z.boolean(),
   authorized: z.boolean(),
@@ -45,6 +62,7 @@ const bodySchema = z.object({
   website: z.preprocess(normalizeWebsite, z.union([z.literal(''), z.string().url()])),
   industry: z.string().trim().max(200).optional().default(''),
   extras: z.record(z.string(), z.string()).optional().default({}),
+  lookup: lookupSchema.optional(),
   owners: z.array(ownerSchema).min(1).max(20),
   declaration: declarationSchema.optional(),
   locale: z.enum(['en', 'pt', 'es']).optional(),
@@ -121,11 +139,23 @@ export const POST: APIRoute = async ({ request }) => {
     else reserved[key] = value;
   }
 
+  const lookup = data.lookup;
   await db.insert(merchantCompany).values({
     merchantId: merchant.id,
     legalName: data.companyName,
+    tradeName: lookup?.tradeName ?? null,
     taxId: data.documentNumber,
     taxIdType: identity.taxId.name,
+    registrationNumber: lookup?.registrationNumber ?? null,
+    registrationDate: lookup?.registrationDate ?? null,
+    legalStructure: lookup?.legalStructure ?? null,
+    addressStreet: lookup?.addressStreet ?? null,
+    addressNumber: lookup?.addressNumber ?? null,
+    addressComplement: lookup?.addressComplement ?? null,
+    addressNeighborhood: lookup?.addressNeighborhood ?? null,
+    addressCity: lookup?.addressCity ?? null,
+    addressState: lookup?.addressState ?? null,
+    addressZip: lookup?.addressZip ?? null,
     industry: data.industry || null,
     addressCountry: country,
     taxRegime: known.taxRegime ?? null,
@@ -136,6 +166,18 @@ export const POST: APIRoute = async ({ request }) => {
     camaraComercio: known.camaraComercio ?? null,
     countryDetails: Object.keys(reserved).length > 0 ? reserved : null,
   });
+
+  if (lookup) {
+    const { source, ...fields } = lookup;
+    await db.insert(onboardingEvents).values({
+      merchantId: merchant.id,
+      eventType: 'company.enriched',
+      payload: {
+        source: source || '',
+        fields: Object.entries(fields).filter(([, v]) => v).map(([k]) => k),
+      },
+    });
+  }
 
   await db.insert(merchantOwners).values(
     data.owners.map((o) => ({
