@@ -41,10 +41,10 @@ const termsHref = pathForLang('/legal/terms', lang);
         <label class="signup__check" for="su-terms">
           <input id="su-terms" name="terms" type="checkbox" required />
           <span>
-            {lang === 'pt' ? 'Concordo com os ' : lang === 'es' ? 'Acepto los ' : 'I agree to the '}
-            <a href={termsHref} target="_blank" rel="noopener">{lang === 'pt' ? 'Termos' : lang === 'es' ? 'Términos' : 'Terms'}</a>
-            {lang === 'pt' ? ' e a ' : lang === 'es' ? ' y la ' : ' and the '}
-            <a href={privacyHref} target="_blank" rel="noopener">{lang === 'pt' ? 'Privacidade' : lang === 'es' ? 'Privacidad' : 'Privacy'}</a>.
+            {copy.terms.agree}
+            <a href={termsHref} target="_blank" rel="noopener">{copy.terms.terms}</a>
+            {copy.terms.and}
+            <a href={privacyHref} target="_blank" rel="noopener">{copy.terms.privacy}</a>.
           </span>
         </label>
         <button class="signup__btn" type="button" data-next>{copy.next}</button>
@@ -90,10 +90,10 @@ const termsHref = pathForLang('/legal/terms', lang);
       <!-- Step 4 -->
       <section data-panel="4" hidden>
         <h2 class="signup__h2">{copy.step4Title}</h2>
-        <FileDrop id="doc-company" name="companyDoc" label={copy.documents.company} hint={copy.documents.companyHint} required errorId="doc-company-err" />
+        <FileDrop id="doc-company" name="companyDoc" label={copy.documents.company} hint={copy.documents.companyHint} required errorId="doc-company-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
         <div data-owner-docs></div>
-        <FileDrop id="doc-address" name="addressDoc" label={copy.documents.address} hint={copy.documents.addressOptional} errorId="doc-address-err" />
-        <FileDrop id="doc-contract" name="contractDoc" label={copy.documents.contract} hint={copy.documents.contractOptional} errorId="doc-contract-err" />
+        <FileDrop id="doc-address" name="addressDoc" label={copy.documents.address} hint={copy.documents.addressOptional} errorId="doc-address-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
+        <FileDrop id="doc-contract" name="contractDoc" label={copy.documents.contract} hint={copy.documents.contractOptional} errorId="doc-contract-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
 
         <fieldset class="signup__declare">
           <legend class="signup__declare-title">{copy.declaration.title}</legend>
@@ -152,7 +152,9 @@ const termsHref = pathForLang('/legal/terms', lang);
     lookingUp: copy.lookup.loading,
     lookupNone: copy.lookup.none,
     lookupFound: copy.lookup.found,
-    autofillHint: copy.fields.autofillHint,
+    filePrompt: copy.fileDrop.prompt,
+    fileTypeError: copy.fileDrop.typeError,
+    fileSizeError: copy.fileDrop.sizeError,
     declaration: copy.declaration,
     saving: copy.saving,
     uploading: copy.uploading,
@@ -366,7 +368,7 @@ const termsHref = pathForLang('/legal/terms', lang);
   /** One identification document per owner, mirroring the owners list. */
   function ownerDocMarkup(idx: number): string {
     return `
-      <div class="fd" data-file-drop data-doc-type="ownerDoc_${idx}">
+      <div class="fd" data-file-drop data-doc-type="ownerDoc_${idx}" data-msg-type="${esc(t.fileTypeError)}" data-msg-size="${esc(t.fileSizeError)}">
         <span class="fd__label">
           <span class="fd__name">${esc(t.ownerDocFile)} · ${idx}</span>
           <span class="fd__req" aria-hidden="true">*</span>
@@ -376,7 +378,7 @@ const termsHref = pathForLang('/legal/terms', lang);
           <span class="fd__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>
           </span>
-          <span class="fd__text" data-file-text>${esc(t.ownerDocFileHint)}</span>
+          <span class="fd__text" data-file-text>${esc(t.filePrompt)}</span>
           <span class="fd__meta" data-file-meta></span>
         </label>
       </div>`;

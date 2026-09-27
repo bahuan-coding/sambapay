@@ -7,15 +7,22 @@ interface Props {
   required?: boolean;
   errorId?: string;
   accept?: string;
+  /** Prompt and messages, so no English is hardcoded in the client. */
+  prompt?: string;
+  typeError?: string;
+  sizeError?: string;
 }
 
 const {
   id, name, label, hint, required = false, errorId,
   accept = 'application/pdf,image/jpeg,image/png',
+  prompt = 'Choose a file or drop it here',
+  typeError = 'Use a PDF, JPG or PNG.',
+  sizeError = 'The file is over 10 MB.',
 } = Astro.props;
 ---
 
-<div class="fd" data-file-drop data-doc-type={name}>
+<div class="fd" data-file-drop data-doc-type={name} data-msg-type={typeError} data-msg-size={sizeError}>
   <span class="fd__label">
     <span class="fd__name">{label}</span>
     {required ? <span class="fd__req" aria-hidden="true">*</span> : <span class="fd__opt">{hint ?? ''}</span>}
@@ -25,7 +32,7 @@ const {
     <span class="fd__icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>
     </span>
-    <span class="fd__text" data-file-text>Choose a file or drop it here</span>
+    <span class="fd__text" data-file-text>{prompt}</span>
     <span class="fd__meta" data-file-meta></span>
   </label>
   {errorId && <p class="fd__error" id={errorId} hidden role="alert" />}
@@ -142,6 +149,8 @@ const {
     const err = drop.querySelector<HTMLElement>('.fd__error');
     if (!input || !text || !meta) return;
     drop.dataset.fileBound = 'true';
+    const msgType = drop.dataset.msgType ?? 'Use a PDF, JPG or PNG.';
+    const msgSize = drop.dataset.msgSize ?? 'The file is over 10 MB.';
 
     const fail = (msg: string) => {
       drop.classList.add('has-error');
@@ -151,8 +160,8 @@ const {
 
     const check = (file: File | undefined) => {
       if (!file) return false;
-      if (!OK.includes(file.type)) { fail('Use a PDF, JPG or PNG.'); return false; }
-      if (file.size > MAX) { fail('The file is over 10 MB.'); return false; }
+      if (!OK.includes(file.type)) { fail(msgType); return false; }
+      if (file.size > MAX) { fail(msgSize); return false; }
       return true;
     };
 
