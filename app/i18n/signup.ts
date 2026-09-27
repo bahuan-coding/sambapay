@@ -145,10 +145,13 @@ const pt: Copy = {
   fields: {
     ...en.fields,
     name: 'Nome completo',
+    namePlaceholder: 'Maria Silva',
     email: 'E-mail corporativo',
     phone: 'Telefone',
+    phonePlaceholder: '+55 11 90000 0000',
     merchantType: 'Tipo de negócio',
     companyName: 'Razão social',
+    companyNamePlaceholder: 'Acme Ltda.',
     countries: 'Países onde você opera',
     countriesHint: 'Selecione todos os que se aplicam.',
     countryFirst: 'Onde a empresa vai operar?',
@@ -208,7 +211,12 @@ const pt: Copy = {
     countries: 'Selecione ao menos um país.',
     taxId: 'Confira o documento fiscal do país selecionado.',
     ownerDoc: 'Confira o documento do sócio.',
+    ownerRequired: 'Adicione ao menos um sócio ou representante legal.',
+    email: 'Informe um e-mail válido.',
+    url: 'Informe um endereço de site válido.',
     file: 'Anexe um arquivo válido.',
+    upload: 'Alguns documentos não subiram. Mantenha-os anexados e tente de novo.',
+    summary: 'Alguns campos precisam da sua atenção.',
   },
 };
 
@@ -236,10 +244,13 @@ const es: Copy = {
   fields: {
     ...en.fields,
     name: 'Nombre completo',
+    namePlaceholder: 'Ana Gómez',
     email: 'Correo corporativo',
     phone: 'Teléfono',
+    phonePlaceholder: '+57 300 000 0000',
     merchantType: 'Tipo de negocio',
     companyName: 'Razón social',
+    companyNamePlaceholder: 'Acme S.A.S.',
     countries: 'Países donde operas',
     countriesHint: 'Selecciona todos los que apliquen.',
     countryFirst: '¿Dónde operará la empresa?',
@@ -299,7 +310,12 @@ const es: Copy = {
     countries: 'Selecciona al menos un país.',
     taxId: 'Revisa el documento fiscal del país seleccionado.',
     ownerDoc: 'Revisa el documento del socio.',
+    ownerRequired: 'Agrega al menos un socio o representante legal.',
+    email: 'Ingresa un correo válido.',
+    url: 'Ingresa una dirección de sitio válida.',
     file: 'Adjunta un archivo válido.',
+    upload: 'Algunos documentos no se subieron. Déjalos adjuntos e inténtalo de nuevo.',
+    summary: 'Algunos campos necesitan tu atención.',
   },
 };
 
