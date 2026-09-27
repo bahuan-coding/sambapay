@@ -16,6 +16,14 @@ const enPath = alternatePath(currentPath, 'en');
 const ptPath = alternatePath(currentPath, 'pt');
 const esPath = alternatePath(currentPath, 'es');
 const others = (['en', 'pt', 'es'] as const).filter((item) => item !== lang);
+
+// One card per language, so a link shared in a chat opens in that language.
+const ogImage = new URL(`/og/og-${lang}.png`, site);
+const ogAlt = {
+  en: 'SambaPay — payments across South and Central America, engineered.',
+  pt: 'SambaPay — pagamentos na América do Sul e Central, engenharia de verdade.',
+  es: 'SambaPay — pagos en América del Sur y Central, pura ingeniería.',
+}[lang];
 ---
 
 <title>{title}</title>
@@ -30,5 +38,16 @@ const others = (['en', 'pt', 'es'] as const).filter((item) => item !== lang);
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:secure_url" content={ogImage} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={ogAlt} />
 <meta property="og:locale" content={ogLocale(lang)} />
 {others.map((item) => <meta property="og:locale:alternate" content={ogLocale(item)} />)}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={ogAlt} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
