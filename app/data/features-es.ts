@@ -2,7 +2,7 @@ import type { FeatureColumn, FeatureGroup } from './features';
 
 export const esCopy = {
   seoTitle: 'Producto',
-  lede: 'Precios locales, local signup y direct connection. Varios adquirentes lado a lado. La tienda digitalizada incluye la terminal. El dinero recaudado localmente vuelve en el menor número de pasos.',
+  lede: 'Un servicio, cuatro movimientos: el volumen se cobra en los rieles locales, se conecta a la adquirencia local, se liquida cuando el libro cierra. La tienda que digitalizamos es el otro nicho.',
   refusalTitle: 'Lo que no hacemos',
   refusal: 'No tomamos los merchants de nuestros clientes. No disputamos sus cuentas. No hacemos fulfilment ni envío. Solo los rieles, la tienda digitalizada y la liquidación que lleva el dinero afuera. Dos nichos, sin conflicto de interés.',
   close: 'El comprador paga, el riel autoriza y captura en el mercado, los fondos liquidan en la ventana del adquirente y el payout sale cuando la conciliación cierra el libro.',
@@ -53,7 +53,7 @@ export const esCopy = {
         { methodLogo: 'elo', title: 'Elo', body: 'La marca brasileña.' },
         { methodLogo: 'hipercard', title: 'Hipercard', body: 'La marca brasileña.' },
         {
-          icon: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
+          methodLogo: 'threeds',
           title: '3DS',
           body: 'Reduzca el chargeback. El banco del comprador confirma que es él. Sin ese desafío, el cobro es 2D.',
         },

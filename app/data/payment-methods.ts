@@ -40,6 +40,7 @@ export const methods = {
   webpay: { logo: 'card-webpay', category: 'card', label: ['Webpay', 'Webpay', 'Webpay'] },
   magna: { logo: 'card-magna', category: 'card', label: ['Magna', 'Magna', 'Magna'] },
   // Instant payments
+  threeds: { logo: 'threeds', svg: true, category: 'card', label: ['3DS', '3DS', '3DS'] },
   pix: { logo: 'pix', category: 'instant', label: ['Pix', 'Pix', 'Pix'] },
   spei: { logo: 'spei', category: 'instant', label: ['SPEI', 'SPEI', 'SPEI'] },
   pse: { logo: 'bank-pse', svg: true, category: 'instant', label: ['PSE', 'PSE', 'PSE'] },
@@ -48,7 +49,7 @@ export const methods = {
   oxxo: { logo: 'oxxo', category: 'cash', label: ['OXXO', 'OXXO', 'OXXO'] },
   pagofacil: { logo: 'pago-facil', category: 'cash', label: ['Pago Fácil', 'Pago Fácil', 'Pago Fácil'] },
   pago24: { logo: 'cash-pago24', category: 'cash', label: ['Pago24', 'Pago24', 'Pago24'] },
-  pagoefectivo: { logo: 'cash-pagoefectivo', category: 'cash', label: ['PagoEfectivo', 'PagoEfectivo', 'PagoEfectivo'] },
+  pagoefectivo: { logo: 'cash-pagoefectivo', svg: true, category: 'cash', label: ['PagoEfectivo', 'PagoEfectivo', 'PagoEfectivo'] },
   tambo: { logo: 'cash-tambo', category: 'cash', label: ['Tambo', 'Tambo', 'Tambo'] },
   kasnet: { logo: 'cash-kasnet', category: 'cash', label: ['KasNet', 'KasNet', 'KasNet'] },
   pagaya: { logo: 'cash-pagaya', category: 'cash', label: ['PagoYa', 'PagoYa', 'PagoYa'] },

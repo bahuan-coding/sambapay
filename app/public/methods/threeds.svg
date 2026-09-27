@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" aria-hidden="true">
+  <rect x="30" y="26" width="100" height="108" rx="10" fill="none" stroke="#1C3D4A" stroke-width="5"/>
+  <rect x="30" y="48" width="100" height="12" fill="#1351B4"/>
+  <path d="M72 92 l10 10 22 -26" fill="none" stroke="#168821" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="80" y="140" text-anchor="middle" font-family="Raleway, sans-serif" font-size="20" font-weight="700" fill="#1C3D4A" letter-spacing="1">3DS</text>
+</svg>

@@ -64,7 +64,7 @@ export interface FeatureGroup {
 
 const en = {
   seoTitle: 'Product',
-  lede: 'Local prices, a local signup and a direct connection. Several acquirers sit side by side. The digitised store includes the terminal. Money collected locally comes back in as few steps as possible.',
+  lede: 'One service, four moves: the volume is accepted on the local rails, connected to local acquiring, settled once the book ties. The store we digitise is the other niche.',
   refusalTitle: 'What we do not do',
   refusal: "We do not take our clients' merchants. We do not dispute their accounts. We do not do fulfilment or shipping. Only the rails, the digitised store and the settlement that carries money out. Two niches, no conflict of interest.",
   close: 'The shopper pays, the rail authorises and captures in the market, the funds settle on the acquirer\u2019s window, and the payout leaves once reconciliation closes the book.',
@@ -115,7 +115,7 @@ const en = {
         { methodLogo: 'elo', title: 'Elo', body: 'The Brazilian card brand.' },
         { methodLogo: 'hipercard', title: 'Hipercard', body: 'The Brazilian card brand.' },
         {
-          icon: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
+          methodLogo: 'threeds',
           title: '3DS',
           body: "Reduce your chargebacks. The shopper's bank confirms it is the shopper. Without that challenge, the charge is 2D.",
         },
@@ -179,7 +179,7 @@ const en = {
 
 const pt = {
   seoTitle: 'Produto',
-  lede: 'Preços locais, local signup e direct connection. Vários adquirentes lado a lado. A loja digitalizada inclui a maquininha. O dinheiro arrecadado localmente volta no menor número de passos.',
+  lede: 'Um serviço, quatro movimentos: o volume é capturado nos trilhos locais, conectado à adquirência local, liquidado quando o livro fecha. A loja que digitalizamos é o outro nicho.',
   refusalTitle: 'O que não fazemos',
   refusal: 'Não pegamos os merchants dos nossos clientes. Não disputamos as contas deles. Não fazemos fulfilment nem envio. Só os trilhos, a loja digitalizada e a liquidação que leva o dinheiro embora. Dois nichos, sem conflito de interesse.',
   close: 'O cliente paga, o trilho autoriza e captura no mercado, os fundos liquidam na janela do adquirente e o payout sai quando a conciliação fecha o livro.',
@@ -230,7 +230,7 @@ const pt = {
         { methodLogo: 'elo', title: 'Elo', body: 'A bandeira brasileira.' },
         { methodLogo: 'hipercard', title: 'Hipercard', body: 'A bandeira brasileira.' },
         {
-          icon: ['visa_secure', 'mastercard_id_check', 'amex_safekey'],
+          methodLogo: 'threeds',
           title: '3DS',
           body: 'Reduza o chargeback. O banco do comprador confirma que é ele. Sem esse desafio, a cobrança é 2D.',
         },
