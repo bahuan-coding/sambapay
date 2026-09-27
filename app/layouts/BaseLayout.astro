@@ -13,7 +13,13 @@ interface Props {
   description?: string;
 }
 
-const { lang, currentPath, title = 'SambaPay', description = 'SambaPay' } = Astro.props;
+const { lang, currentPath, title = 'SambaPay', description } = Astro.props;
+const share = {
+  en: 'Local prices, a local signup and a direct connection across South and Central America.',
+  pt: 'Preços locais, cadastro local e conexão direta na América do Sul e Central.',
+  es: 'Precios locales, registro local y conexión directa en América del Sur y Central.',
+}[lang];
+const metaDescription = description ?? share;
 const messages = t(lang);
 ---
 
@@ -22,7 +28,7 @@ const messages = t(lang);
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <Seo title={title} description={description} lang={lang} currentPath={currentPath} />
+    <Seo title={title} description={metaDescription} lang={lang} currentPath={currentPath} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>

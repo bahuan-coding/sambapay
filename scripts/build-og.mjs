@@ -77,6 +77,9 @@ function svg({ lines }) {
 </svg>`;
 }
 
+console.error('Retired. The share cards are app/public/og/og-en.jpg, og-pt.jpg and og-es.jpg.');
+process.exit(1);
+
 mkdirSync(outDir, { recursive: true });
 
 for (const card of cards) {
