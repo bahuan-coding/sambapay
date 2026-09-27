@@ -24,6 +24,18 @@ const en = {
   noDocuments: 'No documents received yet.',
   noOwners: 'No owners listed yet.',
   documentReceived: 'Received',
+
+  roles: {
+    director: 'Director / legal representative',
+    ubo: 'Beneficial owner (25% or more)',
+  } as Record<string, string>,
+  docTypes: {
+    companyDoc: 'Company registration',
+    ownerDoc: 'Owner identification',
+    addressDoc: 'Proof of address',
+    contractDoc: 'Power of attorney',
+    ownerDocN: 'Owner identification',
+  } as Record<string, string>,
 };
 
 type Copy = typeof en;
@@ -51,6 +63,17 @@ const pt: Copy = {
   noDocuments: 'Nenhum documento recebido ainda.',
   noOwners: 'Nenhum sócio listado ainda.',
   documentReceived: 'Recebido',
+  roles: {
+    director: 'Diretor / representante legal',
+    ubo: 'Beneficiário final (25% ou mais)',
+  },
+  docTypes: {
+    companyDoc: 'Registro da empresa',
+    ownerDoc: 'Identificação do sócio',
+    addressDoc: 'Comprovante de endereço',
+    contractDoc: 'Procuração',
+    ownerDocN: 'Identificação do sócio',
+  },
 };
 
 const es: Copy = {
@@ -76,6 +99,17 @@ const es: Copy = {
   noDocuments: 'Aún no se recibió ningún documento.',
   noOwners: 'Aún no hay socios listados.',
   documentReceived: 'Recibido',
+  roles: {
+    director: 'Director / representante legal',
+    ubo: 'Beneficiario final (25% o más)',
+  },
+  docTypes: {
+    companyDoc: 'Registro de la empresa',
+    ownerDoc: 'Identificación del socio',
+    addressDoc: 'Comprobante de domicilio',
+    contractDoc: 'Poder notarial',
+    ownerDocN: 'Identificación del socio',
+  },
 };
 
 const accountCatalog = { en, pt, es };

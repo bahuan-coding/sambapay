@@ -15,6 +15,13 @@ const { lang, currentPath, merchant } = Astro.props;
 const copy = accountCopy(lang);
 const overview = await getAccountOverview(merchant);
 const status = copy.statuses[overview.status] ?? copy.statuses.commercial_fit;
+
+/* Technical values from the database must never reach the screen raw. */
+const roleLabel = (role: string | null) => (role ? copy.roles[role] ?? role : '');
+const docTypeLabel = (docType: string) =>
+  /^ownerDoc_\d+$/.test(docType)
+    ? copy.docTypes.ownerDocN
+    : copy.docTypes[docType] ?? docType;
 ---
 
 <BaseLayout lang={lang} currentPath={currentPath} title={copy.title}>
@@ -59,7 +66,7 @@ const status = copy.statuses[overview.status] ?? copy.statuses.commercial_fit;
             <p class="account__count">{overview.ownersWithDoc}/{overview.ownerCount} {copy.ownersSuffix}</p>
             <ul class="account__facts">
               {overview.owners.map((o) => (
-                <li>{o.fullName}{o.role ? ` · ${o.role}` : ''}</li>
+                <li>{o.fullName}{o.role ? ` · ${roleLabel(o.role)}` : ''}</li>
               ))}
             </ul>
           </>
@@ -74,7 +81,7 @@ const status = copy.statuses[overview.status] ?? copy.statuses.commercial_fit;
           <ul class="account__docs">
             {overview.documents.map((d) => (
               <li class="account__doc">
-                <span class="account__doc-type">{d.docType}</span>
+                <span class="account__doc-type">{docTypeLabel(d.docType)}</span>
                 <span class="account__doc-name">{d.fileName}</span>
                 <span class="account__doc-status">{copy.documentReceived}</span>
               </li>
