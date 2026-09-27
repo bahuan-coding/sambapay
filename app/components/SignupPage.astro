@@ -105,10 +105,10 @@ for (const c of americas) {
       <!-- Step 4 -->
       <section data-panel="4" hidden>
         <h2 class="signup__h2">{copy.step4Title}</h2>
-        <FileDrop id="doc-company" name="companyDoc" role="company" label={copy.documents.company} hint={copy.documents.companyHint} required errorId="doc-company-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
+        <FileDrop id="doc-company" name="companyDoc" role="company" label={copy.documents.company} hint={copy.documents.companyHint} required errorId="doc-company-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} camera={copy.fileDrop.camera} remove={copy.fileDrop.remove} />
         <div data-owner-docs></div>
-        <FileDrop id="doc-address" name="addressDoc" role="address" label={copy.documents.address} hint={copy.documents.addressOptional} errorId="doc-address-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
-        <FileDrop id="doc-contract" name="contractDoc" role="contract" label={copy.documents.contract} hint={copy.documents.contractOptional} errorId="doc-contract-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} />
+        <FileDrop id="doc-address" name="addressDoc" role="address" label={copy.documents.address} hint={copy.documents.addressOptional} errorId="doc-address-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} camera={copy.fileDrop.camera} remove={copy.fileDrop.remove} />
+        <FileDrop id="doc-contract" name="contractDoc" role="contract" label={copy.documents.contract} hint={copy.documents.contractOptional} errorId="doc-contract-err" prompt={copy.fileDrop.prompt} typeError={copy.fileDrop.typeError} sizeError={copy.fileDrop.sizeError} camera={copy.fileDrop.camera} remove={copy.fileDrop.remove} />
 
         <fieldset class="signup__declare">
           <legend class="signup__declare-title">{copy.declaration.title}</legend>
@@ -170,6 +170,8 @@ for (const c of americas) {
     filePrompt: copy.fileDrop.prompt,
     fileTypeError: copy.fileDrop.typeError,
     fileSizeError: copy.fileDrop.sizeError,
+    fileCamera: copy.fileDrop.camera,
+    fileRemove: copy.fileDrop.remove,
     docLabels,
     declaration: copy.declaration,
     saving: copy.saving,
@@ -413,13 +415,21 @@ for (const c of americas) {
           <span class="fd__req" aria-hidden="true">*</span>
         </span>
         <label class="fd__zone">
-          <input class="fd__input" name="ownerDoc_${idx}" type="file" accept="application/pdf,image/jpeg,image/png" data-file-input />
+          <input class="fd__input" id="ownerDoc_${idx}" name="ownerDoc_${idx}" type="file" accept="application/pdf,image/jpeg,image/png" data-file-input />
           <span class="fd__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>
           </span>
+          <span class="fd__thumb" data-file-thumb hidden aria-hidden="true"></span>
           <span class="fd__text" data-file-text>${esc(t.filePrompt)}</span>
           <span class="fd__meta" data-file-meta></span>
         </label>
+        <div class="fd__actions" data-file-actions hidden>
+          <button type="button" class="fd__camera" data-file-camera hidden>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg>
+            <span>${esc(t.fileCamera)}</span>
+          </button>
+          <button type="button" class="fd__clear" data-file-clear>${esc(t.fileRemove)}</button>
+        </div>
       </div>`;
   }
 

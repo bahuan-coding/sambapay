@@ -13,6 +13,10 @@ interface Props {
   sizeError?: string;
   /** Which document role this is, so the client can relabel it per country. */
   role?: string;
+  /** The camera button label; the button only shows on a device with a camera. */
+  camera?: string;
+  /** The remove label. */
+  remove?: string;
 }
 
 const {
@@ -22,6 +26,8 @@ const {
   typeError = 'Use a PDF, JPG or PNG.',
   sizeError = 'The file is over 10 MB.',
   role,
+  camera = 'Take a photo',
+  remove = 'Remove',
 } = Astro.props;
 ---
 
@@ -36,9 +42,17 @@ const {
     <span class="fd__icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>
     </span>
+    <span class="fd__thumb" data-file-thumb hidden aria-hidden="true"></span>
     <span class="fd__text" data-file-text>{prompt}</span>
     <span class="fd__meta" data-file-meta></span>
   </label>
+  <div class="fd__actions" data-file-actions hidden>
+    <button type="button" class="fd__camera" data-file-camera hidden data-label={camera}>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg>
+      <span>{camera}</span>
+    </button>
+    <button type="button" class="fd__clear" data-file-clear>{remove}</button>
+  </div>
   {errorId && <p class="fd__error" id={errorId} hidden role="alert" />}
 </div>
 
@@ -131,12 +145,59 @@ const {
     white-space: nowrap;
   }
 
+  .fd__thumb {
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: none;
+    border-radius: var(--radius);
+    background-image: var(--thumb);
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--border);
+  }
+
   .fd__meta {
     margin-left: auto;
     font-size: 0.7rem;
     color: var(--muted);
     white-space: nowrap;
   }
+
+  .fd__actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .fd__actions[hidden] { display: none; }
+
+  .fd__camera,
+  .fd__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 38px;
+    padding: 0 0.85rem;
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+
+  .fd__camera {
+    border: 1px solid var(--blue);
+    background: rgba(19, 81, 180, 0.06);
+    color: var(--blue);
+  }
+
+  .fd__clear {
+    border: 1px solid var(--border);
+    background: var(--paper);
+    color: var(--muted);
+  }
+
+  .fd__camera[hidden] { display: none; }
 
   .fd__error {
     margin: 0.4rem 0 0;
@@ -157,9 +218,14 @@ const {
     const input = drop.querySelector<HTMLInputElement>('[data-file-input]');
     const text = drop.querySelector<HTMLElement>('[data-file-text]');
     const meta = drop.querySelector<HTMLElement>('[data-file-meta]');
+    const thumb = drop.querySelector<HTMLElement>('[data-file-thumb]');
+    const actions = drop.querySelector<HTMLElement>('[data-file-actions]');
+    const cameraBtn = drop.querySelector<HTMLButtonElement>('[data-file-camera]');
+    const clearBtn = drop.querySelector<HTMLButtonElement>('[data-file-clear]');
     const err = drop.querySelector<HTMLElement>('.fd__error');
     if (!input || !text || !meta) return;
     drop.dataset.fileBound = 'true';
+    const promptText = text.textContent ?? '';
     const msgType = drop.dataset.msgType ?? 'Use a PDF, JPG or PNG.';
     const msgSize = drop.dataset.msgSize ?? 'The file is over 10 MB.';
 
@@ -176,6 +242,10 @@ const {
       return true;
     };
 
+    const resetPreview = () => {
+      if (thumb) { thumb.hidden = true; thumb.style.removeProperty('--thumb'); }
+    };
+
     const show = (file: File) => {
       if (!check(file)) return;
       drop.classList.remove('has-error');
@@ -183,9 +253,50 @@ const {
       if (err) err.hidden = true;
       text.textContent = file.name;
       meta.textContent = `${Math.round(file.size / 1024)} KB`;
+      if (thumb) {
+        if (file.type.startsWith('image/')) {
+          const url = URL.createObjectURL(file);
+          thumb.style.setProperty('--thumb', `url("${url}")`);
+          thumb.hidden = false;
+        } else {
+          resetPreview();
+        }
+      }
+      if (actions) actions.hidden = false;
     };
 
+    // A phone can shoot the document; a desktop keeps its file picker.
+    // The camera input is created on the fly, with the facing camera set.
     input.addEventListener('change', () => show(input.files?.[0] as File));
+    if (cameraBtn && window.matchMedia('(pointer: coarse)').matches) {
+      cameraBtn.hidden = false;
+      cameraBtn.addEventListener('click', () => {
+        const cam = document.createElement('input');
+        cam.type = 'file';
+        cam.accept = input.accept;
+        cam.setAttribute('capture', 'environment');
+        cam.addEventListener('change', () => {
+          const file = cam.files?.[0];
+          if (!file) return;
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          input.files = dt.files;
+          show(file);
+        });
+        cam.click();
+      });
+    }
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        input.value = '';
+        resetPreview();
+        drop.classList.remove('is-done', 'has-error');
+        if (err) err.hidden = true;
+        text.textContent = promptText;
+        meta.textContent = '';
+        if (actions) actions.hidden = true;
+      });
+    }
 
     ['dragenter', 'dragover'].forEach((ev) =>
       drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('is-dragover'); }),

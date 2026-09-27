@@ -71,6 +71,8 @@ const en = {
     prompt: 'Choose a file or drop it here',
     typeError: 'Use a PDF, JPG or PNG.',
     sizeError: 'The file is over 10 MB.',
+    camera: 'Take a photo',
+    remove: 'Remove',
   },
 
   owners: {
@@ -182,6 +184,8 @@ const pt: Copy = {
     prompt: 'Escolha um arquivo ou arraste aqui',
     typeError: 'Use PDF, JPG ou PNG.',
     sizeError: 'O arquivo passa de 10 MB.',
+    camera: 'Tirar foto',
+    remove: 'Remover',
   },
   owners: {
     director: 'Diretor / representante legal',
@@ -281,6 +285,8 @@ const es: Copy = {
     prompt: 'Elige un archivo o arrástralo aquí',
     typeError: 'Usa PDF, JPG o PNG.',
     sizeError: 'El archivo supera los 10 MB.',
+    camera: 'Tomar foto',
+    remove: 'Quitar',
   },
   owners: {
     director: 'Director / representante legal',
