@@ -535,12 +535,42 @@ const taxIdOnly: Record<string, IdentityConfig['taxId']> = {
   CU: { name: 'NIT', mask: '00000000000', example: '12345678901', placeholder: '12345678901', maxLength: 11 },
 };
 
+/**
+ * The owner document for markets without a deep config: the local term and its
+ * mask. Person documents rarely carry a public check digit, so none claims one.
+ */
+const ownerDocOnly: Record<string, OwnerDoc> = {
+  GT: { name: 'DPI', mask: '0000 00000 0000' },
+  CR: { name: 'Cédula', mask: '0-0000-0000' },
+  PA: { name: 'Cédula', mask: '0-000-0000' },
+  DO: { name: 'Cédula', mask: '000-0000000-0' },
+  UY: { name: 'CI', mask: '0.000.000-0' },
+  PY: { name: 'Cédula', mask: '0.000.000' },
+  EC: { name: 'Cédula', mask: '0000000000' },
+  BO: { name: 'CI', mask: '0000000' },
+  VE: { name: 'Cédula', mask: 'A-00000000' },
+  NI: { name: 'Cédula', mask: '000-000000-0000A' },
+  HN: { name: 'DNI', mask: '0000-0000-00000' },
+  SV: { name: 'DUI', mask: '00000000-0' },
+  BZ: { name: 'National ID', mask: 'XXXXXXXX' },
+  HT: { name: 'CIN', mask: '000-000-0000' },
+  JM: { name: 'National ID', mask: 'XXXXXXXX' },
+  TT: { name: 'National ID', mask: 'XXXXXXXX' },
+  SR: { name: 'National ID', mask: 'XXXXXXXX' },
+  GY: { name: 'National ID', mask: 'XXXXXXXX' },
+  CU: { name: 'Carné de identidad', mask: '00000000000' },
+  US: { name: 'National ID', mask: 'XXXXXXXX' },
+  CA: { name: 'National ID', mask: 'XXXXXXXX' },
+};
+
 export function identityFor(country: string): IdentityConfig {
   const key = country.toUpperCase();
   const deep = identity[key as IdentityKind];
   if (deep) return deep;
   const taxId = taxIdOnly[key];
-  return taxId ? { ...identity.GENERAL, taxId } : identity.GENERAL;
+  const owner = ownerDocOnly[key];
+  if (!taxId && !owner) return identity.GENERAL;
+  return { ...identity.GENERAL, ...(taxId ? { taxId } : {}), ...(owner ? { owner } : {}) };
 }
 
 /** The generic company documents, for markets with no local term on file. */
