@@ -25,12 +25,26 @@ const items: { code: Lang; flag: string; label: string }[] = [
       aria-current={lang === item.code ? 'true' : undefined}
       aria-label={item.label}
       title={item.label}
+      data-lang={item.code}
     >
       <CountryFlag code={item.flag} />
       <span class="lang__name">{item.label}</span>
     </a>
   ))}
 </div>
+
+<script>
+  import { LANG_COOKIE } from '../i18n/geo';
+
+  const secure = location.protocol === 'https:' ? '; Secure' : '';
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('.lang__link[data-lang]')) {
+    link.addEventListener('click', () => {
+      const code = link.dataset.lang;
+      if (code !== 'en' && code !== 'pt' && code !== 'es') return;
+      document.cookie = `${LANG_COOKIE}=${code}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+    });
+  }
+</script>
 
 <style>
   .lang {

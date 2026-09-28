@@ -6,7 +6,7 @@ export default defineConfig({
   srcDir: './app',
   publicDir: './app/public',
   outDir: './dist/app',
-  adapter: netlify(),
+  adapter: netlify({ devFeatures: true }),
   site: 'https://sambapay.tech',
   i18n: {
     defaultLocale: 'en',
