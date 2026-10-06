@@ -1,1 +1,424 @@
-PASTE
+---
+import type { Lang } from '../i18n';
+import type { Merchant } from '../../db/schema';
+import { accountCopy } from '../i18n/account';
+import { getAccountOverview } from '../lib/account';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  lang: Lang;
+  currentPath: string;
+  merchant: Merchant;
+}
+
+const { lang, currentPath, merchant } = Astro.props;
+const copy = accountCopy(lang);
+const overview = await getAccountOverview(merchant);
+const status = copy.statuses[overview.status] ?? copy.statuses.commercial_fit;
+
+/* Technical values from the database must never reach the screen raw. */
+const roleLabel = (role: string | null) => (role ? copy.roles[role] ?? role : '');
+const docTypeLabel = (docType: string) =>
+  /^ownerDoc_\d+$/.test(docType)
+    ? copy.docTypes.ownerDocN
+    : copy.docTypes[docType] ?? docType;
+
+/**
+ * First Remittance account — commercial terms from the project material.
+ * Platform pricing and FX-provider economics remain explicitly separated.
+ */
+const remittanceTerms = {
+  product: 'Remittance',
+  provider: 'Double Diamond / Choicepay',
+  setupFee: 'Waived',
+  subAccount: '$0 / account / month',
+  deposit: '0.25%',
+  payout: '0.00%',
+  feeTiming: 'Real-time deduction',
+  fx: 'Real-time quote + BPS service fee',
+  fxSpread: 'Bid/ask spread may apply',
+  settlement: 'Net amount after applicable fees',
+};
+---
+
+<BaseLayout lang={lang} currentPath={currentPath} title={copy.title}>
+  <div class="account">
+    <div class="account__card">
+      <h1>{copy.h1}</h1>
+      <p class="account__sub">{copy.in}</p>
+      <p class="account__niches">{copy.niches}</p>
+
+      <div class="account__status">
+        <span class="account__status-label">{copy.statusLabel}</span>
+        <span class="account__status-title">{status.title}</span>
+        <p class="account__status-body">{status.body}</p>
+      </div>
+
+      <section class="account__block account__remittance" aria-labelledby="remittance-title">
+        <div class="account__section-kicker">Product</div>
+        <h2 id="remittance-title" class="account__h2">{remittanceTerms.product}</h2>
+        <p class="account__section-note">
+          Commercial conditions for the first Remittance account. Platform fees and FX-provider
+          economics are shown separately.
+        </p>
+
+        <div class="account__commercial-meta">
+          <div>
+            <span>Commercial partner</span>
+            <strong>{remittanceTerms.provider}</strong>
+          </div>
+          <div>
+            <span>Settlement</span>
+            <strong>{remittanceTerms.settlement}</strong>
+          </div>
+        </div>
+
+        <div class="account__pricing">
+          <div class="account__pricing-head">
+            <span>Condition</span>
+            <span>Agreed</span>
+          </div>
+          <div class="account__pricing-row"><span>Setup fee</span><strong>{remittanceTerms.setupFee}</strong></div>
+          <div class="account__pricing-row"><span>Sub-account</span><strong>{remittanceTerms.subAccount}</strong></div>
+          <div class="account__pricing-row"><span>Deposit transactions</span><strong>{remittanceTerms.deposit}</strong></div>
+          <div class="account__pricing-row"><span>Withdrawal / payout</span><strong>{remittanceTerms.payout}</strong></div>
+          <div class="account__pricing-row"><span>Fee collection</span><strong>{remittanceTerms.feeTiming}</strong></div>
+        </div>
+
+        <div class="account__fx">
+          <span class="account__fx-label">FX / Other Providers</span>
+          <p>{remittanceTerms.fx}. {remittanceTerms.fxSpread}. Fees are deducted from the settlement amount.</p>
+        </div>
+      </section>
+
+      <section class="account__block">
+        <h2 class="account__h2">{copy.progressTitle}</h2>
+        <ol class="account__progress">
+          {copy.steps.map((label, i) => (
+            <li class:list={['account__step', i + 1 <= overview.completedSteps && 'is-done']}>
+              <span class="account__step-num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="account__step-label">{label}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section class="account__block">
+        <h2 class="account__h2">{copy.companyTitle}</h2>
+        <ul class="account__facts">
+          <li>{overview.legalName ?? merchant.companyName}</li>
+          <li>{merchant.email}</li>
+        </ul>
+      </section>
+
+      <section class="account__block">
+        <h2 class="account__h2">{copy.ownersTitle}</h2>
+        {overview.owners.length === 0 ? (
+          <p class="account__empty">{copy.noOwners}</p>
+        ) : (
+          <>
+            <p class="account__count">{overview.ownersWithDoc}/{overview.ownerCount} {copy.ownersSuffix}</p>
+            <ul class="account__facts">
+              {overview.owners.map((o) => (
+                <li>{o.fullName}{o.role ? ` · ${roleLabel(o.role)}` : ''}</li>
+              ))}
+            </ul>
+          </>
+        )}
+      </section>
+
+      <section class="account__block">
+        <h2 class="account__h2">{copy.documentsTitle}</h2>
+        {overview.documents.length === 0 ? (
+          <p class="account__empty">{copy.noDocuments}</p>
+        ) : (
+          <ul class="account__docs">
+            {overview.documents.map((d) => (
+              <li class="account__doc">
+                <span class="account__doc-type">{docTypeLabel(d.docType)}</span>
+                <span class="account__doc-name">{d.fileName}</span>
+                <span class="account__doc-status">{copy.documentReceived}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <form method="post" action={`/api/auth/logout?lang=${lang}`}>
+        <button class="btn btn--secondary" type="submit">{copy.logout}</button>
+      </form>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .account {
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 2.5rem 1rem 4rem;
+  }
+
+  .account__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .account h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .account__sub {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .account__niches {
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .account__status {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: rgba(244, 239, 228, 0.4);
+  }
+
+  .account__status-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--anil);
+  }
+
+  .account__status-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+
+  .account__status-body {
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .account__block { margin-top: 1.75rem; }
+
+  .account__h2 {
+    margin: 0 0 0.75rem;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .account__section-kicker {
+    margin-bottom: 0.25rem;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--anil);
+  }
+
+  .account__section-note {
+    margin: -0.2rem 0 1rem;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .account__commercial-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .account__commercial-meta > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+    padding: 0.7rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--paper);
+  }
+
+  .account__commercial-meta span {
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .account__commercial-meta strong {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .account__pricing {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--paper);
+  }
+
+  .account__pricing-head,
+  .account__pricing-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.68rem 0.75rem;
+  }
+
+  .account__pricing-head {
+    background: rgba(244, 239, 228, 0.55);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .account__pricing-row {
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+  }
+
+  .account__pricing-row strong {
+    font-weight: 650;
+    text-align: right;
+  }
+
+  .account__fx {
+    margin-top: 0.7rem;
+    padding: 0.8rem 0.85rem;
+    border-left: 2px solid var(--anil);
+    background: rgba(244, 239, 228, 0.4);
+  }
+
+  .account__fx-label {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--anil);
+  }
+
+  .account__fx p {
+    margin: 0;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .account__progress {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .account__step {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--paper);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .account__step.is-done {
+    border-color: rgba(22, 136, 33, 0.4);
+    background: rgba(22, 136, 33, 0.05);
+    color: var(--ink);
+  }
+
+  .account__step-num {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--anil);
+  }
+
+  .account__step.is-done .account__step-num { color: var(--green); }
+
+  .account__facts,
+  .account__docs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .account__facts li {
+    font-size: 0.875rem;
+    color: var(--ink);
+  }
+
+  .account__count,
+  .account__empty {
+    margin: 0 0 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  .account__doc {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--paper);
+    font-size: 0.8125rem;
+  }
+
+  .account__doc-type {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .account__doc-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+
+  .account__doc-status {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  .account form { margin-top: 2rem; }
+</style>
