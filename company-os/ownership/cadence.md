@@ -8,7 +8,7 @@ Companions: [`ownership-framework.plan.md`](ownership-framework.plan.md) · [`wo
 **Owner (1) · Backup (1) · Mandate (1 line) · Cadence · Evidence** — one owner per process and per
 live front; unowned items are blockers in the pulse until they have a name.
 
-## Daily — the chase (Hansraj, ten minutes, screen-driven)
+## Daily — the chase (Hansraj Ojha, ten minutes, screen-driven)
 
 - Open the Ownership tab and the Open work tab; chase only what the screen flags — unowned items,
   proposals awaiting assignment, items without movement.
