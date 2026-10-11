@@ -73,9 +73,9 @@ is written about it · one owner and one backup per row.
 | **W1 · Words & Map** | `sambapay` | Word review + surface map + local file renames + this plan | Docs reviewed; renames applied; PR open | **zero** | ✅ PR #1 |
 | **W2 · Registry** | `sambapay` | Canonical texts into the registers (Annex A): the two KYBs, Scalefy, Nuclea, QorePay-WL, Reborn row, Cielo GT, owner updates, actors | Registers updated on the branch | zero | ✅ PR #2 |
 | **W3 · Panel** | `sambapay-app` | Registry + Ownership tab (five columns + Open Queue + mandate drawer) | Functional screen on the branch | zero | ✅ PR #17 |
-| **W4 · Connections** | `sambapay-app` | Owner chips on open work / week / rails; orphan surfacing; Hansraj chase view | Live on the branch | zero | pending |
-| **W5 · Cadence + process docs** | both | Weekly ritual written; how-the-company-works docs attached to processes (per the surface map) | Ritual written; view ready | zero | pending |
-| **W6 · PagSeguro pack** | `sambapay-app` | Cruzia checklist (55 items) structured as the case template | Case trackable | zero | pending |
+| **W4 · Connections** | `sambapay-app` | Owner chips on open work / week / rails; orphan surfacing; Hansraj chase view | Live on the branch | zero | ✅ PR #18 |
+| **W5 · Cadence + process docs** | both | Weekly ritual written; how-the-company-works docs attached to processes (per the surface map) | Ritual written; view ready | zero | ✅ PR #3 + #19 |
+| **W6 · PagSeguro pack** | `sambapay-app` | Cruzia checklist (66 items) structured as the case template | Case trackable | zero | ✅ PR #20 |
 | **W7 · GO** | both | Final PR `ownership/program` → `main` · merge · release · deploy | **Production verified** | **the only deploy** | pending |
 
 ## The git flow (GitHub committee)
