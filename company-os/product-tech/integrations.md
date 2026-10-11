@@ -23,8 +23,8 @@
 | AmFi | Factoring pools | Brazil / BRL | Close-out | 2023 | A55 junior quota | Open |
 | Blocked Brazilian acquirer (name omitted) | Acquirer | Brazil / BRL | Restart is Board goal 1 | | US cards | Open |
 | Kushki | PSP | Colombia | Pipeline (Break Even tool) | | | Open |
-| Reborn (RBN-2026-PSC001) | Card advance + FX into Brazil (contract with Double Diamond) | Brazil / BRL | Contract — updated agreement signed 6 Oct 2026 (our side); awaiting Reborn's next step; KYB in review | Sep 2026 | The instrument runs between Reborn and Double Diamond; PaySecure is not a party (the received version named it by mistake). Card advance 2.38%/month on 90%; FX 0.44% over PTAX, D+1/D+2 | Hansraj (owner) · Abner Maioralli (execution) |
-| QorePay | Acquirer / PSP | Brazil / BRL | Live — first paid transaction 1 Oct 2026; whitelisted (trusted) traffic opened for us | Sep 2026 | New price under negotiation (Hansraj; Renato Paulino assisting); international cards not enabled; checkout filter bypass under review; counterpart: Navya Jain | Renato Paulino · Navya Jain |
+| Reborn (RBN-2026-PSC001) | Card advance + FX into Brazil (contract with Double Diamond) | Brazil / BRL | Contract — updated agreement signed 6 Oct 2026 (our side); awaiting Reborn's next step; KYB in review | Sep 2026 | The instrument runs between Reborn and Double Diamond; PaySecure is not a party (the received version named it by mistake). Card advance 2.38%/month on 90%; FX 0.44% over PTAX, D+1/D+2 | Hansraj Ojha (owner) · Abner Maioralli (execution) |
+| QorePay | Acquirer / PSP | Brazil / BRL | Live — first paid transaction 1 Oct 2026; whitelisted (trusted) traffic opened for us | Sep 2026 | New price under negotiation (Hansraj Ojha; Renato Paulino assisting); international cards not enabled; checkout filter bypass under review; counterpart: Navya Jain | Renato Paulino · Navya Jain |
 | Scalefy | Sub-acquirer (Double Diamond front) | Brazil / BRL | Onboarding started — KYB through the panel | Oct 2026 | Runs what QorePay runs today; the marketplace does not ride on it; legal name and CNPJ pending entry | Abner Maioralli (execution) · André Silva (Bahuan) sponsoring |
 | Nuclea | Registradora (receivables registry) | Brazil | Sub-acquirer homologation in progress | Oct 2026 | Double Diamond in homologation as sub-acquirer at Nuclea; requirements being chased | Abner Maioralli |
 
@@ -39,7 +39,7 @@ Scope: every new acquirer directly connected to the central bank of its country,
 | EFI | Brazil | requirements | Open | | | Open | | | Abner Maioralli |
 | On-ramp desk 1: MIPPO/GFS/OrbiFi | Brazil | contract (MIPPO addendum) | | GFS 30 Jul 2025 | | MIPPO addendum; GFS successor | — | bps vs PTAX | Abner Maioralli with Taina Chaves |
 | On-ramp desk 2: Transfero | Brazil | restart (PSAV + A55 wallet) | | | | PSAV protocol; wallet questionnaire | — | bps vs PTAX | Abner Maioralli with Taina Chaves |
-| Reborn | Brazil | contract (KYB in review) | | 6 Oct 2026 (our side) | | KYB review (Hansraj); Reborn's next step | — | 0.44% over PTAX (FX); 2.38%/month advance (card) | Hansraj (with Abner Maioralli) |
+| Reborn | Brazil | contract (KYB in review) | | 6 Oct 2026 (our side) | | KYB review (Hansraj); Reborn's next step | — | 0.44% over PTAX (FX); 2.38%/month advance (card) | Hansraj Ojha (with Abner Maioralli) |
 | QorePay | Brazil | live (whitelisted traffic) | | | 1 Oct 2026 | International cards enablement; new price | | | Renato Paulino · Navya Jain |
 | Scalefy | Brazil | requirements (KYB via panel) | Oct 2026 | | | KYB pack requested; legal name and CNPJ | — | — | Abner Maioralli |
 

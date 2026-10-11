@@ -12,7 +12,7 @@ texts apply mechanically once that pass lands.
 | `product-tech/integrations.md` | Four counterparty rows: **Reborn (RBN-2026-PSC001)**, **QorePay**, **Scalefy**, **Nuclea**. Three partner-signup pipeline rows: Reborn, QorePay, Scalefy. |
 | `governance/decision-log.md` | Five entries (10 Oct 2026): the two KYBs (PagSeguro), QorePay keeps the minimum + new price via Hansraj + Navya/BIN + filters, the naming canon, the ownership framework (Hansraj assigns Monday), Scalefy as the riskier-volume sub-acquirer. |
 
-Owners written on the new rows are the committee's proposals; **Hansraj's Monday (12 Oct)
+Owners written on the new rows are the committee's proposals; **Hansraj Ojha's Monday (12 Oct)
 assignment may re-designate them** — the registers follow the assignment.
 
 ## Held on purpose (apply after the Mexico pass commits)
