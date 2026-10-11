@@ -39,6 +39,16 @@ BD_Proposal*.docx
 WhatsApp Image*.jpeg
 ```
 
+## Tooling (local scripts)
+
+The two local generators wrote their outputs under the old names; their output paths now follow the
+convention (both are local files, never committed):
+
+| Script | Output now |
+| --- | --- |
+| `gerar-contrato-consolidado.py` | `RBN-2026-PSC001 - versao consolidada (Double Diamond).pdf` |
+| `gerar-minuta-clausula-nona.py` | `RBN-2026-PSC001 - minuta clausula nona (CONTRATANTE).pdf` |
+
 ## Pending (app repo, different wave)
 
 `sambapay-app` holds tracked copies under `compliance/pagsmile/`:
