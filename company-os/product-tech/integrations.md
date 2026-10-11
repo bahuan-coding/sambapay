@@ -39,7 +39,7 @@ Scope: every new acquirer directly connected to the central bank of its country,
 | EFI | Brazil | requirements | Open | | | Open | | | Abner Maioralli |
 | On-ramp desk 1: MIPPO/GFS/OrbiFi | Brazil | contract (MIPPO addendum) | | GFS 30 Jul 2025 | | MIPPO addendum; GFS successor | — | bps vs PTAX | Abner Maioralli with Taina Chaves |
 | On-ramp desk 2: Transfero | Brazil | restart (PSAV + A55 wallet) | | | | PSAV protocol; wallet questionnaire | — | bps vs PTAX | Abner Maioralli with Taina Chaves |
-| Reborn | Brazil | contract (KYB in review) | | 6 Oct 2026 (our side) | | KYB review (Hansraj); Reborn's next step | — | 0.44% over PTAX (FX); 2.38%/month advance (card) | Hansraj Ojha (with Abner Maioralli) |
+| Reborn | Brazil | contract (KYB in review) | | 6 Oct 2026 (our side) | | KYB review (Hansraj Ojha); Reborn's next step | — | 0.44% over PTAX (FX); 2.38%/month advance (card) | Hansraj Ojha (with Abner Maioralli) |
 | QorePay | Brazil | live (whitelisted traffic) | | | 1 Oct 2026 | International cards enablement; new price | | | Renato Paulino · Navya Jain |
 | Scalefy | Brazil | requirements (KYB via panel) | Oct 2026 | | | KYB pack requested; legal name and CNPJ | — | — | Abner Maioralli |
 

@@ -10,7 +10,7 @@ texts apply mechanically once that pass lands.
 | --- | --- |
 | `people/process-map.md` | **P29 Factoring** owner: Open → **André Silva (Bahuan)**. New row **P41** — Cheap-rail safety and filters (owner André Silva (Bahuan), backup Leandro Silva). *P41 follows the Mexico-pass numbering (P35–P40 sit in the uncommitted working-tree pass).* |
 | `product-tech/integrations.md` | Four counterparty rows: **Reborn (RBN-2026-PSC001)**, **QorePay**, **Scalefy**, **Nuclea**. Three partner-signup pipeline rows: Reborn, QorePay, Scalefy. |
-| `governance/decision-log.md` | Five entries (10 Oct 2026): the two KYBs (PagSeguro), QorePay keeps the minimum + new price via Hansraj + Navya/BIN + filters, the naming canon, the ownership framework (Hansraj assigns Monday), Scalefy as the riskier-volume sub-acquirer. |
+| `governance/decision-log.md` | Five entries (10 Oct 2026): the two KYBs (PagSeguro), QorePay keeps the minimum + new price via Hansraj Ojha + Navya/BIN + filters, the naming canon, the ownership framework (Hansraj Ojha assigns Monday), Scalefy as the riskier-volume sub-acquirer. |
 
 Owners written on the new rows are the committee's proposals; **Hansraj Ojha's Monday (12 Oct)
 assignment may re-designate them** — the registers follow the assignment.
