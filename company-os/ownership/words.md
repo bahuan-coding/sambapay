@@ -16,10 +16,10 @@ follow this table. PT terms appear only inside quotes in English registers.
 | Process codes | Name first, code after — e.g., "partner signup (P33)" | Codes alone to people ("P33" without the name) | Registers, conversations |
 | DD1 / DD2 | DD1 = production volume on Cielo; DD2 = the secondary Brazilian entity template | Using "DD" alone for either | Registers, screens |
 | PagSeguro | The **marketplace track** (Site Factory / Cruzia) for the Brazil engagement | Confusing with "PagSeguro (Chile)" — the legacy row | Registers, pipeline |
-| PagBank vs PagSeguro | Two different companies — keep them apart | Interchanging the names | Registers, screens |
+| PagBank vs PagSeguro | Keep each naming as received; the engagement runs as PagSeguro — confirm which legal entity signs with Glau | Interchanging the names without confirming | Registers, screens, the case |
 | Pagsmile | **Pagsmile** (register legal name: PAGSMILE INSTITUIÇÃO DE PAGAMENTO LTDA.) | "Pagsmil", "PAGSMIL" | Registers |
 | Scalefy | **Scalefy** (the new sub-acquirer, Double Diamond front) | "Skellify", "ScaleFy" | Registers, screens |
 | Nuclea | **Nuclea** — official spelling to confirm (may be Núclea) on first written use | Inventing variants | Registers |
-| Take rate vs MDR | Take rate = ours (Hansraj proposes); MDR = the acquirer's rate | Using them as synonyms | Kit, finance |
+| Take rate vs MDR | Take rate = ours (Hansraj Ojha proposes); MDR = the acquirer's rate | Using them as synonyms | Kit, finance |
 | The four statuses | partner Merchant of Record → payment facilitator → **sub-acquirer** → payment institution — distinct, never collapsed | "PayFac" as a synonym for sub-acquirer | Kit, registers |
 | Money | "BRL 1.20", "USD 2,000" in registers; "R$" only inside PT quotes | Mixed formats in one document | All documents |

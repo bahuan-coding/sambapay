@@ -1,6 +1,6 @@
 # The Ownership Framework — Program Plan
 
-Status: W1–W3 delivered on the integration branches (PRs #1, #2, #17). Production is untouched until W7.
+Status: W1–W6 delivered on the integration branches (PRs #1, #2, #3 and #17–#20). Production is untouched until W7.
 Owner: André Silva (Bahuan). Cadence: this file is the plan of record; it closes when W7 deploys.
 Companions: [`words.md`](words.md) · [`surface-map.md`](surface-map.md) · [`renames.md`](renames.md)
 
@@ -8,7 +8,7 @@ Companions: [`words.md`](words.md) · [`surface-map.md`](surface-map.md) · [`re
 
 Every process and every live front gets **one owner** with a mandate, a backup, a cadence and
 evidence — visible on the screen the team already uses. Nobody guesses who owns what. **Unowned is
-an explicit blocker**, not silence. Hansraj chases daily; André Silva (Bahuan) approves.
+an explicit blocker**, not silence. Hansraj Ojha chases daily; André Silva (Bahuan) approves.
 
 ## Locked decisions (canonical)
 
@@ -18,13 +18,13 @@ an explicit blocker**, not silence. Hansraj chases daily; André Silva (Bahuan) 
 | PagSeguro × Cruzia/Double Diamond | **Two KYBs: Cruzia as Merchant of Record + Double Diamond as sub-acquirer.** Meeting Tuesday 11:00, only André Silva; material: Site Factory Business Strategy (internal). After: route to PagSeguro's onboarding team (via Glau) |
 | PagSeguro's role | **PagSeguro is for the marketplace** (Site Factory / Cruzia track) |
 | Entities | Double Diamond runs via the SambaPay endpoint; Cruzia runs rails directly integrated with PagSeguro. Brand rename pending; entity is CRUZIAPAY LTDA |
-| QorePay | Keep volume — minimum USD 2,000 plus company-expense consistency (R$ 38k payroll context). New price: **Hansraj negotiates, approved with him**. Navya checks BIN-data accessibility before any commercial-proposal inclusion. **Filters: André Silva owns** |
+| QorePay | Keep volume — minimum USD 2,000 plus company-expense consistency (R$ 38k payroll context). New price: **Hansraj Ojha negotiates, approved with him**. Navya checks BIN-data accessibility before any commercial-proposal inclusion. **Filters: André Silva owns** |
 | Cielo | Unblocked by Abner; GT declines recurred (19 declines · 1 approval, Oct 9–10) — filter revert pending |
 | HO Brazil | **Hansraj Ojha** |
 | Scalefy | New **sub-acquirer** (Double Diamond front), runs what QorePay runs today — **not** the marketplace |
 | Nuclea | Double Diamond **sub-acquirer homologation** — Abner chasing |
 | File names | Contract files renamed (see `renames.md`); word pass first, no overcomplication |
-| Monday | **Hansraj assigns the owners of everything still open** (Open Queue below) |
+| Monday | **Hansraj Ojha assigns the owners of everything still open** (Open Queue below) |
 
 ## The model, in one page
 
@@ -48,8 +48,8 @@ an explicit blocker**, not silence. Hansraj chases daily; André Silva (Bahuan) 
 | Backup | Runs it when the owner is away, and says so |
 | DRI | Owner of one initiative |
 | Unowned Queue | Orphans listed openly; never silently assigned |
-| Cadence Owner | Runs the rhythm and chases updates — **Hansraj** |
-| Escalation | Owner → Hansraj → **André Silva (Approver)** |
+| Cadence Owner | Runs the rhythm and chases updates — **Hansraj Ojha** |
+| Escalation | Owner → Hansraj Ojha → **André Silva (Approver)** |
 
 **House rules (kept from the repo):** a process with no owner is a blocker in the next weekly
 pulse · a new front enters the map the day it starts, with owner and backup, before anything else
@@ -62,7 +62,7 @@ is written about it · one owner and one backup per row.
    the Open Queue highlighted, a drawer with the mandate text.
 3. **Connections** — owner chips already living on the screens (open work, week tasks, rails) link
    to their ownership entry; unowned items surface everywhere.
-4. **The Cadence** — Hansraj's daily needs-chasing view (screen-driven, not memory) + the weekly
+4. **The Cadence** — Hansraj Ojha's daily needs-chasing view (screen-driven, not memory) + the weekly
    Ownership Review (assign orphans · items stale > 7 days declare the blocker · close
    initiatives).
 
@@ -73,7 +73,7 @@ is written about it · one owner and one backup per row.
 | **W1 · Words & Map** | `sambapay` | Word review + surface map + local file renames + this plan | Docs reviewed; renames applied; PR open | **zero** | ✅ PR #1 |
 | **W2 · Registry** | `sambapay` | Canonical texts into the registers (Annex A): the two KYBs, Scalefy, Nuclea, QorePay-WL, Reborn row, Cielo GT, owner updates, actors | Registers updated on the branch | zero | ✅ PR #2 |
 | **W3 · Panel** | `sambapay-app` | Registry + Ownership tab (five columns + Open Queue + mandate drawer) | Functional screen on the branch | zero | ✅ PR #17 |
-| **W4 · Connections** | `sambapay-app` | Owner chips on open work / week / rails; orphan surfacing; Hansraj chase view | Live on the branch | zero | ✅ PR #18 |
+| **W4 · Connections** | `sambapay-app` | Owner chips on open work / week / rails; orphan surfacing; Hansraj Ojha chase view | Live on the branch | zero | ✅ PR #18 |
 | **W5 · Cadence + process docs** | both | Weekly ritual written; how-the-company-works docs attached to processes (per the surface map) | Ritual written; view ready | zero | ✅ PR #3 + #19 |
 | **W6 · PagSeguro pack** | `sambapay-app` | Cruzia checklist (66 items) structured as the case template | Case trackable | zero | ✅ PR #20 |
 | **W7 · GO** | both | Final PR `ownership/program` → `main` · merge · release · deploy | **Production verified** | **the only deploy** | pending |
@@ -97,16 +97,16 @@ main ─────────────────────────
 - Branch protection on `main` is recommended while the program runs; systems working in parallel
   (e.g., the other agent) must keep their work on branches.
 
-## The Open Queue — Hansraj assigns Monday
+## The Open Queue — Hansraj Ojha assigns Monday
 
-| Item | Committee recommends | Hansraj |
+| Item | Committee recommends | Hansraj Ojha |
 | --- | --- | --- |
 | AmFi price · Asaas anticipation · Asaas on Double Diamond · PagBank | André Silva (Bahuan); Asaas with Renato Paulino | ☐ |
 | Scalefy rail | Abner (execution), André Silva sponsoring | ☐ |
 | Nuclea homologation | Abner (execution) | ☐ |
 | QorePay WL management | Renato Paulino + Navya | ☐ |
 | Filters / cheap-rail safety | André Silva (assigned) | ☐ |
-| Reborn register row | Hansraj (owner) · Abner (execution) | ☐ |
+| Reborn register row | Hansraj Ojha (owner) · Abner (execution) | ☐ |
 | Cielo GT revert + international cards | Leandro (revert) · Abner (Cielo) | ☐ |
 | Marketplace / Site Factory | Commercial owner Open in the kit · swarm PMs Open · LATAM team composition Open | ☐ |
 | Sridhar's items 2–7 | Pagsmile → Abner · Asaas → Renato Paulino · Pagar.me → Abner · Transfero → Taina · BTG → Rafaela | ☐ |
@@ -121,7 +121,7 @@ main ─────────────────────────
   marketplace. Onboarding started; KYB via panel. Legal name and CNPJ pending entry."
 - **Nuclea:** "Double Diamond in homologation as sub-acquirer at Nuclea. Abner chasing
   requirements; ETA pending."
-- **QorePay WL:** "Trusted (whitelisted) traffic opened for us. New price: Hansraj negotiates,
+- **QorePay WL:** "Trusted (whitelisted) traffic opened for us. New price: Hansraj Ojha negotiates,
   approved with him. Minimum volume USD 2,000 plus company-expense consistency. Navya: BIN-data
   accessibility check before commercial-proposal inclusion. Filters: André Silva owns. Incident:
   checkout filter bypass (10 Aug) — revert pending; international cards not enabled."
@@ -138,6 +138,6 @@ main ─────────────────────────
 
 1. **Words first** — perfect names before anything moves.
 2. **Nothing changes how it is** — we add the ownership layer; we do not rebuild screens.
-3. **No owner invented silently** — everything open goes to Hansraj Monday.
+3. **No owner invented silently** — everything open goes to Hansraj Ojha Monday.
 4. **One owner + one backup per row** — always.
 5. The screen stays **functional** (no UX wave yet).
