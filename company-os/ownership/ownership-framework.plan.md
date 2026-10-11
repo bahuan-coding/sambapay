@@ -1,6 +1,6 @@
 # The Ownership Framework — Program Plan
 
-Status: in delivery — W1 on branch `ownership/w1-words-map`. Production is untouched until W7.
+Status: W1–W3 delivered on the integration branches (PRs #1, #2, #17). Production is untouched until W7.
 Owner: André Silva (Bahuan). Cadence: this file is the plan of record; it closes when W7 deploys.
 Companions: [`words.md`](words.md) · [`surface-map.md`](surface-map.md) · [`renames.md`](renames.md)
 
@@ -31,7 +31,7 @@ an explicit blocker**, not silence. Hansraj chases daily; André Silva (Bahuan) 
 **The five columns of truth — every row in the system has exactly these:**
 
 | Owner (1) | Backup (1) | Mandate (1 line) | Cadence | Evidence |
-| --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- |
 
 **Two layers**
 
@@ -68,15 +68,15 @@ is written about it · one owner and one backup per row.
 
 ## Waves
 
-| Wave | Repo(s) | Scope | Exit | Production |
-| --- | --- | --- | --- | --- |
-| **W1 · Words & Map** | `sambapay` | Word review + surface map + local file renames + this plan | Docs reviewed; renames applied; PR open | **zero** |
-| **W2 · Registry** | `sambapay` | Canonical texts into the registers (Annex A): the two KYBs, Scalefy, Nuclea, QorePay-WL, Reborn row, Cielo GT, owner updates, actors | Registers updated on the branch | zero |
-| **W3 · Panel** | `sambapay-app` | Registry + Ownership tab (five columns + Open Queue + mandate drawer) | Functional screen on the branch | zero |
-| **W4 · Connections** | `sambapay-app` | Owner chips on open work / week / rails; orphan surfacing; Hansraj chase view | Live on the branch | zero |
-| **W5 · Cadence + process docs** | both | Weekly ritual written; how-the-company-works docs attached to processes (per the surface map) | Ritual written; view ready | zero |
-| **W6 · PagSeguro pack** | `sambapay-app` | Cruzia checklist (55 items) structured as the case template | Case trackable | zero |
-| **W7 · GO** | both | Final PR `ownership/program` → `main` · merge · release · deploy | **Production verified** | **the only deploy** |
+| Wave | Repo(s) | Scope | Exit | Production | Status |
+| --- | --- | --- | --- | --- | --- |
+| **W1 · Words & Map** | `sambapay` | Word review + surface map + local file renames + this plan | Docs reviewed; renames applied; PR open | **zero** | ✅ PR #1 |
+| **W2 · Registry** | `sambapay` | Canonical texts into the registers (Annex A): the two KYBs, Scalefy, Nuclea, QorePay-WL, Reborn row, Cielo GT, owner updates, actors | Registers updated on the branch | zero | ✅ PR #2 |
+| **W3 · Panel** | `sambapay-app` | Registry + Ownership tab (five columns + Open Queue + mandate drawer) | Functional screen on the branch | zero | ✅ PR #17 |
+| **W4 · Connections** | `sambapay-app` | Owner chips on open work / week / rails; orphan surfacing; Hansraj chase view | Live on the branch | zero | pending |
+| **W5 · Cadence + process docs** | both | Weekly ritual written; how-the-company-works docs attached to processes (per the surface map) | Ritual written; view ready | zero | pending |
+| **W6 · PagSeguro pack** | `sambapay-app` | Cruzia checklist (55 items) structured as the case template | Case trackable | zero | pending |
+| **W7 · GO** | both | Final PR `ownership/program` → `main` · merge · release · deploy | **Production verified** | **the only deploy** | pending |
 
 ## The git flow (GitHub committee)
 

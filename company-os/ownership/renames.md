@@ -49,12 +49,11 @@ convention (both are local files, never committed):
 | `gerar-contrato-consolidado.py` | `RBN-2026-PSC001 - versao consolidada (Double Diamond).pdf` |
 | `gerar-minuta-clausula-nona.py` | `RBN-2026-PSC001 - minuta clausula nona (CONTRATANTE).pdf` |
 
-## Pending (app repo, different wave)
+## Applied (app repo — branch `ownership/w3-panel`, PR #17)
 
-`sambapay-app` holds tracked copies under `compliance/pagsmile/`:
-`Contrato_RBN-2026-PSC001___Double_Diamond_Paysecure.pdf` and
-`RBN-2026-PSC001_Pontos_de_Alteracao.pdf` (plus the corporate amendment). Those are tracked — the
-rename happens with a git move on the app's ownership branch (W3), never directly on `main`.
+The same two contract copies under `sambapay-app/compliance/pagsmile/` were renamed with a git move
+(100% similarity) and every reference updated: `MANIFEST.md`, `pagsmile-pack.ts`, and the download
+registry `server/utils/rail-documents.ts` (filename + path). Content untouched — names only.
 
 ## References
 

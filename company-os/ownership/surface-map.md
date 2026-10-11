@@ -15,6 +15,7 @@ line) · Cadence · Evidence · Status (owned / unowned).
 | Anticipation tab | Desk (product × entity), sheet rates record | Each product row (owner) |
 | Remittance tab | FX comparison, desk, sheet record (OTC) | Each corridor (owner) |
 | Open work tab | Desk tasks (19) + sheet week tasks (11) | Each task (owner chip → registry entry) |
+| Ownership tab | The registry: 15 processes · 12 initiatives · the open queue (W3) | The ownership layer itself; rows expand to the mandate charter |
 | Views | Table · Matrix · Presentation | — (rendering only) |
 
 ## 2. Company brain — `company-os` (`sambapay`)
