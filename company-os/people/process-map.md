@@ -32,12 +32,13 @@ Every process in the company, one owner, one backup, its cadence and where it is
 | P26 | Decision log and governance | André Silva | — | On decision | ../governance/decision-log.md |
 | P27 | Legal counsel Mexico and Colombia (objective 6) | André Silva | Sheila Esmeralda | Project | ../opportunities/latam-map.md |
 | P28 | Purchases and tools (five Android phones) | Rafaela Brito | — | On request | README.md |
-| P29 | Factoring: all volume anticipated at a competitive price | Open (internal process; no vendor) | — | Continuous | ../operations/README.md |
+| P29 | Factoring: all volume anticipated at a competitive price | André Silva (Bahuan) | — | Continuous | ../operations/README.md |
 | P30 | Brazilian / 2D acquirer restart | André Silva | Open | Board goal 1 | ../governance/README.md |
 | P31 | Second Brazilian entity (DD2): Double Diamond checklist package, entity opening, indicative all-in about R$ 5,000 (lawyer, digitising including 2-step on mobile for bank/acquirer apps, CNPJ, three acquirer accounts; no contract signed), on-ramp desk account openings; the three acquirer signups run under P33 | André Silva | Sheila Esmeralda (documents), Taina Chaves (desks), Rafaela Brito (apps and access) | Opens in parallel with DD1 Cielo production volume. Date Open. Not the volume gate | ../product-tech/integrations.md, ../operations/operator-windows.md |
 | P32 | Licensing roadmap: sub-acquiring in our own name, then payment-institution authorisation. Agents design; André Silva decides | André Silva | Sheila Esmeralda (obligations file) | Whenever a Stage-1 gate moves | ../governance/licensing-roadmap.md |
 | P33 | Partner signup: SambaPay signed up and live on new acquirers directly connected to the central bank; requirements, document packs, contracts, production API keys delivered to the core team, MIDs, integration on PaySecure's white label, first live transaction; the pipeline metrics | Abner Maioralli | Leandro Silva (integration build), Sheila Esmeralda (documents) | Per acquirer; metrics weekly in the pulse | ../product-tech/integrations.md (signup pipeline and metrics) |
 | P34 | Power of Attorney for the FX contact and contract, so settlements can start. Sridhar (PaySecure) helps; André Silva owns | André Silva | Taina Chaves (money out after the contract exists) | Until the Power of Attorney is in hand and the contract is signed | ../operations/README.md |
+| P41 | Cheap-rail safety and filters: decline analysis, filter quality and the safety of low-cost rails; every incident reviewed | André Silva (Bahuan) | Leandro Silva | Continuous; every incident reviewed | ../product-tech/integrations.md |
 
 ## How to use this map
 
