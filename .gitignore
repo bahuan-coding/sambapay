@@ -14,3 +14,10 @@ RBN-*.pdf
 Contrato_*.pdf
 ChoicePay*.docx
 gerar-*.py
+
+# Local personal/compliance documents (never commit)
+CNH*.pdf
+CNPJ*.pdf
+*ALTERA*.pdf
+BD_Proposal*.docx
+WhatsApp Image*.jpeg
